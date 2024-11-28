@@ -1,6 +1,6 @@
 "use client";
 
-import { addParticipant } from "@/actions/supabase";
+import { addParticipant } from "@/actions/survey";
 import {
   Anchor,
   Box,

@@ -1,13 +1,13 @@
 "use client";
 
+import { adminLogin } from "@/actions/auth";
 import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Group,
-  Text,
   Box,
-  rem,
+  Button,
+  em,
+  Group,
+  PasswordInput,
+  TextInput,
 } from "@mantine/core";
 import { isEmail, isNotEmpty, useForm } from "@mantine/form";
 
@@ -24,11 +24,13 @@ export const LoginForm = () => {
   });
 
   const handleSubmit = (values: { email: string; password: string }) => {
-    console.log(values);
+    if (form.isValid()) {
+      adminLogin(values.email, values.password);
+    }
   };
 
   return (
-    <Box w={rem(300)}>
+    <Box>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="Email"
@@ -42,11 +44,10 @@ export const LoginForm = () => {
           placeholder="Your password"
           {...form.getInputProps("password")}
         />
-        <Group justify="apart" mt="md">
-          <Button type="submit">Login</Button>
-          <Text component="a" size="sm">
-            Forgot password?
-          </Text>
+        <Group justify="center" mt="md">
+          <Button type="submit" px="xl">
+            Login
+          </Button>
         </Group>
       </form>
     </Box>
