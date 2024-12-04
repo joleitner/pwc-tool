@@ -9,21 +9,162 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      images: {
+        Row: {
+          created_at: string
+          id: number
+          metadata: Json | null
+          path: string
+          survey: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          metadata?: Json | null
+          path: string
+          survey: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          metadata?: Json | null
+          path?: string
+          survey?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "images_survey_fkey"
+            columns: ["survey"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pair_comparisons: {
+        Row: {
+          created_at: string
+          id: number
+          image_1: number
+          image_2: number
+          survey: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          image_1: number
+          image_2: number
+          survey: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          image_1?: number
+          image_2?: number
+          survey?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pair_comparisons_image_1_fkey"
+            columns: ["image_1"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pair_comparisons_image_2_fkey"
+            columns: ["image_2"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pair_comparisons_survey_fkey"
+            columns: ["survey"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       participants: {
         Row: {
           created_at: string
           email: string
-          id: number
+          id: string
+          verified: boolean
         }
         Insert: {
           created_at?: string
           email: string
-          id?: number
+          id: string
+          verified?: boolean
         }
         Update: {
           created_at?: string
           email?: string
+          id?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      survey_users: {
+        Row: {
+          created_at: string
+          id: number
+          survey: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
           id?: number
+          survey: number
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          survey?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survey_users_survey_fkey"
+            columns: ["survey"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_users_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      surveys: {
+        Row: {
+          created_at: string
+          id: number
+          image_count: number | null
+          participant_count: number | null
+          public_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          image_count?: number | null
+          participant_count?: number | null
+          public_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          image_count?: number | null
+          participant_count?: number | null
+          public_id?: string
         }
         Relationships: []
       }

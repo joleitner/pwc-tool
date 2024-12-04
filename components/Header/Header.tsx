@@ -5,13 +5,14 @@ import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import { IconAB } from "@tabler/icons-react";
+import { logout } from "@/actions/auth";
 
 const links = [
   { link: "/", label: "Um was gehts?" },
   { link: "/participate", label: "Hilf mit!" },
 ];
 
-export function Header() {
+export function Header({ admin }: { admin?: boolean }) {
   const [opened, { toggle }] = useDisclosure(false);
   //   const [active, setActive] = useState(links[0].link);
 
@@ -27,19 +28,24 @@ export function Header() {
       {link.label}
     </Button>
   ));
+  const adminLinks = (
+    <Button variant={"subtle"} onClick={logout}>
+      Logout
+    </Button>
+  );
 
   return (
     <header className={classes.header}>
       <Container size="lg" className={classes.inner}>
         <Group>
           <IconAB size={40} color="var(--mantine-primary-color-6)" />
-          <Title order={1} size="h3">
+          <Title order={1} size="h3" visibleFrom="sm">
             Nutzerstudie - Gruppenbilder
           </Title>
         </Group>
 
         <Group gap={10} visibleFrom="xs">
-          {items}
+          {admin ? adminLinks : items}
           <ThemeToggle />
         </Group>
 

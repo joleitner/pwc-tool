@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Container size="lg" miw="100vh">
+      <Container size="lg">
         <Paper shadow="md" p={30} radius="md" my={50} withBorder>
           <Text fw="bold" mb={15}>
             Welches Bild gefällt dir besser?

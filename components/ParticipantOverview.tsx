@@ -2,85 +2,112 @@
 
 import { deleteParticipant, getParticipants } from "@/actions/survey";
 import { Participant } from "@/types";
-import { createClient } from "@/utils/supabase/client";
+import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import {
   ActionIcon,
-  Alert,
+  Badge,
   Box,
+  BoxProps,
   Button,
   Flex,
   Group,
   Modal,
   Paper,
+  ScrollAreaAutosize,
   Stack,
   StackProps,
   Text,
-  ThemeIcon,
+  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconTrash, IconX } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { IconTrash, IconUsersGroup, IconX } from "@tabler/icons-react";
+import { useState } from "react";
 
-export const ParticipantOverview = ({ ...props }: Partial<StackProps>) => {
-  const [participants, setParticipants] = useState<Participant[]>([]);
+type Props = Partial<BoxProps> & {
+  initial?: Participant[];
+};
+
+export const ParticipantOverview = ({ initial, ...props }: Props) => {
+  const [participants, setParticipants] = useState<Participant[]>(
+    initial || []
+  );
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteCandidate, setDeleteCandidate] = useState<Participant | null>(
     null
   );
-  const supabase = createClient();
+  const supabase = createClientSupabase();
 
-  useEffect(() => {
-    const loadParticipants = async () => {
-      const { data, error } = await getParticipants();
-      if (!error) {
-        setParticipants(data);
-      }
-    };
-    loadParticipants();
-  }, []);
-
-  const onUpdate = async (payload: any) => {
-    setParticipants((prev) => [payload.new, ...prev]);
+  const onUpdate = async () => {
+    const { data, error } = await getParticipants();
+    if (!error) {
+      setParticipants(data);
+    }
   };
 
   supabase
     .channel("participants")
     .on(
       "postgres_changes",
-      { event: "INSERT", schema: "public", table: "participants" },
+      { event: "*", schema: "public", table: "participants" },
       onUpdate
     )
     .subscribe();
 
   return (
     <>
-      <Stack gap="md" {...props}>
-        {participants.map((participant) => (
-          <Paper py="xs" px="lg" withBorder key={participant.id}>
-            <Flex justify="space-between" align="center">
-              <Text>{participant.email}</Text>
-              <ActionIcon
-                size="lg"
-                color="var(--mantine-color-red-8)"
-                onClick={() => {
-                  setDeleteCandidate(participant);
-                  open();
-                }}
-              >
-                <IconTrash size={20} />
-              </ActionIcon>
-            </Flex>
-          </Paper>
-        ))}
-      </Stack>
+      <Box {...props}>
+        <Flex justify="space-between" mr="md" align="center" mb="md">
+          <Title order={2}>Teilnehmer</Title>
+          <Badge
+            variant="light"
+            size="xl"
+            leftSection={<IconUsersGroup size={20} />}
+          >
+            {participants.length}
+          </Badge>
+        </Flex>
+        <ScrollAreaAutosize mah={450} offsetScrollbars>
+          <Stack gap="md">
+            {participants.map((participant) => (
+              <Paper py="xs" px="lg" withBorder key={participant.id}>
+                <Flex justify="space-between" align="center">
+                  <Text>{participant.email}</Text>
+                  <Group gap={20}>
+                    <Badge color={participant.verified ? "green" : "blue"}>
+                      {participant.verified ? "Verified" : "Pending"}
+                    </Badge>
+                    <ActionIcon
+                      size="lg"
+                      variant="subtle"
+                      color="var(--mantine-color-red-8)"
+                      onClick={() => {
+                        setDeleteCandidate(participant);
+                        open();
+                      }}
+                    >
+                      <IconTrash size={20} />
+                    </ActionIcon>
+                  </Group>
+                </Flex>
+              </Paper>
+            ))}
+          </Stack>
+        </ScrollAreaAutosize>
+      </Box>
+
       <DeleteModal
         opened={opened}
         onClose={() => {
           close();
+          setDeleteCandidate(null);
+        }}
+        onDelete={() => {
           // remove from list
           setParticipants((prev) =>
             prev.filter((p) => p.id !== deleteCandidate?.id)
           );
+          deleteParticipant(deleteCandidate?.id!);
+          close();
           setDeleteCandidate(null);
         }}
         participant={deleteCandidate}
@@ -92,10 +119,12 @@ export const ParticipantOverview = ({ ...props }: Partial<StackProps>) => {
 const DeleteModal = ({
   opened,
   onClose,
+  onDelete,
   participant,
 }: {
   opened: boolean;
   onClose: () => void;
+  onDelete: () => void;
   participant: Participant | null;
 }) => {
   return (
@@ -116,10 +145,7 @@ const DeleteModal = ({
             color="red"
             size="sm"
             leftSection={<IconTrash size={18} />}
-            onClick={() => {
-              deleteParticipant(participant?.id!);
-              onClose();
-            }}
+            onClick={onDelete}
           >
             Ja, löschen
           </Button>

@@ -1,70 +1,77 @@
 "use server";
 
 import { User } from "@/types/index";
-import { createClient } from "@/utils/supabase/server";
+import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
+import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export const getAuthUser = async (select = '*') => {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+export const getAuthUser = async (select = "*") => {
+  const supabase = await createServerSupabase();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) return null;
-  
-    const { data, error } = await supabase
-      .from('users')
-      .select(select)
-      .eq('id', user?.id!)
-      .returns<Partial<User[]>>()
-      .single();
+  if (!user) return null;
 
-    if (error) return null;
-  
-    return { email: user?.email, ...data } as User;
-  };
+  const { data, error } = await supabase
+    .from("users")
+    .select(select)
+    .eq("id", user?.id!)
+    .returns<Partial<User[]>>()
+    .single();
 
+  if (error) return null;
+
+  return { email: user?.email, ...data } as User;
+};
 
 export async function adminLogin(email: string, password: string) {
-    const supabase = await createClient()
-  
-    const { error } = await supabase.auth.signInWithPassword({email, password})
-  
-    if (error) {
-      redirect('/error')
-    }
-  
-    revalidatePath('/admin')
-    redirect('/admin')
+  const supabase = await createServerSupabase();
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    redirect("/error");
   }
+
+  revalidatePath("/admin");
+  redirect("/admin");
+}
 
 export async function logout() {
-    const supabase = await createClient()
-  
-    await supabase.auth.signOut()
-  
-    revalidatePath('/', 'layout')
-    redirect('/')
+  const supabase = await createServerSupabase();
 
-  }
-  
-  // export async function signup(formData: FormData) {
-  //   const supabase = await createClient()
-  
-  //   // type-casting here for convenience
-  //   // in practice, you should validate your inputs
-  //   const data = {
-  //     email: formData.get('email') as string,
-  //     password: formData.get('password') as string,
-  //   }
-  
-  //   const { error } = await supabase.auth.signUp(data)
-  
-  //   if (error) {
-  //     redirect('/error')
-  //   }
-  
-  //   revalidatePath('/', 'layout')
-  //   redirect('/')
-  // }
+  await supabase.auth.signOut();
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function inviteParticipant(email: string) {
+  const supabase = await createAdminSupabase();
+
+  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
+
+  if (error) return { error };
+
+  return await supabase
+    .from("participants")
+    .insert([{ id: data.user.id, email }]);
+
+  // return await supabase.auth.signInWithOtp({
+  //   email,
+  // });
+}
+
+export async function resendOTPLink(email: string, redirectTo?: string) {
+  const supabase = await createServerSupabase();
+
+  return await supabase.auth.signInWithOtp({
+    email: email,
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: redirectTo,
+    },
+  });
+}

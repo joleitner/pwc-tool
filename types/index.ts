@@ -1,7 +1,9 @@
-import { Database } from "./supabase";
+import { Database, Tables } from "./supabase";
 
-export type User = Database["public"]["Tables"]["users"]["Row"] & {
+export type User = Tables<"users"> & {
     email: string;
 };
 
-export type Participant = Database["public"]["Tables"]["participants"]["Row"]
+export type Participant = Tables<"participants">
+
+export type Survey = Tables<"surveys">

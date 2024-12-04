@@ -1,6 +1,7 @@
 "use client";
 
-import { addParticipant } from "@/actions/survey";
+import { inviteParticipant } from "@/actions/auth";
+import { showNotification } from "@/utils/showNotification";
 import {
   Anchor,
   Box,
@@ -41,10 +42,19 @@ export const ParticapteForm = () => {
     dataPrivacy: boolean;
   }) => {
     if (form.isValid()) {
-      const { data, error } = await addParticipant(values.email);
+      const { error } = await inviteParticipant(values.email);
       if (error) {
-        alert("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.");
+        showNotification(
+          "Leider hat das einschreiben nicht geklappt",
+          "Bitte versuche es erneut!",
+          "error"
+        );
       } else {
+        showNotification(
+          "Erfolgreich eingeschrieben",
+          "Danke für deine Teilnahme! Bitte überprüfe deine Emails.",
+          "success"
+        );
         redirect("/");
       }
     }

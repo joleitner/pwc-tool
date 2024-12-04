@@ -1,6 +1,9 @@
 import { ColorSchemeScript, createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
+import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
+import { Notifications } from "@mantine/notifications";
 
 export const metadata: Metadata = {
   title: "Gruppenbilder - Nutzerstudie",
@@ -42,6 +45,7 @@ export default async function RootLayout({
       <body>
         <MantineProvider defaultColorScheme="light" theme={theme}>
           {children}
+          <Notifications />
         </MantineProvider>
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { Anchor, Box, Container, Group, Text } from "@mantine/core";
+import { Anchor, Box, BoxProps, Container, Group, Text } from "@mantine/core";
 import classes from "./Footer.module.css";
 import { IconAB } from "@tabler/icons-react";
 
@@ -8,7 +8,7 @@ const links = [
   { link: "/participate", label: "Hilf mit" },
 ];
 
-export function Footer() {
+export function Footer({ ...props }: Partial<BoxProps>) {
   const items = links.map((link) => (
     <Anchor<"a">
       c="dimmed"
@@ -22,7 +22,7 @@ export function Footer() {
   ));
 
   return (
-    <div className={classes.footer}>
+    <Box className={classes.footer} {...props}>
       <Container className={classes.inner}>
         <Group>
           <IconAB size={25} color="var(--mantine-primary-color-6)" />
@@ -30,6 +30,6 @@ export function Footer() {
         </Group>
         <Group className={classes.links}>{items}</Group>
       </Container>
-    </div>
+    </Box>
   );
 }

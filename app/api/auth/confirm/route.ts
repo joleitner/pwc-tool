@@ -1,28 +1,41 @@
-import { type EmailOtpType } from '@supabase/supabase-js'
-import { type NextRequest } from 'next/server'
+import { type EmailOtpType } from "@supabase/supabase-js";
+import { type NextRequest } from "next/server";
 
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+import { createServerSupabase } from "@/utils/supabase/supabase.server";
+import { redirect } from "next/navigation";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const token_hash = searchParams.get('token_hash')
-  const type = searchParams.get('type') as EmailOtpType | null
-  const next = searchParams.get('next') ?? '/'
+  const { searchParams } = new URL(request.url);
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
+  const next = searchParams.get("next") ?? "/confirmed";
 
   if (token_hash && type) {
-    const supabase = await createClient()
+    const supabase = await createServerSupabase();
 
-    const { error } = await supabase.auth.verifyOtp({
+    const { data, error } = await supabase.auth.verifyOtp({
       type,
       token_hash,
-    })
+    });
     if (!error) {
+      if (type === "invite") {
+        // set participant as verified
+        await supabase
+          .from("participants")
+          .update({ verified: true })
+          .eq("id", data?.user?.id!)
+          .select();
+      }
+
       // redirect user to specified redirect URL or root of app
-      redirect(next)
+      redirect(next);
+    } else if (error.code === "otp_expired") {
+      redirect(`/survey?next=${next}`);
     }
+
+    console.log(error.name, error.code);
   }
 
   // redirect the user to an error page with some instructions
-  redirect('/error')
+  redirect("/error");
 }
