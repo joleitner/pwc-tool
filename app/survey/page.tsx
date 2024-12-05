@@ -3,7 +3,7 @@ import {
   getImages,
   getPairwiseComparisons,
   getSurveyByPublicId,
-  isUserParticipantOfSurvey,
+  getUserParticipantOfSurvey,
 } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
@@ -11,7 +11,7 @@ import { Survey } from "@/components/Survey/Survey";
 import { SurveyWrapper } from "@/components/Survey/SurveyWrapper";
 import { NextPageProps } from "@/types";
 import { Container, Flex, Text } from "@mantine/core";
-import { IconMoodSad } from "@tabler/icons-react";
+import { IconMoodSad, IconMoodSmile } from "@tabler/icons-react";
 import { redirect } from "next/navigation";
 
 export default async function SurveyPage({ searchParams }: NextPageProps) {
@@ -23,17 +23,25 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
   }
 
   let noValidId = true;
-  let survey_id = 0;
+  let surveyId = 0;
+  let surveyFinished = false;
 
   if (id) {
     const { data: survey } = await getSurveyByPublicId(id);
     if (survey) {
-      noValidId = !(await isUserParticipantOfSurvey(survey.id, user.id));
-      survey_id = survey.id;
+      const { isParticipant, finished } = await getUserParticipantOfSurvey(
+        survey.id,
+        user.id
+      );
+      if (isParticipant && finished !== undefined) {
+        noValidId = false;
+        surveyId = survey.id;
+        surveyFinished = finished;
+      }
     }
   }
 
-  if (noValidId) {
+  if (noValidId || surveyFinished) {
     return (
       <>
         <Header />
@@ -45,9 +53,19 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
             direction="column"
             gap={10}
           >
-            <IconMoodSad size={50} color="gray" />
-            <Text fw="bold">Ungültige Umfrage ID</Text>
-            <Text>Bitte klicke auf den Link in deiner Email.</Text>
+            {surveyFinished ? (
+              <>
+                <IconMoodSmile size={50} color="gray" />
+                <Text fw="bold">Umfrage abgeschlossen</Text>
+                <Text>Vielen Dank für deine Teilnahme.</Text>
+              </>
+            ) : (
+              <>
+                <IconMoodSad size={50} color="gray" />
+                <Text fw="bold">Ungültige Umfrage ID</Text>
+                <Text>Bitte klicke auf den Link in deiner Email.</Text>
+              </>
+            )}
           </Flex>
         </Container>
         <Footer />
@@ -55,8 +73,8 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     );
   }
 
-  const { data: comparisons } = await getPairwiseComparisons(survey_id);
-  const { data: images } = await getImages(survey_id);
+  const { data: comparisons } = await getPairwiseComparisons(surveyId);
+  const { data: images } = await getImages(surveyId);
 
   if (!comparisons || !images) {
     redirect("/error");
@@ -65,7 +83,11 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
   return (
     <>
       <Header survey />
-      <SurveyWrapper comparisons={comparisons} images={images} />
+      <SurveyWrapper
+        comparisons={comparisons}
+        images={images}
+        surveyId={surveyId}
+      />
     </>
   );
 }

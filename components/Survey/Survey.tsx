@@ -9,11 +9,11 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { PwcExample } from "../PwcExample";
 import { ComparisonForm } from "./ComparisonForm";
 import { useSurveyContext } from "./SurveyProvider";
+import { Questionaire } from "./Questionaire";
 
 export const Survey = () => {
   const [surveyStarted, setSurveyStarted] = useState<boolean>(false);
@@ -24,7 +24,6 @@ export const Survey = () => {
   >(comparisons.length > 0 ? 0 : null);
 
   useEffect(() => {
-    console.log(currentComparisonIndex);
     if (nextComparison) {
       if (
         currentComparisonIndex !== null &&
@@ -49,9 +48,9 @@ export const Survey = () => {
               key={comparisons[currentComparisonIndex].id}
             />
           ) : (
-            <>
-              <Title order={3}>Allgemeine Umfrage..</Title>
-            </>
+            <Container size="md" mb={150}>
+              <Questionaire />
+            </Container>
           )}
         </Container>
       ) : (

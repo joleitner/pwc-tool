@@ -7,13 +7,12 @@ import { useEffect, useState } from "react";
 import { useFileUtils } from "@/utils/useFileUtils";
 
 type Props = {
-  // survey_id: number;
-  // user: User;
+  surveyId: number;
   comparisons: PairwiseComparison[];
   images: { id: number; path: string }[];
 };
 
-export const SurveyWrapper = ({ comparisons, images }: Props) => {
+export const SurveyWrapper = ({ comparisons, images, surveyId }: Props) => {
   const [imageUrls, setImageUrls] = useState<{ [id: number]: string }>({});
   const { getFileUrl } = useFileUtils();
 
@@ -40,7 +39,11 @@ export const SurveyWrapper = ({ comparisons, images }: Props) => {
   }, []);
 
   return (
-    <SurveyProvider comparisons={comparisons} imageUrls={imageUrls}>
+    <SurveyProvider
+      comparisons={comparisons}
+      imageUrls={imageUrls}
+      surveyId={surveyId}
+    >
       <Survey />
     </SurveyProvider>
   );

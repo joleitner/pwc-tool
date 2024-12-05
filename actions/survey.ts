@@ -90,7 +90,7 @@ export async function createPairwiseComparisonEntries(
   return await supabase.from("pair_comparisons").insert(comparisons);
 }
 
-export async function isUserParticipantOfSurvey(
+export async function getUserParticipantOfSurvey(
   surveyId: number,
   userId: string
 ) {
@@ -98,12 +98,16 @@ export async function isUserParticipantOfSurvey(
 
   const { data } = await supabase
     .from("survey_users")
-    .select("*")
+    .select("finished")
     .eq("survey", surveyId)
     .eq("user", userId)
     .single();
 
-  return data ? true : false;
+  if (data) {
+    return { isParticipant: true, finished: data.finished };
+  } else {
+    return { isParticipant: false };
+  }
 }
 
 export async function getPairwiseComparisons(surveyId: number) {
@@ -114,4 +118,22 @@ export async function getPairwiseComparisons(surveyId: number) {
     .select("id, image_1(id, path), image_2(id, path)")
     .eq("survey", surveyId)
     .returns<PairwiseComparison[]>();
+}
+
+export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
+  const supabase = await createServerSupabase();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // todo: save answers
+
+  return await supabase
+    .from("survey_users")
+    .update({
+      finished: true,
+    })
+    .eq("survey", surveyId)
+    .eq("user", user!.id);
 }

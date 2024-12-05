@@ -111,18 +111,21 @@ export type Database = {
       survey_users: {
         Row: {
           created_at: string
+          finished: boolean
           id: number
           survey: number
           user: string
         }
         Insert: {
           created_at?: string
+          finished?: boolean
           id?: number
           survey: number
           user: string
         }
         Update: {
           created_at?: string
+          finished?: boolean
           id?: number
           survey?: number
           user?: string

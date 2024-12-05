@@ -43,7 +43,7 @@ export default function ParticipatePage() {
           </ListItem>
           <ListItem>
             Die Bilder können nur von Teilnehmern der Umfrage gesehen werden.
-            Die Ergebnisse werden anonymisiert ausgewertet.
+            Die Ergebnisse werden pseudonymisiert ausgewertet.
           </ListItem>
         </List>
         <Container size="sm">
