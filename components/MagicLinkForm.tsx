@@ -9,7 +9,6 @@ import { useSearchParams } from "next/navigation";
 export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
-  const survey_id = searchParams.get("id");
 
   const form = useForm({
     initialValues: {
@@ -22,10 +21,7 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
 
   const handleSubmit = async (values: { email: string }) => {
     if (form.isValid()) {
-      const { error } = await resendOTPLink(
-        values.email,
-        next ? next : `/survey?id=${survey_id}`
-      );
+      await resendOTPLink(values.email, next || "/");
 
       showNotification(
         "Email wurde erfolgreich versendet",
@@ -49,7 +45,7 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
 
           <Flex justify="center" mt="md">
             <Button type="submit" disabled={!form.isValid()}>
-              Teilnehmen
+              Neuen Link anfordern
             </Button>
           </Flex>
         </form>

@@ -1,6 +1,6 @@
 "use server";
 
-import { Participant, Survey } from "@/types";
+import { PairwiseComparison } from "@/types";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 
 export async function getParticipants() {
@@ -25,6 +25,16 @@ export async function getSurveys() {
     .from("surveys")
     .select("*")
     .order("created_at", { ascending: false });
+}
+
+export async function getSurveyByPublicId(id: string) {
+  const supabase = await createServerSupabase();
+
+  return await supabase
+    .from("surveys")
+    .select("*")
+    .eq("public_id", id)
+    .single();
 }
 
 export async function createNewSurvey(data: any) {
@@ -52,6 +62,15 @@ export async function createImageEntries(
     .select("id");
 }
 
+export async function getImages(surveyId: number) {
+  const supabase = await createServerSupabase();
+
+  return await supabase
+    .from("images")
+    .select("id, path")
+    .eq("survey", surveyId);
+}
+
 export async function createPairwiseComparisonEntries(
   surveyId: number,
   imageIds: number[]
@@ -69,4 +88,30 @@ export async function createPairwiseComparisonEntries(
   }
 
   return await supabase.from("pair_comparisons").insert(comparisons);
+}
+
+export async function isUserParticipantOfSurvey(
+  surveyId: number,
+  userId: string
+) {
+  const supabase = await createServerSupabase();
+
+  const { data } = await supabase
+    .from("survey_users")
+    .select("*")
+    .eq("survey", surveyId)
+    .eq("user", userId)
+    .single();
+
+  return data ? true : false;
+}
+
+export async function getPairwiseComparisons(surveyId: number) {
+  const supabase = await createServerSupabase();
+
+  return await supabase
+    .from("pair_comparisons")
+    .select("id, image_1(id, path), image_2(id, path)")
+    .eq("survey", surveyId)
+    .returns<PairwiseComparison[]>();
 }

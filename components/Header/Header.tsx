@@ -12,7 +12,13 @@ const links = [
   { link: "/participate", label: "Hilf mit!" },
 ];
 
-export function Header({ admin }: { admin?: boolean }) {
+export function Header({
+  admin,
+  survey,
+}: {
+  admin?: boolean;
+  survey?: boolean;
+}) {
   const [opened, { toggle }] = useDisclosure(false);
   //   const [active, setActive] = useState(links[0].link);
 
@@ -35,17 +41,19 @@ export function Header({ admin }: { admin?: boolean }) {
   );
 
   return (
-    <header className={classes.header}>
+    <header className={classes.header} data-survey={survey}>
       <Container size="lg" className={classes.inner}>
         <Group>
           <IconAB size={40} color="var(--mantine-primary-color-6)" />
-          <Title order={1} size="h3" visibleFrom="sm">
-            Nutzerstudie - Gruppenbilder
-          </Title>
+          {!survey && (
+            <Title order={1} size="h3" visibleFrom="sm">
+              Nutzerstudie - Gruppenbilder
+            </Title>
+          )}
         </Group>
 
         <Group gap={10} visibleFrom="xs">
-          {admin ? adminLinks : items}
+          {survey ? null : admin ? adminLinks : items}
           <ThemeToggle />
         </Group>
 

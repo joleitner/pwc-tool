@@ -15,7 +15,6 @@ import {
   Paper,
   ScrollAreaAutosize,
   Stack,
-  StackProps,
   Text,
   Title,
 } from "@mantine/core";

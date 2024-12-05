@@ -1,15 +1,7 @@
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { ParticapteForm } from "@/components/ParticipateForm";
-import {
-  Center,
-  Container,
-  Title,
-  Text,
-  Box,
-  ListItem,
-  List,
-} from "@mantine/core";
+import { Container, List, ListItem, Text, Title } from "@mantine/core";
 
 export default function ParticipatePage() {
   return (
@@ -17,16 +9,16 @@ export default function ParticipatePage() {
       <Header />
       <Container size="md" mih="70vh">
         <Title order={2} mb={40}>
-          Danke für Ihre Hilfe!
+          Danke für Deine Hilfe!
         </Title>
         <Text>
-          Vielen Dank, dass Sie sich bereit erklärt haben an der Nutzerstudie
-          zur Qualitativen Bewertung von Gruppenbildern teilzunehmen! Um besser
+          Vielen Dank, dass du dich bereit erklärt hast an der Nutzerstudie zur
+          Qualitativen Bewertung von Gruppenbildern teilzunehmen! Um besser
           verstehen zu können, wie das schönste Gruppenbild aus einer Fotoreihe
           ausgewählt wird führe ich in Folge meiner Masterarbeit diese Umfrage
           durch. Ich möchte erforschen, ob es mithilfe von Deep Learning möglich
           ist sinnvolle Aussagen über die Bildqualität von Gruppenbildern zu
-          treffen. Zur Validierung benötige ich Ihre Hilfe um echte Daten zu
+          treffen. Zur Validierung benötige ich deine Hilfe um echte Daten zu
           sammeln.
         </Text>
         <Text fw="bold" mt={15} mb={5}>
@@ -37,13 +29,13 @@ export default function ParticipatePage() {
             Es wird eine Reihe von Gruppenbildern von Ihnen aufgenommen
           </ListItem>
           <ListItem>
-            Darauffolgend erhalten Sie einen Link zur Umfrage. In dieser müssen
-            Sie mithilfe von paarweisen Vergleichen die Bildqualität der
+            Darauffolgend erhalten Sie einen Link zur Umfrage. In dieser musst
+            du mithilfe von paarweisen Vergleichen die Bildqualität der
             einzelnen Bilder bewerten.
           </ListItem>
           <ListItem>
-            Im Anschluss erhalten Sie ein paar allgemeine Fragen dazu, an was
-            sie die Qualität von Gruppenbildern festmachen.
+            Im Anschluss erhälst du ein paar allgemeine Fragen dazu, anhand was
+            du die Qualität von Gruppenbildern festmachst.
           </ListItem>
           <ListItem>
             Die Umfrage dauert ca. 10-15 Minuten und kann bequem von zu Hause

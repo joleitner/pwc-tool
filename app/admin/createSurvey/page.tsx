@@ -2,9 +2,7 @@ import { getAuthUser } from "@/actions/auth";
 import { getParticipants } from "@/actions/survey";
 import { CreateSurveyForm } from "@/components/CreateSurveyForm";
 import { Header } from "@/components/Header/Header";
-import { ParticipantOverview } from "@/components/ParticipantOverview";
-import { Button, Container, Flex, Title } from "@mantine/core";
-import Link from "next/link";
+import { Container, Title } from "@mantine/core";
 import { redirect } from "next/navigation";
 
 export default async function CreateSurvey() {

@@ -1,7 +1,6 @@
-import { DataPrivacy } from "@/components/DataPrivacy";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
-import { Container, Paper, Title, Text } from "@mantine/core";
+import { Container, Paper, Text, Title } from "@mantine/core";
 
 export default function Home() {
   return (

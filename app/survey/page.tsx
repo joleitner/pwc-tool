@@ -1,49 +1,71 @@
+import { getAuthUser } from "@/actions/auth";
+import {
+  getImages,
+  getPairwiseComparisons,
+  getSurveyByPublicId,
+  isUserParticipantOfSurvey,
+} from "@/actions/survey";
+import { Footer } from "@/components/Footer/Footer";
+import { Header } from "@/components/Header/Header";
+import { Survey } from "@/components/Survey/Survey";
+import { SurveyWrapper } from "@/components/Survey/SurveyWrapper";
+import { NextPageProps } from "@/types";
+import { Container, Flex, Text } from "@mantine/core";
+import { IconMoodSad } from "@tabler/icons-react";
 import { redirect } from "next/navigation";
 
-import { createServerSupabase } from "@/utils/supabase/supabase.server";
-import { Header } from "@/components/Header/Header";
-import { Footer } from "@/components/Footer/Footer";
-import { Container, Flex, Text } from "@mantine/core";
-import { IconLogin, IconMail } from "@tabler/icons-react";
-import { MagicLinkForm } from "@/components/MagicLinkForm";
+export default async function SurveyPage({ searchParams }: NextPageProps) {
+  const { id } = await searchParams;
 
-export default async function SurveyPage() {
-  const supabase = await createServerSupabase();
+  const user = await getAuthUser();
+  if (!user) {
+    redirect("/login");
+  }
 
-  const { data } = await supabase.auth.getUser();
-  const user = data?.user;
+  let noValidId = true;
+  let survey_id = 0;
+
+  if (id) {
+    const { data: survey } = await getSurveyByPublicId(id);
+    if (survey) {
+      noValidId = !(await isUserParticipantOfSurvey(survey.id, user.id));
+      survey_id = survey.id;
+    }
+  }
+
+  if (noValidId) {
+    return (
+      <>
+        <Header />
+        <Container size="md" style={{ height: "calc(100vh - 150px - 210px)" }}>
+          <Flex
+            align="center"
+            mih="60vh"
+            justify="center"
+            direction="column"
+            gap={10}
+          >
+            <IconMoodSad size={50} color="gray" />
+            <Text fw="bold">Ungültige Umfrage ID</Text>
+            <Text>Bitte klicke auf den Link in deiner Email.</Text>
+          </Flex>
+        </Container>
+        <Footer />
+      </>
+    );
+  }
+
+  const { data: comparisons } = await getPairwiseComparisons(survey_id);
+  const { data: images } = await getImages(survey_id);
+
+  if (!comparisons || !images) {
+    redirect("/error");
+  }
 
   return (
     <>
-      <Header />
-      <Container size="md" style={{ height: "calc(100vh - 150px - 210px)" }}>
-        {user ? (
-          <>
-            <h1>Survey</h1>
-            <p>Survey page content</p>
-          </>
-        ) : (
-          <>
-            <Flex
-              mih="100%"
-              align="center"
-              justify="center"
-              direction="column"
-              gap={10}
-            >
-              <IconLogin size={50} color="gray" />
-
-              <Text fw="bold">Neuen Loginlink anfordern</Text>
-              <Text ta="center">
-                Du hast dich erfolgreich registriert aber dein Loginlink ist
-                abgelaufen?
-              </Text>
-              <MagicLinkForm w={250} />
-            </Flex>
-          </>
-        )}
-      </Container>
-      <Footer />
+      <Header survey />
+      <SurveyWrapper comparisons={comparisons} images={images} />
     </>
   );
 }

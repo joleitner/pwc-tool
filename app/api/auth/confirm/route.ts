@@ -30,10 +30,8 @@ export async function GET(request: NextRequest) {
       // redirect user to specified redirect URL or root of app
       redirect(next);
     } else if (error.code === "otp_expired") {
-      redirect(`/survey?next=${next}`);
+      redirect(`/login?next=${next}`);
     }
-
-    console.log(error.name, error.code);
   }
 
   // redirect the user to an error page with some instructions

@@ -67,7 +67,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
 
       // 2. upload images
       setUploading(true);
-      let filenames: string[] = [];
+      const filenames: string[] = [];
       const uploadedFiles = await Promise.all(
         files.map((file, index) => {
           const ext = file.name.split(".").pop();

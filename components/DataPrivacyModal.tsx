@@ -1,4 +1,4 @@
-import { Container, Modal, Text, Title } from "@mantine/core";
+import { Container, Modal } from "@mantine/core";
 import { DataPrivacy } from "./DataPrivacy";
 
 type Props = {
