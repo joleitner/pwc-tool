@@ -2,20 +2,21 @@
 
 import { PairwiseComparison } from "@/types";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
+import { getAuthUser } from "./auth";
 
-export async function getParticipants() {
+export async function getRegistrations() {
   const supabase = await createServerSupabase();
 
   return await supabase
-    .from("participants")
+    .from("registrations")
     .select("*")
     .order("created_at", { ascending: false });
 }
 
-export async function deleteParticipant(id: number) {
+export async function deleteRegistration(id: string) {
   const supabase = await createServerSupabase();
 
-  return await supabase.from("participants").delete().eq("id", id);
+  return await supabase.from("registrations").delete().eq("id", id);
 }
 
 export async function getSurveys() {
@@ -25,16 +26,6 @@ export async function getSurveys() {
     .from("surveys")
     .select("*")
     .order("created_at", { ascending: false });
-}
-
-export async function getSurveyByPublicId(id: string) {
-  const supabase = await createServerSupabase();
-
-  return await supabase
-    .from("surveys")
-    .select("*")
-    .eq("public_id", id)
-    .single();
 }
 
 export async function createNewSurvey(data: any) {
@@ -87,37 +78,53 @@ export async function createPairwiseComparisonEntries(
     }
   }
 
-  return await supabase.from("pair_comparisons").insert(comparisons);
+  return await supabase.from("comparison_pairs").insert(comparisons);
 }
 
-export async function getUserParticipantOfSurvey(
-  surveyId: number,
-  userId: string
-) {
+export async function getParticipation(surveyId: string, userId: string) {
   const supabase = await createServerSupabase();
 
-  const { data } = await supabase
-    .from("survey_users")
-    .select("finished")
-    .eq("survey", surveyId)
-    .eq("user", userId)
+  const { data: survey, error } = await supabase
+    .from("surveys")
+    .select("id")
+    .eq("public_id", surveyId)
     .single();
 
-  if (data) {
-    return { isParticipant: true, finished: data.finished };
-  } else {
-    return { isParticipant: false };
-  }
-}
-
-export async function getPairwiseComparisons(surveyId: number) {
-  const supabase = await createServerSupabase();
+  if (error || !survey?.id) return { data: null };
 
   return await supabase
-    .from("pair_comparisons")
+    .from("participations")
+    .select("*")
+    .eq("survey", survey.id)
+    .eq("user", userId)
+    .single();
+}
+
+export async function getUnansweredComparisons(surveyId: number) {
+  const supabase = await createServerSupabase();
+
+  const user = await getAuthUser();
+
+  const { data: pwc_results } = await supabase
+    .from("pwc_results")
+    .select("pair")
+    .eq("user", user!.id);
+
+  const { data, error } = await supabase
+    .from("comparison_pairs")
     .select("id, image_1(id, path), image_2(id, path)")
     .eq("survey", surveyId)
     .returns<PairwiseComparison[]>();
+
+  if (error || !pwc_results || pwc_results?.length === 0)
+    return { data, error };
+
+  // filter out comparisons that the user has already answered
+  const unansweredComparisons = data.filter((comparison) => {
+    return !pwc_results.some((result) => result.pair === comparison.id);
+  });
+
+  return { data: unansweredComparisons, error };
 }
 
 export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
@@ -130,10 +137,27 @@ export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
   // todo: save answers
 
   return await supabase
-    .from("survey_users")
+    .from("participations")
     .update({
       finished: true,
     })
     .eq("survey", surveyId)
     .eq("user", user!.id);
+}
+
+export async function sendPwcResult(
+  comparisonPairId: number,
+  imageId: number,
+  timeTaken: number
+) {
+  const supabase = await createServerSupabase();
+  const user = await getAuthUser();
+  if (!user) return;
+
+  return supabase.from("pwc_results").insert({
+    user: user.id,
+    pair: comparisonPairId,
+    choice: imageId,
+    time_taken: timeTaken,
+  });
 }

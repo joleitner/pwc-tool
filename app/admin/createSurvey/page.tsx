@@ -1,5 +1,5 @@
 import { getAuthUser } from "@/actions/auth";
-import { getParticipants } from "@/actions/survey";
+import { getRegistrations } from "@/actions/survey";
 import { CreateSurveyForm } from "@/components/CreateSurveyForm";
 import { Header } from "@/components/Header/Header";
 import { Container, Title } from "@mantine/core";
@@ -12,7 +12,7 @@ export default async function CreateSurvey() {
     redirect("/admin/login");
   }
 
-  const { data: participants } = await getParticipants();
+  const { data: participants } = await getRegistrations();
 
   return (
     <>

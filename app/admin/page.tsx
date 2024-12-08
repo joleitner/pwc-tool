@@ -1,7 +1,7 @@
 import { getAuthUser } from "@/actions/auth";
-import { getParticipants, getSurveys } from "@/actions/survey";
+import { getRegistrations, getSurveys } from "@/actions/survey";
 import { Header } from "@/components/Header/Header";
-import { ParticipantOverview } from "@/components/ParticipantOverview";
+import { RegistrationOverview } from "@/components/RegistrationOverview";
 import { SurveyOverview } from "@/components/SurveyOverview";
 import { Button, Container, Divider, Flex, Title } from "@mantine/core";
 import Link from "next/link";
@@ -14,7 +14,7 @@ export default async function AdminPanel() {
     redirect("/admin/login");
   }
 
-  const { data: participants } = await getParticipants();
+  const { data: participants } = await getRegistrations();
   const { data: surveys } = await getSurveys();
 
   return (
@@ -25,7 +25,7 @@ export default async function AdminPanel() {
           Admin Panel
         </Title>
         <Divider my="lg" />
-        <ParticipantOverview my={50} initial={participants!} />
+        <RegistrationOverview my={50} initial={participants!} />
         <Flex justify="center" mb="lg">
           <Button component={Link} href="/admin/createSurvey">
             Neue Umfrage erstellen

@@ -1,10 +1,10 @@
 "use server";
 
-import { Participant } from "@/types";
+import { Registrations } from "@/types";
 import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
 
 export async function signupParticipants(
-  participants: Participant[],
+  registrations: Registrations[],
   surveyId: number
 ) {
   const supabase = createAdminSupabase();
@@ -22,20 +22,20 @@ export async function signupParticipants(
   let participantRequests: any[] = [];
   let surveyUserRequests: any[] = [];
 
-  participants.forEach(async (participant) => {
+  registrations.forEach(async (registration) => {
     userRequests.push(
       supabase.from("users").insert({
-        id: participant.id,
+        id: registration.id,
       })
     );
     surveyUserRequests.push(
-      supabase.from("survey_users").insert({
+      supabase.from("participations").insert({
         survey: surveyId,
-        user: participant.id,
+        user: registration.id,
       })
     );
     participantRequests.push(
-      supabase.from("participants").delete().eq("id", participant.id)
+      supabase.from("registrations").delete().eq("id", registration.id)
     );
   });
 

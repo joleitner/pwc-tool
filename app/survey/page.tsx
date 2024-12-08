@@ -1,13 +1,11 @@
 import { getAuthUser } from "@/actions/auth";
 import {
   getImages,
-  getPairwiseComparisons,
-  getSurveyByPublicId,
-  getUserParticipantOfSurvey,
+  getUnansweredComparisons,
+  getParticipation,
 } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
-import { Survey } from "@/components/Survey/Survey";
 import { SurveyWrapper } from "@/components/Survey/SurveyWrapper";
 import { NextPageProps } from "@/types";
 import { Container, Flex, Text } from "@mantine/core";
@@ -22,26 +20,9 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     redirect("/login");
   }
 
-  let noValidId = true;
-  let surveyId = 0;
-  let surveyFinished = false;
+  const { data: participation } = await getParticipation(id, user.id);
 
-  if (id) {
-    const { data: survey } = await getSurveyByPublicId(id);
-    if (survey) {
-      const { isParticipant, finished } = await getUserParticipantOfSurvey(
-        survey.id,
-        user.id
-      );
-      if (isParticipant && finished !== undefined) {
-        noValidId = false;
-        surveyId = survey.id;
-        surveyFinished = finished;
-      }
-    }
-  }
-
-  if (noValidId || surveyFinished) {
+  if (!participation || participation.finished) {
     return (
       <>
         <Header />
@@ -53,7 +34,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
             direction="column"
             gap={10}
           >
-            {surveyFinished ? (
+            {participation?.finished ? (
               <>
                 <IconMoodSmile size={50} color="gray" />
                 <Text fw="bold">Umfrage abgeschlossen</Text>
@@ -73,7 +54,8 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     );
   }
 
-  const { data: comparisons } = await getPairwiseComparisons(surveyId);
+  const surveyId = participation.survey;
+  const { data: comparisons } = await getUnansweredComparisons(surveyId);
   const { data: images } = await getImages(surveyId);
 
   if (!comparisons || !images) {
@@ -84,9 +66,9 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     <>
       <Header survey />
       <SurveyWrapper
+        participation={participation}
         comparisons={comparisons}
         images={images}
-        surveyId={surveyId}
       />
     </>
   );

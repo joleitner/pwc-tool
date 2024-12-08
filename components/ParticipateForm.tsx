@@ -82,7 +82,13 @@ export const ParticapteForm = () => {
             label={
               <Text size="sm">
                 Ich habe die{" "}
-                <Anchor onClick={open} c="blue">
+                <Anchor
+                  onClick={(e) => {
+                    e.preventDefault();
+                    open();
+                  }}
+                  c="blue"
+                >
                   Datenschutzerklärung
                 </Anchor>{" "}
                 zur Kenntnis genommen.

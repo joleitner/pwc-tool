@@ -3,6 +3,7 @@ import { Button, Center, Flex, Overlay, Title } from "@mantine/core";
 import { IconCircleDashedCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useSurveyContext } from "./SurveyProvider";
+import { sendPwcResult } from "@/actions/survey";
 
 type Props = {
   comparison: PairwiseComparison;
@@ -14,6 +15,17 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
   const { imageUrls } = useSurveyContext();
 
   const images = [comparison.image_1, comparison.image_2];
+
+  const timeStart = new Date();
+
+  const handleSubmit = async () => {
+    if (!selectedImage) return;
+    const timeTaken = new Date().getTime() - timeStart.getTime();
+
+    await sendPwcResult(comparison.id, selectedImage, timeTaken);
+
+    finished();
+  };
 
   return (
     <>
@@ -56,7 +68,7 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
         ))}
       </Flex>
       <Flex justify="flex-end" mt={40}>
-        <Button disabled={!selectedImage} onClick={() => finished()}>
+        <Button disabled={!selectedImage} onClick={handleSubmit}>
           Weiter
         </Button>
       </Flex>

@@ -1,18 +1,22 @@
 "use client";
 
-import { PairwiseComparison } from "@/types";
+import { PairwiseComparison, Participation } from "@/types";
 import { SurveyProvider } from "./SurveyProvider";
 import { Survey } from "./Survey";
 import { useEffect, useState } from "react";
 import { useFileUtils } from "@/utils/useFileUtils";
 
 type Props = {
-  surveyId: number;
+  participation: Participation;
   comparisons: PairwiseComparison[];
   images: { id: number; path: string }[];
 };
 
-export const SurveyWrapper = ({ comparisons, images, surveyId }: Props) => {
+export const SurveyWrapper = ({
+  comparisons,
+  images,
+  participation,
+}: Props) => {
   const [imageUrls, setImageUrls] = useState<{ [id: number]: string }>({});
   const { getFileUrl } = useFileUtils();
 
@@ -42,7 +46,7 @@ export const SurveyWrapper = ({ comparisons, images, surveyId }: Props) => {
     <SurveyProvider
       comparisons={comparisons}
       imageUrls={imageUrls}
-      surveyId={surveyId}
+      participation={participation}
     >
       <Survey />
     </SurveyProvider>

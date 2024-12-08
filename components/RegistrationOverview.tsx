@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteParticipant, getParticipants } from "@/actions/survey";
-import { Participant } from "@/types";
+import { deleteRegistration, getRegistrations } from "@/actions/survey";
+import { Registrations } from "@/types";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import {
   ActionIcon,
@@ -23,31 +23,31 @@ import { IconTrash, IconUsersGroup, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 type Props = Partial<BoxProps> & {
-  initial?: Participant[];
+  initial?: Registrations[];
 };
 
-export const ParticipantOverview = ({ initial, ...props }: Props) => {
-  const [participants, setParticipants] = useState<Participant[]>(
+export const RegistrationOverview = ({ initial, ...props }: Props) => {
+  const [registrations, setRegistrations] = useState<Registrations[]>(
     initial || []
   );
   const [opened, { open, close }] = useDisclosure(false);
-  const [deleteCandidate, setDeleteCandidate] = useState<Participant | null>(
+  const [deleteCandidate, setDeleteCandidate] = useState<Registrations | null>(
     null
   );
   const supabase = createClientSupabase();
 
   const onUpdate = async () => {
-    const { data, error } = await getParticipants();
+    const { data, error } = await getRegistrations();
     if (!error) {
-      setParticipants(data);
+      setRegistrations(data);
     }
   };
 
   supabase
-    .channel("participants")
+    .channel("registrations")
     .on(
       "postgres_changes",
-      { event: "*", schema: "public", table: "participants" },
+      { event: "*", schema: "public", table: "registrations" },
       onUpdate
     )
     .subscribe();
@@ -62,25 +62,25 @@ export const ParticipantOverview = ({ initial, ...props }: Props) => {
             size="xl"
             leftSection={<IconUsersGroup size={20} />}
           >
-            {participants.length}
+            {registrations.length}
           </Badge>
         </Flex>
         <ScrollAreaAutosize mah={450} offsetScrollbars>
           <Stack gap="md">
-            {participants.map((participant) => (
-              <Paper py="xs" px="lg" withBorder key={participant.id}>
+            {registrations.map((registrant) => (
+              <Paper py="xs" px="lg" withBorder key={registrant.id}>
                 <Flex justify="space-between" align="center">
-                  <Text>{participant.email}</Text>
+                  <Text>{registrant.email}</Text>
                   <Group gap={20}>
-                    <Badge color={participant.verified ? "green" : "blue"}>
-                      {participant.verified ? "Verified" : "Pending"}
+                    <Badge color={registrant.verified ? "green" : "blue"}>
+                      {registrant.verified ? "Verified" : "Pending"}
                     </Badge>
                     <ActionIcon
                       size="lg"
                       variant="subtle"
                       color="var(--mantine-color-red-8)"
                       onClick={() => {
-                        setDeleteCandidate(participant);
+                        setDeleteCandidate(registrant);
                         open();
                       }}
                     >
@@ -102,14 +102,14 @@ export const ParticipantOverview = ({ initial, ...props }: Props) => {
         }}
         onDelete={() => {
           // remove from list
-          setParticipants((prev) =>
+          setRegistrations((prev) =>
             prev.filter((p) => p.id !== deleteCandidate?.id)
           );
-          deleteParticipant(deleteCandidate?.id!);
+          deleteRegistration(deleteCandidate?.id!);
           close();
           setDeleteCandidate(null);
         }}
-        participant={deleteCandidate}
+        registrant={deleteCandidate}
       />
     </>
   );
@@ -119,17 +119,17 @@ const DeleteModal = ({
   opened,
   onClose,
   onDelete,
-  participant,
+  registrant,
 }: {
   opened: boolean;
   onClose: () => void;
   onDelete: () => void;
-  participant: Participant | null;
+  registrant: Registrations | null;
 }) => {
   return (
     <Modal opened={opened} onClose={onClose} title="Teilnehmer löschen">
       <Box p="md">
-        <Text>Soll "{participant?.email}" wirklich entfernt werden?</Text>
+        <Text>Soll "{registrant?.email}" wirklich entfernt werden?</Text>
         <Group justify="space-between" mt="md">
           <Button
             variant="subtle"

@@ -6,7 +6,7 @@ import {
   createNewSurvey,
   createPairwiseComparisonEntries,
 } from "@/actions/survey";
-import { Participant } from "@/types";
+import { Registrations } from "@/types";
 import { showNotification } from "@/utils/showNotification";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import { Carousel, CarouselSlide } from "@mantine/carousel";
@@ -29,7 +29,7 @@ import { redirect } from "next/navigation";
 import { useState } from "react";
 
 type Props = Partial<BoxProps> & {
-  possibleParticipants: Participant[];
+  possibleParticipants: Registrations[];
 };
 
 export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
@@ -47,7 +47,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
     },
   });
 
-  const getFinalParticipants = (participants: string[]): Participant[] => {
+  const getFinalParticipants = (participants: string[]): Registrations[] => {
     return participants.map(
       (id) => possibleParticipants.find((participant) => participant.id === id)!
     );

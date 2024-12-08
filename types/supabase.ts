@@ -9,39 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      images: {
-        Row: {
-          created_at: string
-          id: number
-          metadata: Json | null
-          path: string
-          survey: number
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          metadata?: Json | null
-          path: string
-          survey: number
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          metadata?: Json | null
-          path?: string
-          survey?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "images_survey_fkey"
-            columns: ["survey"]
-            isOneToOne: false
-            referencedRelation: "surveys"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pair_comparisons: {
+      comparison_pairs: {
         Row: {
           created_at: string
           id: number
@@ -87,28 +55,39 @@ export type Database = {
           },
         ]
       }
-      participants: {
+      images: {
         Row: {
           created_at: string
-          email: string
-          id: string
-          verified: boolean
+          id: number
+          metadata: Json | null
+          path: string
+          survey: number
         }
         Insert: {
           created_at?: string
-          email: string
-          id: string
-          verified?: boolean
+          id?: number
+          metadata?: Json | null
+          path: string
+          survey: number
         }
         Update: {
           created_at?: string
-          email?: string
-          id?: string
-          verified?: boolean
+          id?: number
+          metadata?: Json | null
+          path?: string
+          survey?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "images_survey_fkey"
+            columns: ["survey"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      survey_users: {
+      participations: {
         Row: {
           created_at: string
           finished: boolean
@@ -146,6 +125,135 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pwc_results: {
+        Row: {
+          choice: number
+          created_at: string
+          id: number
+          pair: number
+          time_taken: number
+          user: string
+        }
+        Insert: {
+          choice: number
+          created_at?: string
+          id?: number
+          pair: number
+          time_taken: number
+          user: string
+        }
+        Update: {
+          choice?: number
+          created_at?: string
+          id?: number
+          pair?: number
+          time_taken?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pwc_results_choice_fkey"
+            columns: ["choice"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pwc_results_pair_fkey"
+            columns: ["pair"]
+            isOneToOne: false
+            referencedRelation: "comparison_pairs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pwc_results_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaires: {
+        Row: {
+          additional_features: string | null
+          background: number
+          centering: number
+          created_at: string
+          eyes: number
+          face_orientation: number
+          gaze: number
+          id: number
+          lighting: number
+          occluded: number
+          self_observation: number
+          sharpness: number
+          smile: number
+          user: string
+        }
+        Insert: {
+          additional_features?: string | null
+          background: number
+          centering: number
+          created_at?: string
+          eyes: number
+          face_orientation: number
+          gaze: number
+          id?: number
+          lighting: number
+          occluded: number
+          self_observation: number
+          sharpness: number
+          smile: number
+          user?: string
+        }
+        Update: {
+          additional_features?: string | null
+          background?: number
+          centering?: number
+          created_at?: string
+          eyes?: number
+          face_orientation?: number
+          gaze?: number
+          id?: number
+          lighting?: number
+          occluded?: number
+          self_observation?: number
+          sharpness?: number
+          smile?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaires_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      registrations: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          verified: boolean
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          verified?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          verified?: boolean
+        }
+        Relationships: []
       }
       surveys: {
         Row: {
@@ -194,7 +302,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

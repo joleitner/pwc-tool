@@ -56,7 +56,7 @@ export async function inviteParticipant(email: string) {
   if (error) return { error };
 
   return await supabase
-    .from("participants")
+    .from("registrations")
     .insert([{ id: data.user.id, email }]);
 
   // return await supabase.auth.signInWithOtp({
