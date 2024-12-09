@@ -3,6 +3,7 @@ import { Header } from "@/components/Header/Header";
 import { MagicLinkForm } from "@/components/MagicLinkForm";
 import { Container, Flex, Text } from "@mantine/core";
 import { IconLogin } from "@tabler/icons-react";
+import { Suspense } from "react";
 
 export default async function Login() {
   return (
@@ -23,7 +24,9 @@ export default async function Login() {
             Du hast dich erfolgreich registriert aber dein Loginlink ist
             abgelaufen?
           </Text>
-          <MagicLinkForm w={250} />
+          <Suspense>
+            <MagicLinkForm w={250} />
+          </Suspense>
         </Flex>
       </Container>
       <Footer />
