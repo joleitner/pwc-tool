@@ -35,7 +35,7 @@ export async function adminLogin(email: string, password: string) {
     redirect("/error");
   }
 
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
   redirect("/admin");
 }
 
@@ -53,7 +53,10 @@ export async function inviteParticipant(email: string) {
 
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
 
-  if (error) return { error };
+  if (error) {
+    console.error(error.message);
+    return { error };
+  }
 
   return await supabase
     .from("registrations")

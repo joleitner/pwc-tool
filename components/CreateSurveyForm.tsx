@@ -15,6 +15,7 @@ import {
   BoxProps,
   Button,
   Center,
+  Container,
   FileButton,
   Flex,
   Group,
@@ -71,7 +72,9 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
       const uploadedFiles = await Promise.all(
         files.map((file, index) => {
           const ext = file.name.split(".").pop();
-          const filename = `scene${survey.id}/${index + 1}.${ext}`;
+          const filename = `scene${survey.id}/${
+            index + 1
+          }.${ext?.toLowerCase()}`;
           filenames.push(filename);
           return supabase.storage.from("group-images").upload(filename, file);
         })
@@ -160,21 +163,23 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         />
         {files.length > 0 && (
           <Flex justify="center">
-            <Carousel
-              my="lg"
-              withIndicators
-              height={250}
-              //   slideSize="70%"
-              //   slideGap="md"
-            >
-              {files.map((file, index) => (
-                <CarouselSlide key={index}>
-                  <Center>
-                    <img src={URL.createObjectURL(file)} height={250} />
-                  </Center>
-                </CarouselSlide>
-              ))}
-            </Carousel>
+            <Box w={500}>
+              <Carousel
+                my="lg"
+                withIndicators
+                height={250}
+                // slideSize="100%"
+                // slideGap="md"
+              >
+                {files.map((file, index) => (
+                  <CarouselSlide key={index} w={300}>
+                    <Center>
+                      <img src={URL.createObjectURL(file)} height={250} />
+                    </Center>
+                  </CarouselSlide>
+                ))}
+              </Carousel>
+            </Box>
           </Flex>
         )}
 

@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 export default async function AdminPanel() {
   const user = await getAuthUser();
 
-  if (user?.admin === false) {
+  if (!user || user?.admin === undefined || user.admin === false) {
     redirect("/admin/login");
   }
 

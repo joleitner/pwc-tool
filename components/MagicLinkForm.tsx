@@ -21,13 +21,22 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
 
   const handleSubmit = async (values: { email: string }) => {
     if (form.isValid()) {
-      await resendOTPLink(values.email, next || "/");
+      const { error } = await resendOTPLink(values.email, next || "/");
 
-      showNotification(
-        "Email wurde erfolgreich versendet",
-        "itte überprüfe deine Email.",
-        "success"
-      );
+      if (error) {
+        showNotification(
+          "Fehler beim Senden des Email",
+          "Bitte versuche es noch einmal.",
+          "error"
+        );
+        return;
+      } else {
+        showNotification(
+          "Email wurde erfolgreich versendet",
+          "Bitte überprüfe deine Email.",
+          "success"
+        );
+      }
     }
   };
 

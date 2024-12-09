@@ -5,14 +5,14 @@ import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { redirect } from "next/navigation";
 
 export async function GET(request: NextRequest) {
+  const supabase = await createServerSupabase();
+
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/confirmed";
 
   if (token_hash && type) {
-    const supabase = await createServerSupabase();
-
     const { data, error } = await supabase.auth.verifyOtp({
       type,
       token_hash,
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       if (type === "invite") {
         // set participant as verified
         await supabase
-          .from("participants")
+          .from("registrations")
           .update({ verified: true })
           .eq("id", data?.user?.id!)
           .select();

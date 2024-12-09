@@ -1,5 +1,6 @@
 "use client";
 
+import { getSurveys } from "@/actions/survey";
 import { Survey } from "@/types";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import {
@@ -25,15 +26,18 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
   const [surveys, setSurveys] = useState(initial || []);
   const supabase = createClientSupabase();
 
-  const onUpdate = async (payload: any) => {
-    setSurveys((prev) => [payload.new, ...prev]);
+  const onUpdate = async () => {
+    const { data, error } = await getSurveys();
+    if (!error) {
+      setSurveys(data);
+    }
   };
 
   supabase
     .channel("surveys")
     .on(
       "postgres_changes",
-      { event: "INSERT", schema: "public", table: "surveys" },
+      { event: "*", schema: "public", table: "surveys" },
       onUpdate
     )
     .subscribe();
