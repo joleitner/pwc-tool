@@ -54,7 +54,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     );
   }
 
-  const surveyId = participation.survey;
+  const surveyId = participation.survey.id;
   const { data: comparisons } = await getUnansweredComparisons(surveyId);
   const { data: images } = await getImages(surveyId);
 

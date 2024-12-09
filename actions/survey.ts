@@ -1,6 +1,6 @@
 "use server";
 
-import { PairwiseComparison } from "@/types";
+import { PairwiseComparison, Participation } from "@/types";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
 
@@ -94,9 +94,10 @@ export async function getParticipation(surveyId: string, userId: string) {
 
   return await supabase
     .from("participations")
-    .select("*")
+    .select("*, survey(id, image_count)")
     .eq("survey", survey.id)
     .eq("user", userId)
+    .returns<Participation[]>()
     .single();
 }
 
@@ -134,7 +135,12 @@ export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // todo: save answers
+  if (!user) return;
+
+  await supabase
+    .from("questionnaires")
+    .insert([{ ...answers, user: user.id }])
+    .single();
 
   return await supabase
     .from("participations")

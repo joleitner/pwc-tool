@@ -12,38 +12,47 @@ export default function ParticipatePage() {
           Danke für Deine Hilfe!
         </Title>
         <Text>
-          Vielen Dank, dass du dich bereit erklärt hast an der Nutzerstudie zur
-          Qualitativen Bewertung von Gruppenbildern teilzunehmen! Um besser
-          verstehen zu können, wie das schönste Gruppenbild aus einer Fotoreihe
-          ausgewählt wird führe ich in Folge meiner Masterarbeit diese Umfrage
-          durch. Ich möchte erforschen, ob es mithilfe von Deep Learning möglich
-          ist sinnvolle Aussagen über die Bildqualität von Gruppenbildern zu
-          treffen. Zur Validierung benötige ich deine Hilfe um echte Daten zu
-          sammeln.
+          Vielen Dank für deine Teilnahme an der Nutzerstudie zur qualitativen
+          Bewertung von Gruppenbildern! Für uns Menschen ist es oft einfach zu
+          entscheiden, welches Bild uns ästhetisch am besten gefällt. Dies
+          geschieht jedoch oft auf einer unbewussten Ebene, wodurch es schwierig
+          ist, genau zu verstehen, warum ein Bild einem anderen vorgezogen wird.
+          Um diesen Prozess besser verstehen zu können, führe ich diese Umfrage
+          für meine Masterarbeit durch. Ich möchte untersuchen, ob es möglich
+          ist mit Hilfe von Deep Learning sinnvolle Aussagen über die
+          ästhetische Qualität von Gruppenbildern zu treffen. Für die
+          Validierung benötige ich deine Hilfe, um reale Daten zu sammeln.
         </Text>
         <Text fw="bold" mt={15} mb={5}>
           Ablauf der Nutzerstudie:
         </Text>
         <List mb={20}>
           <ListItem>
-            Es wird eine Reihe von Gruppenbildern von Ihnen aufgenommen
+            Nachdem du deine Zustimmung zur Teilnahme an der Nutzerstudie
+            gegeben hast, werden zu Beginn eine Reihe von Gruppenfotos von dir
+            und deiner Gruppe gemacht.
           </ListItem>
           <ListItem>
-            Darauffolgend erhalten Sie einen Link zur Umfrage. In dieser musst
-            du mithilfe von paarweisen Vergleichen die Bildqualität der
-            einzelnen Bilder bewerten.
+            Die Bilder werden zu eurer Umfrage hinzugefügt und ihr erhaltet
+            einen Link zur Umfrage per E-Mail.
           </ListItem>
           <ListItem>
-            Im Anschluss erhälst du ein paar allgemeine Fragen dazu, anhand was
-            du die Qualität von Gruppenbildern festmachst.
+            In der Umfrage wirst du die Qualität der einzelnen Bilder anhand von
+            Paarvergleichen bewerten.
           </ListItem>
           <ListItem>
-            Die Umfrage dauert ca. 10-15 Minuten und kann bequem von zu Hause
-            aus durchgeführt werden.
+            Anschließend werden dir einige allgemeine Fragen gestellt, um
+            herauszufinden, welche Faktoren die ästhetische Qualität der
+            Gruppenfotos bestimmen.
           </ListItem>
           <ListItem>
-            Die Bilder können nur von Teilnehmern der Umfrage gesehen werden.
-            Die Ergebnisse werden pseudonymisiert ausgewertet.
+            Die Umfrage dauert ca. 10 Minuten und kann direkt vom Smartphone
+            oder idealerweise bequem von zu Hause aus durchgeführt werden.
+          </ListItem>
+          <ListItem>
+            Die aufgenommenen Gruppenbilder können nur von (den Teilnehmern der
+            Umfrage / eurer Gruppe) eingesehen werden. Die Ergebnisse werden
+            pseudonymisiert ausgewertet.
           </ListItem>
         </List>
         <Container size="sm">

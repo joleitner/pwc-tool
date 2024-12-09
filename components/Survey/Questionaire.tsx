@@ -16,42 +16,44 @@ import { useSurveyContext } from "./SurveyProvider";
 
 export const Questionaire = () => {
   const smallScreen = useMediaQuery("(max-width: 768px)");
-  const { surveyId } = useSurveyContext();
+  const {
+    participation: { survey },
+  } = useSurveyContext();
 
   const questions = [
     {
-      key: "question1",
+      key: "eyes",
       label: "dass alle Personen auf dem Bild die Augen geöffnet haben.",
     },
-    { key: "question2", label: "dass die meisten Personen Freude ausdrücken." },
+    { key: "smile", label: "dass die meisten Personen Freude ausdrücken." },
     {
-      key: "question3",
+      key: "gaze",
       label: "dass die meisten Personen in die Kamera schauen?",
     },
     {
-      key: "question4",
+      key: "occluded",
       label: "dass keine Gesicht verdeckt oder abgeschnitten ist?",
     },
-    { key: "question5", label: "dass das Bild scharf ist?" },
+    { key: "sharpness", label: "dass das Bild scharf ist?" },
+    {
+      key: "lighting",
+      label:
+        "dass die Beleuchtung im Bild gleichmäßig ist (z. B. keine starken Schatten oder Reflexionen auf den Gesichtern/Personen)?",
+    },
+    {
+      key: "face_orientation",
+      label: "dass die Personen den Kopf nicht zu stark wegdrehen",
+    },
+    { key: "centering", label: "dass die Gruppe im Bild zentriert ist?" },
+    {
+      key: "self_observation",
+      label: "dass oben genannte Kriterien vorallem auf mich zutreffen?",
+    },
+    {
+      key: "background",
+      label: "dass der Hintergrund mit der Gesamtbild harmoniert?",
+    },
   ];
-
-  const form = useForm({
-    initialValues: {
-      question1: "",
-      question2: "",
-      question3: "",
-      question4: "",
-      question5: "",
-      question11: "",
-    },
-    validate: {
-      question1: isNotEmpty("Dieses Feld ist erforderlich"),
-      question2: isNotEmpty("Dieses Feld ist erforderlich"),
-      question3: isNotEmpty("Dieses Feld ist erforderlich"),
-      question4: isNotEmpty("Dieses Feld ist erforderlich"),
-      question5: isNotEmpty("Dieses Feld ist erforderlich"),
-    },
-  });
 
   const radioOptions = [
     { value: "1", label: "Sehr unwichtig" },
@@ -61,9 +63,24 @@ export const Questionaire = () => {
     { value: "5", label: "Sehr wichtig" },
   ];
 
+  // loop through questions to create initial values and validation rules
+  let initialValues: any = {
+    additional_features: "",
+  };
+  let validate: any = {};
+  questions.forEach((question) => {
+    initialValues[question.key] = "";
+    validate[question.key] = isNotEmpty("Bitte wähle eine Option aus.");
+  });
+
+  const form = useForm({
+    initialValues,
+    validate,
+  });
+
   const handleSubmit = async (values: any) => {
     if (form.isValid()) {
-      const { error } = await saveQuestionaireAnswers(surveyId, values);
+      const { error } = await saveQuestionaireAnswers(survey.id, values);
 
       if (!error) {
         window.location.reload();
@@ -114,8 +131,8 @@ export const Questionaire = () => {
               mt="xl"
               autosize
               minRows={4}
-              label="Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden:"
-              {...form.getInputProps("question11")}
+              label="Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden (oder sonstige Anmerkungen):"
+              {...form.getInputProps("additional_features")}
             />
           </Stack>
 

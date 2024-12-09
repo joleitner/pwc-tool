@@ -16,23 +16,22 @@ import { useSurveyContext } from "./SurveyProvider";
 import { Questionaire } from "./Questionaire";
 
 export const Survey = () => {
-  const { comparisons, imageUrls } = useSurveyContext();
+  const {
+    comparisons,
+    participation: { survey },
+  } = useSurveyContext();
   const [nextComparison, setNextComparison] = useState<boolean>(false);
   const [currentComparisonIndex, setCurrentComparisonIndex] = useState<
     number | null
   >(comparisons.length > 0 ? 0 : null);
-  const [surveyStarted, setSurveyStarted] = useState<boolean>(false);
 
   const calculatePairs = (n: number) => {
     return (n * (n - 1)) / 2;
   };
 
-  // Check if survey was already started as soon as imageUrls are loaded
-  useEffect(() => {
-    setSurveyStarted(
-      comparisons.length < calculatePairs(Object.keys(imageUrls).length)
-    );
-  }, [imageUrls]);
+  const [surveyStarted, setSurveyStarted] = useState<boolean>(
+    comparisons.length < calculatePairs(survey.image_count)
+  );
 
   useEffect(() => {
     if (nextComparison) {
