@@ -1,9 +1,9 @@
 import { Tables } from "./supabase";
 
-export interface NextPageProps<SlugType = string> {
-  params: { slug: SlugType };
-  searchParams?: any; // [key: string]: string | string[] | undefined;
-}
+export type NextPageProps = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+};
 
 export type User = Tables<"users"> & {
   email: string;

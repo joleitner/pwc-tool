@@ -135,20 +135,20 @@ export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return;
-
-  await supabase
+  const { data, error } = await supabase
     .from("questionnaires")
-    .insert([{ ...answers, user: user.id }])
+    .insert([{ ...answers, user: user!.id }])
     .single();
 
-  return await supabase
+  await supabase
     .from("participations")
     .update({
       finished: true,
     })
     .eq("survey", surveyId)
     .eq("user", user!.id);
+
+  return { data, error };
 }
 
 export async function sendPwcResult(

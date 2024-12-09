@@ -19,8 +19,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
   if (!user) {
     redirect("/login");
   }
-
-  const { data: participation } = await getParticipation(id, user.id);
+  const { data: participation } = await getParticipation(id!, user.id);
 
   if (!participation || participation.finished) {
     return (
