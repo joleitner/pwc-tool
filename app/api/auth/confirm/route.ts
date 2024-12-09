@@ -17,19 +17,19 @@ export async function GET(request: NextRequest) {
       type,
       token_hash,
     });
-    if (!error) {
+    if (!error && data) {
       if (type === "invite") {
         // set participant as verified
         await supabase
           .from("registrations")
           .update({ verified: true })
-          .eq("id", data?.user?.id!)
+          .eq("id", data.user!.id!)
           .select();
       }
 
       // redirect user to specified redirect URL or root of app
       redirect(next);
-    } else if (error.code === "otp_expired") {
+    } else if (error?.code === "otp_expired") {
       redirect(`/login?next=${next}`);
     }
   }

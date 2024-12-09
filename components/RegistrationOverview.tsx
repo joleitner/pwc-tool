@@ -103,9 +103,9 @@ export const RegistrationOverview = ({ initial, ...props }: Props) => {
         onDelete={() => {
           // remove from list
           setRegistrations((prev) =>
-            prev.filter((p) => p.id !== deleteCandidate?.id)
+            prev.filter((p) => p.id !== deleteCandidate!.id)
           );
-          deleteRegistration(deleteCandidate?.id!);
+          deleteRegistration(deleteCandidate!.id!);
           close();
           setDeleteCandidate(null);
         }}
@@ -129,7 +129,9 @@ const DeleteModal = ({
   return (
     <Modal opened={opened} onClose={onClose} title="Teilnehmer löschen">
       <Box p="md">
-        <Text>Soll "{registrant?.email}" wirklich entfernt werden?</Text>
+        <Text>
+          Soll &quot;{registrant?.email}&quot; wirklich entfernt werden?
+        </Text>
         <Group justify="space-between" mt="md">
           <Button
             variant="subtle"

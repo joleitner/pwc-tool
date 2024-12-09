@@ -15,7 +15,6 @@ import {
   BoxProps,
   Button,
   Center,
-  Container,
   FileButton,
   Flex,
   Group,
@@ -173,7 +172,11 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
                 {files.map((file, index) => (
                   <CarouselSlide key={index} w={300}>
                     <Center>
-                      <img src={URL.createObjectURL(file)} height={250} />
+                      <img
+                        src={URL.createObjectURL(file)}
+                        height={250}
+                        alt={`group image ${index}`}
+                      />
                     </Center>
                   </CarouselSlide>
                 ))}

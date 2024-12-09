@@ -64,10 +64,10 @@ export const Questionaire = () => {
   ];
 
   // loop through questions to create initial values and validation rules
-  let initialValues: any = {
+  const initialValues: any = {
     additional_features: "",
   };
-  let validate: any = {};
+  const validate: any = {};
   questions.forEach((question) => {
     initialValues[question.key] = "";
     validate[question.key] = isNotEmpty("Bitte wähle eine Option aus.");

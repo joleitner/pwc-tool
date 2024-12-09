@@ -35,17 +35,14 @@ export const Survey = () => {
 
   useEffect(() => {
     if (nextComparison) {
-      if (
-        currentComparisonIndex !== null &&
-        currentComparisonIndex + 1 < comparisons.length
-      ) {
-        setCurrentComparisonIndex(currentComparisonIndex + 1);
-      } else {
-        setCurrentComparisonIndex(null);
-      }
+      setCurrentComparisonIndex((prevIndex) =>
+        prevIndex !== null && prevIndex + 1 < comparisons.length
+          ? prevIndex + 1
+          : null
+      );
       setNextComparison(false);
     }
-  }, [nextComparison]);
+  }, [nextComparison, comparisons.length]);
 
   return (
     <>

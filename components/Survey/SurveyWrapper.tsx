@@ -46,7 +46,7 @@ export const SurveyWrapper = ({
       });
     };
     getImageUrls();
-  }, []);
+  });
 
   return (
     <SurveyProvider
