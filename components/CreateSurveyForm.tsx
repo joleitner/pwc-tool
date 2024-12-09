@@ -35,7 +35,6 @@ type Props = Partial<BoxProps> & {
 
 export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const supabase = createClientSupabase();
   const [uploading, setUploading] = useState(false);
 

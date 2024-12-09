@@ -38,6 +38,12 @@ export const SurveyWrapper = ({
       );
 
       setImageUrls(imageUrls);
+
+      // preload images
+      urls.forEach(({ url }) => {
+        const img = new Image();
+        img.src = url;
+      });
     };
     getImageUrls();
   }, []);
