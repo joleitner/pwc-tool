@@ -4,11 +4,12 @@ import "@mantine/carousel/styles.css";
 import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import { Notifications } from "@mantine/notifications";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Gruppenbilder - Nutzerstudie",
   description:
-    "Nutzerstudie zur ästhetischen Bewertung der Bildqualität von Gruppenbildern",
+    "Nutzerstudie zur Bewertung der ästhetischen Bildqualität von Gruppenbildern",
 };
 
 const theme = createTheme({
@@ -43,6 +44,7 @@ export default async function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
+        <Analytics />
         <MantineProvider defaultColorScheme="light" theme={theme}>
           {children}
           <Notifications />

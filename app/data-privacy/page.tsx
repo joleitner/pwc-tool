@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Container size="md" miw="100vh">
+      <Container size="md">
         <Paper shadow="md" p={30} radius="md" my={20} withBorder>
           <Title order={2} mb="md">
             Datenschutzerklärung

@@ -10,7 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { PwcExample } from "../PwcExample";
+import { PwcExample } from "../PwcExample/PwcExample";
 import { ComparisonForm } from "./ComparisonForm";
 import { useSurveyContext } from "./SurveyProvider";
 import { Questionaire } from "./Questionaire";

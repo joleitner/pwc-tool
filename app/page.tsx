@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
-import { PwcExample } from "@/components/PwcExample";
+import { PwcExample } from "@/components/PwcExample/PwcExample";
 import {
   Button,
   Container,
