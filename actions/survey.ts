@@ -113,7 +113,7 @@ export async function getUnansweredComparisons(surveyId: number) {
 
   const { data, error } = await supabase
     .from("comparison_pairs")
-    .select("id, image_1(id, path), image_2(id, path)")
+    .select("id, image_1, image_2")
     .eq("survey", surveyId)
     .returns<PairwiseComparison[]>();
 

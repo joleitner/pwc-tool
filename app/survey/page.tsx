@@ -61,13 +61,23 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     redirect("/error");
   }
 
+  // go through comparisons and only keep images that are part of the comparisons
+  const imageIds = comparisons.flatMap((comparison) => [
+    comparison.image_1,
+    comparison.image_2,
+  ]);
+  const uniqueImageIds = Array.from(new Set(imageIds));
+  const filteredImages = images.filter((image) =>
+    uniqueImageIds.includes(image.id)
+  );
+
   return (
     <>
       <Header survey />
       <SurveyWrapper
         participation={participation}
         comparisons={comparisons}
-        images={images}
+        images={filteredImages}
       />
     </>
   );

@@ -1,10 +1,11 @@
 "use client";
 
 import { PairwiseComparison, Participation } from "@/types";
-import { SurveyProvider } from "./SurveyProvider";
-import { Survey } from "./Survey";
-import { useEffect, useState } from "react";
 import { useFileUtils } from "@/utils/useFileUtils";
+import { useLocalStorage } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import { Survey } from "./Survey";
+import { SurveyProvider } from "./SurveyProvider";
 
 type Props = {
   participation: Participation;
@@ -17,36 +18,53 @@ export const SurveyWrapper = ({
   images,
   participation,
 }: Props) => {
-  const [imageUrls, setImageUrls] = useState<{ [id: number]: string }>({});
-  const { getFileUrl } = useFileUtils();
+  const [imageUrls, setImageUrls] = useLocalStorage<{ [id: number]: string }>({
+    key: "imageUrls",
+    defaultValue: {},
+  });
+  const [urlExpiry, setUrlExpiry] = useLocalStorage<number>({
+    key: "urlExpiry",
+    defaultValue: 0,
+  });
+  const [storageLoaded, setStorageLoaded] = useState(false);
+  const { getSignedFileUrl } = useFileUtils();
+
+  const fetchImageUrls = async () => {
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (currentTime < urlExpiry) {
+      return imageUrls;
+    }
+
+    const valid = 3600; // 1 hour
+
+    setUrlExpiry(currentTime + valid);
+    console.log("fetching image urls");
+
+    const urls = await Promise.all(
+      images.map(async (image) => ({
+        id: image.id,
+        url: await getSignedFileUrl(image.path, valid),
+      }))
+    );
+
+    return urls.reduce<{ [id: number]: string }>((acc, { id, url }) => {
+      acc[id] = url;
+      return acc;
+    }, {});
+  };
 
   useEffect(() => {
-    const getImageUrls = async () => {
-      const urls = await Promise.all(
-        images.map(async (image) => ({
-          id: image.id,
-          url: await getFileUrl(image.path),
-        }))
-      );
+    setStorageLoaded(true);
+  }, []);
 
-      const imageUrls = urls.reduce<{ [id: number]: string }>(
-        (acc, { id, url }) => {
-          acc[id] = url;
-          return acc;
-        },
-        {}
-      );
-
-      setImageUrls(imageUrls);
-
-      // preload images
-      urls.forEach(({ url }) => {
-        const img = new Image();
-        img.src = url;
-      });
+  useEffect(() => {
+    if (!storageLoaded) return;
+    const getUrls = async () => {
+      const urls = await fetchImageUrls();
+      setImageUrls(urls);
     };
-    getImageUrls();
-  });
+    getUrls();
+  }, [storageLoaded]);
 
   return (
     <SurveyProvider

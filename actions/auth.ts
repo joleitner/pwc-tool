@@ -67,14 +67,16 @@ export async function inviteParticipant(email: string) {
   // });
 }
 
-export async function resendOTPLink(email: string, redirectTo?: string) {
+export async function resendOTPLink(email: string, redirectTo: string) {
   const supabase = await createServerSupabase();
 
   return await supabase.auth.signInWithOtp({
     email: email,
     options: {
       shouldCreateUser: false,
-      emailRedirectTo: redirectTo,
+      emailRedirectTo: redirectTo.startsWith("http")
+        ? redirectTo
+        : `${process.env.SITE_URL}${redirectTo}`,
     },
   });
 }

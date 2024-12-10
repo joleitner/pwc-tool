@@ -24,14 +24,20 @@ export const useFileUtils = () => {
     if (error) throw error;
   };
 
-  const getFileUrl = async (filePath: string) => {
+  const getSignedFileUrl = async (filePath: string, valid: number = 3600) => {
     const { data, error } = await supabase.storage
       .from("group-images")
-      .createSignedUrl(filePath, 3600);
+      .createSignedUrl(filePath, valid, {
+        transform: {
+          width: 700,
+          height: 700,
+          resize: "contain",
+        },
+      });
     if (error) throw error;
 
     return data?.signedUrl;
   };
 
-  return { uploadFile, deleteFile, getFileUrl };
+  return { uploadFile, deleteFile, getSignedFileUrl };
 };

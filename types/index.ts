@@ -15,8 +15,8 @@ export type Survey = Tables<"surveys">;
 
 export type PairwiseComparison = {
   id: number;
-  image_1: { id: number; path: string };
-  image_2: { id: number; path: string };
+  image_1: number;
+  image_2: number;
 };
 
 export type Participation = Tables<"participations"> & {

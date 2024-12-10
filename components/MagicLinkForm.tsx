@@ -5,6 +5,7 @@ import { showNotification } from "@/utils/showNotification";
 import { Box, BoxProps, Button, Flex, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
   const searchParams = useSearchParams();
@@ -39,6 +40,15 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
       }
     }
   };
+
+  useEffect(() => {
+    showNotification(
+      "Dein Loginlink ist abgelaufen",
+      "Bitte fordere einen neuen an.",
+      "error",
+      10000
+    );
+  }, []);
 
   return (
     <>
