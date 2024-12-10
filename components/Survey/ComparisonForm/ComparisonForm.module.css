@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  @media (min-width: $mantine-breakpoint-sm) {
+    flex-wrap: nowrap;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+
+  @media (min-width: $mantine-breakpoint-sm) {
+    width: 50%;
+  }
+
+  @media (min-width: $mantine-breakpoint-xs) {
+    width: 70%;
+  }
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

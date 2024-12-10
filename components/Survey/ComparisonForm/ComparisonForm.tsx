@@ -1,9 +1,12 @@
-import { PairwiseComparison } from "@/types";
-import { Button, Center, Flex, Overlay, Title } from "@mantine/core";
-import { IconCircleDashedCheck } from "@tabler/icons-react";
-import { useState } from "react";
-import { useSurveyContext } from "./SurveyProvider";
 import { sendPwcResult } from "@/actions/survey";
+import { PairwiseComparison } from "@/types";
+import { Box, Button, Center, Flex, Overlay, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { IconCircleDashedCheck } from "@tabler/icons-react";
+import Image from "next/image";
+import { useState } from "react";
+import { useSurveyContext } from "../SurveyProvider";
+import classes from "./ComparisonForm.module.css";
 
 type Props = {
   comparison: PairwiseComparison;
@@ -18,6 +21,8 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
 
   const timeStart = new Date();
 
+  const largerThanMd = useMediaQuery("(min-width: 768px)");
+
   const handleSubmit = async () => {
     if (!selectedImage) return;
     const timeTaken = new Date().getTime() - timeStart.getTime();
@@ -29,33 +34,29 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
 
   return (
     <>
-      <Title order={3} mb={40} mt={40}>
+      <Title order={3} mb={largerThanMd ? 40 : 5} mt={40}>
         Welches Bild gefällt dir besser?
       </Title>
-      <Flex gap={10} h="100%" align="center">
+      <Box className={classes.wrapper}>
         {images.map((image, index) => (
-          <Flex
-            align="center"
-            justify="center"
-            pos="relative"
-            w="50%"
-            style={{
-              aspectRatio: "1/1",
-            }}
-            key={image.id}
-          >
-            <img
-              src={imageUrls[image.id]}
-              alt={`Gruppenfoto ${index + 1}`}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-              onClick={() => setSelectedImage(image.id)}
-            />
+          <Box className={classes.imageContainer} key={image.id}>
+            {imageUrls[image.id] && (
+              <Image
+                src={imageUrls[image.id]}
+                fill={true}
+                alt={`Gruppenfoto ${index + 1}`}
+                className={classes.image}
+                onClick={() => setSelectedImage(image.id)}
+              />
+            )}
+
             {selectedImage === image.id && (
-              <Overlay color="#000" backgroundOpacity={0.4} zIndex={2}>
+              <Overlay
+                color="#000"
+                backgroundOpacity={0.4}
+                zIndex={2}
+                onClick={() => setSelectedImage(null)}
+              >
                 <Center h="100%">
                   <IconCircleDashedCheck
                     color="var(--mantine-primary-color-6)"
@@ -64,10 +65,10 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
                 </Center>
               </Overlay>
             )}
-          </Flex>
+          </Box>
         ))}
-      </Flex>
-      <Flex justify="flex-end" mt={40}>
+      </Box>
+      <Flex justify="flex-end" mt={40} mb={largerThanMd ? 0 : 40}>
         <Button disabled={!selectedImage} onClick={handleSubmit}>
           Weiter
         </Button>

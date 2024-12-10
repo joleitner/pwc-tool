@@ -15,7 +15,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useSurveyContext } from "./SurveyProvider";
 
 export const Questionaire = () => {
-  const smallScreen = useMediaQuery("(max-width: 768px)");
+  const smallScreen = useMediaQuery("(max-width: 768px)", true);
   const {
     participation: { survey },
   } = useSurveyContext();
@@ -90,7 +90,7 @@ export const Questionaire = () => {
 
   return (
     <>
-      <Paper withBorder p={50} mt={80} shadow="lg">
+      <Paper withBorder p={smallScreen ? 25 : 50} mt={80} shadow="lg">
         <Title order={3} mb={40}>
           Fragebogen
         </Title>
@@ -104,13 +104,12 @@ export const Questionaire = () => {
               return (
                 <RadioGroup
                   label={question.label}
-                  mb="lg"
-                  py={10}
+                  py={smallScreen ? 2 : 10}
                   key={form.key(question.key)}
                   {...form.getInputProps(question.key)}
                 >
                   <Flex
-                    p="lg"
+                    p={smallScreen ? "sm" : "lg"}
                     justify="space-evenly"
                     direction={smallScreen ? "column" : "row"}
                   >
@@ -128,7 +127,7 @@ export const Questionaire = () => {
             })}
 
             <Textarea
-              mt="xl"
+              mt={smallScreen ? "md" : "lg"}
               autosize
               minRows={4}
               label="Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden (oder sonstige Anmerkungen):"

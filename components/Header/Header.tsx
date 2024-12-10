@@ -1,6 +1,14 @@
 "use client";
 
-import { Burger, Button, Container, Group, Title } from "@mantine/core";
+import {
+  Burger,
+  Button,
+  Container,
+  Group,
+  Modal,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
@@ -54,11 +62,28 @@ export function Header({
 
         <Group gap={10} visibleFrom="xs">
           {survey ? null : admin ? adminLinks : items}
-          <ThemeToggle />
+          {!survey && <ThemeToggle />}
         </Group>
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        {survey ? (
+          <ThemeToggle />
+        ) : (
+          <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        )}
       </Container>
+      <Modal
+        opened={opened}
+        onClose={toggle}
+        fullScreen
+        yOffset={69}
+        transitionProps={{ transition: "fade", duration: 200 }}
+        // withCloseButton={false}
+      >
+        <Stack gap={10}>
+          {admin ? adminLinks : items}
+          <ThemeToggle />
+        </Stack>
+      </Modal>
     </header>
   );
 }
