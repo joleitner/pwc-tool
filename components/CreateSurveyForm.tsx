@@ -7,6 +7,7 @@ import {
   createPairwiseComparisonEntries,
 } from "@/actions/survey";
 import { Registrations } from "@/types";
+import { resizeImage } from "@/utils/resizeImage";
 import { showNotification } from "@/utils/showNotification";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import { Carousel, CarouselSlide } from "@mantine/carousel";
@@ -36,6 +37,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
   const supabase = createClientSupabase();
   const [uploading, setUploading] = useState(false);
+  const [uploadingStatus, setUploadingStatus] = useState<string>("");
 
   const form = useForm({
     initialValues: {
@@ -55,6 +57,8 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
   const handleSubmit = async (values: { participants: string[] }) => {
     if (form.isValid() && files.length > 0) {
       // 1. create new survey
+      setUploading(true);
+      setUploadingStatus("Creating survey");
       const { data: survey, error } = await createNewSurvey({
         participant_count: values.participants.length,
         image_count: files.length,
@@ -64,11 +68,19 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 2. upload images
-      setUploading(true);
+      // 2. resizing images
+      setUploadingStatus("Resizing images");
+      const resizedFiles = await Promise.all(
+        files.map((file) =>
+          resizeImage(file, { maxSize: 1920, type: "image/webp", quality: 0.9 })
+        )
+      );
+
+      // 3. upload images
+      setUploadingStatus("Uploading images");
       const filenames: string[] = [];
       const uploadedFiles = await Promise.all(
-        files.map((file, index) => {
+        resizedFiles.map((file, index) => {
           const ext = file.name.split(".").pop();
           const filename = `scene${survey.id}/${
             index + 1
@@ -86,7 +98,8 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 3. signup all participants as users
+      // 4. signup all participants as users
+      setUploadingStatus("Signing up participants and sending emails");
       const finalParticipants = getFinalParticipants(values.participants);
       const { error: signUpError } = await signupParticipants(
         finalParticipants,
@@ -101,7 +114,8 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 4. create image entries
+      // 5. create image entries
+      setUploadingStatus("Creating image entries");
       const metadata = {
         participants: finalParticipants.map((user) => user.id),
       };
@@ -119,7 +133,8 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 5. create pairwise comparison entries
+      // 6. create pairwise comparison entries
+      setUploadingStatus("Creating PWC entries");
       const { error: pwcError } = await createPairwiseComparisonEntries(
         survey!.id,
         images.map((image) => image.id)
@@ -133,9 +148,8 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 6. invite participants to survey
-
       setUploading(false);
+      setUploadingStatus("");
       showNotification(
         "Survey created",
         "Survey was successfully created",
@@ -189,7 +203,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
           <Center my="lg">
             <Stack align="center">
               <Loader type="bars" />
-              <Text>Uploading images</Text>
+              <Text>{uploadingStatus}</Text>
             </Stack>
           </Center>
         )}
@@ -197,12 +211,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         <Group justify="center" mt="md">
           {files.length <= 0 ? (
             <FileButton
-              onChange={(files) => {
-                setFiles(files);
-                // setPreviewImages(
-                //   files.map((file) => URL.createObjectURL(file))
-                // );
-              }}
+              onChange={(files) => setFiles(files)}
               accept="image/png,image/jpeg"
               multiple
             >
