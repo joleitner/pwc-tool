@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-dev": "source .venv/bin/activate && fastapi dev api/index.py",
+    "fastapi-dev": "source .venv/bin/activate && flask --app api/index run -p 8000 --debug",
     "next-dev": "next dev --turbopack",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
