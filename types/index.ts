@@ -25,3 +25,13 @@ export type Participation = Tables<"participations"> & {
     image_count: number;
   };
 };
+
+export type PWCResult = Tables<"pwc_results">;
+export type Questionnaire = Tables<"questionnaires">;
+
+export type DetailedSurvey = Survey & {
+  participations: { user: string; finished: boolean }[];
+  comparison_count: number;
+  pwc_results: PWCResult[];
+  questionnaires: Questionnaire[];
+};

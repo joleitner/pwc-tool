@@ -1,6 +1,6 @@
 "use server";
 
-import { PairwiseComparison, Participation } from "@/types";
+import { DetailedSurvey, PairwiseComparison, Participation } from "@/types";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
 
@@ -26,6 +26,49 @@ export async function getSurveys() {
     .from("surveys")
     .select("*")
     .order("created_at", { ascending: false });
+}
+
+export async function getSurveyInfo(surveyId: number): Promise<DetailedSurvey> {
+  const supabase = await createServerSupabase();
+
+  const { data: survey } = await supabase
+    .from("surveys")
+    .select("*")
+    .eq("id", surveyId)
+    .single();
+
+  const { data: participations } = await supabase
+    .from("participations")
+    .select("user, finished")
+    .eq("survey", surveyId);
+
+  const { data: comparisons, error } = await supabase
+    .from("comparison_pairs")
+    .select("id")
+    .eq("survey", surveyId);
+
+  console.log(error);
+
+  const { data: pwc_results } = await supabase
+    .from("pwc_results")
+    .select()
+    .in(
+      "pair",
+      comparisons!.map((c) => c.id)
+    );
+
+  const { data: questionnaires } = await supabase
+    .from("questionnaires")
+    .select()
+    .eq("survey", surveyId);
+
+  return {
+    ...survey!,
+    participations: participations!,
+    comparison_count: comparisons!.length,
+    pwc_results: pwc_results!,
+    questionnaires: questionnaires!,
+  };
 }
 
 export async function createNewSurvey(data: any) {
@@ -105,6 +148,18 @@ export async function getUnansweredComparisons(surveyId: number) {
   const supabase = await createServerSupabase();
 
   const user = await getAuthUser();
+
+  // const res = await fetch(`${process.env.ASAP_API_URL}`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     pwc_matrix: [
+  //     ],
+  //   }),
+  // });
+  // const data = await res.json();
 
   const { data: pwc_results } = await supabase
     .from("pwc_results")
