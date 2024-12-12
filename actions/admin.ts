@@ -71,7 +71,7 @@ export async function signupParticipants(
       const token = otp_link.properties?.hashed_token;
       const type = otp_link.properties?.verification_type;
 
-      const surveyLink = `${process.env.SITE_URL}/api/auth/confirm?token_hash=${token}&type=${type}&next=/survey?id=${survey?.public_id}`;
+      const surveyLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/survey?id=${survey?.public_id}`;
 
       await sendSurveyLinkMail(email, surveyLink);
     }

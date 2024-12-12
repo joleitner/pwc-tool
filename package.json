@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "fastapi-dev": "source .venv/bin/activate && fastapi dev api/index.py",
+    "next-dev": "next dev --turbopack",
+    "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +23,7 @@
     "@supabase/supabase-js": "^2.46.1",
     "@tabler/icons-react": "^3.22.0",
     "@vercel/analytics": "^1.4.1",
+    "concurrently": "^9.1.0",
     "embla-carousel-react": "^7.1.0",
     "next": "15.0.3",
     "postcss": "^8.4.49",

@@ -16,6 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconListCheck, IconPhoto, IconUsersGroup } from "@tabler/icons-react";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
 type Props = Partial<BoxProps> & {
@@ -58,10 +59,16 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
         <ScrollAreaAutosize mah={450} offsetScrollbars>
           <Stack gap="md">
             {surveys.map((survey) => (
-              <Paper py="xs" px="lg" withBorder key={survey.id}>
+              <Paper
+                py="xs"
+                px="lg"
+                withBorder
+                key={survey.id}
+                onClick={() => redirect(`/admin/survey/${survey.id}`)}
+              >
                 <Flex justify="space-between" align="center">
-                  <Text>{survey.public_id}</Text>
-                  <Group gap="xs">
+                  <Text>Umfrage {survey.id}</Text>
+                  <Group gap="xs" wrap="nowrap">
                     <Badge
                       variant="light"
                       size="xl"
