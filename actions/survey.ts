@@ -182,7 +182,7 @@ export async function getComparisonBatch(surveyId: number) {
     const pwc_matrix = createPWCMatrix(imageIds, pwcResults);
 
     // 4. send pwc_matrix to asap api
-    const asapResult = await fetch(`${process.env.ASAP_API_URL}`, {
+    const asapResult = await fetch(`${process.env.ASAP_API_URL}/asap`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
