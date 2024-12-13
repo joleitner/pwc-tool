@@ -1,6 +1,7 @@
 "use server";
 
-import { DetailedSurvey, PairwiseComparison, Participation } from "@/types";
+import { Participation, PWCResultWithPair } from "@/types";
+import { convertToPwcObjects, createPWCMatrix } from "@/utils/pwcMatrix";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
 
@@ -28,48 +29,48 @@ export async function getSurveys() {
     .order("created_at", { ascending: false });
 }
 
-export async function getSurveyInfo(surveyId: number): Promise<DetailedSurvey> {
-  const supabase = await createServerSupabase();
+// export async function getSurveyInfo(surveyId: number): Promise<DetailedSurvey> {
+//   const supabase = await createServerSupabase();
 
-  const { data: survey } = await supabase
-    .from("surveys")
-    .select("*")
-    .eq("id", surveyId)
-    .single();
+//   const { data: survey } = await supabase
+//     .from("surveys")
+//     .select("*")
+//     .eq("id", surveyId)
+//     .single();
 
-  const { data: participations } = await supabase
-    .from("participations")
-    .select("user, finished")
-    .eq("survey", surveyId);
+//   const { data: participations } = await supabase
+//     .from("participations")
+//     .select("user, finished")
+//     .eq("survey", surveyId);
 
-  const { data: comparisons, error } = await supabase
-    .from("comparison_pairs")
-    .select("id")
-    .eq("survey", surveyId);
+//   const { data: comparisons, error } = await supabase
+//     .from("comparison_pairs")
+//     .select("id")
+//     .eq("survey", surveyId);
 
-  console.log(error);
+//   console.log(error);
 
-  const { data: pwc_results } = await supabase
-    .from("pwc_results")
-    .select()
-    .in(
-      "pair",
-      comparisons!.map((c) => c.id)
-    );
+//   const { data: pwc_results } = await supabase
+//     .from("pwc_results")
+//     .select()
+//     .in(
+//       "pair",
+//       comparisons!.map((c) => c.id)
+//     );
 
-  const { data: questionnaires } = await supabase
-    .from("questionnaires")
-    .select()
-    .eq("survey", surveyId);
+//   const { data: questionnaires } = await supabase
+//     .from("questionnaires")
+//     .select()
+//     .eq("survey", surveyId);
 
-  return {
-    ...survey!,
-    participations: participations!,
-    comparison_count: comparisons!.length,
-    pwc_results: pwc_results!,
-    questionnaires: questionnaires!,
-  };
-}
+//   return {
+//     ...survey!,
+//     participations: participations!,
+//     comparison_count: comparisons!.length,
+//     pwc_results: pwc_results!,
+//     questionnaires: questionnaires!,
+//   };
+// }
 
 export async function createNewSurvey(data: any) {
   const supabase = await createServerSupabase();
@@ -102,7 +103,8 @@ export async function getImages(surveyId: number) {
   return await supabase
     .from("images")
     .select("id, path")
-    .eq("survey", surveyId);
+    .eq("survey", surveyId)
+    .order("id");
 }
 
 export async function createPairwiseComparisonEntries(
@@ -144,43 +146,60 @@ export async function getParticipation(surveyId: string, userId: string) {
     .single();
 }
 
-export async function getUnansweredComparisons(surveyId: number) {
+export async function getComparisonBatch(surveyId: number) {
   const supabase = await createServerSupabase();
 
-  const user = await getAuthUser();
+  try {
+    // 1. fetch all necessary data from supabase
+    const [user, { data: images }, { data: pwcPairs }, { data: pwcResults }] =
+      await Promise.all([
+        getAuthUser(),
+        getImages(surveyId),
+        supabase.from("comparison_pairs").select().eq("survey", surveyId),
+        supabase
+          .from("pwc_results")
+          .select("*, pair(*)")
 
-  // const res = await fetch(`${process.env.ASAP_API_URL}`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     pwc_matrix: [
-  //     ],
-  //   }),
-  // });
-  // const data = await res.json();
+          .eq("pair.survey", surveyId)
+          .returns<PWCResultWithPair[]>(),
+      ]);
 
-  const { data: pwc_results } = await supabase
-    .from("pwc_results")
-    .select("pair")
-    .eq("user", user!.id);
+    if (!user) throw new Error("User not authenticated");
+    if (!images) throw new Error("Error when fetching images");
+    if (!pwcPairs) throw new Error("Error when fetching pairs");
+    if (!pwcResults) throw new Error("Error when fetching results");
 
-  const { data, error } = await supabase
-    .from("comparison_pairs")
-    .select("id, image_1, image_2")
-    .eq("survey", surveyId)
-    .returns<PairwiseComparison[]>();
+    // 2 see if user has already answered certain amount
+    const userResults = pwcResults.filter(
+      (result) => result.user === user.id && result.pair.survey === surveyId
+    );
+    if (userResults.length >= (images.length - 1) * 2) {
+      return { data: [], error: null };
+    }
 
-  if (error || !pwc_results || pwc_results?.length === 0)
-    return { data, error };
+    // 3. create pwc_matrix
+    const imageIds = images.map((image) => image.id);
+    const pwc_matrix = createPWCMatrix(imageIds, pwcResults);
 
-  // filter out comparisons that the user has already answered
-  const unansweredComparisons = data.filter((comparison) => {
-    return !pwc_results.some((result) => result.pair === comparison.id);
-  });
+    // 4. send pwc_matrix to asap api
+    const asapResult = await fetch(`${process.env.ASAP_API_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pwc_matrix,
+      }),
+    });
+    const data = await asapResult.json();
 
-  return { data: unansweredComparisons, error };
+    // 5. convert answer to next pairs with correct ids
+    const nextPairs = convertToPwcObjects(imageIds, pwcPairs, data.pairs);
+
+    return { data: nextPairs, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
 }
 
 export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
@@ -198,7 +217,7 @@ export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
   await supabase
     .from("participations")
     .update({
-      finished: true,
+      finished: new Date().toISOString(),
     })
     .eq("survey", surveyId)
     .eq("user", user!.id);
@@ -221,4 +240,18 @@ export async function sendPwcResult(
     choice: imageId,
     time_taken: timeTaken,
   });
+}
+
+export async function sendSurveyStarted(surveyId: number) {
+  const supabase = await createServerSupabase();
+  const user = await getAuthUser();
+  if (!user) return;
+
+  return supabase
+    .from("participations")
+    .update({
+      started: new Date().toISOString(),
+    })
+    .eq("survey", surveyId)
+    .eq("user", user!.id);
 }

@@ -90,22 +90,25 @@ export type Database = {
       participations: {
         Row: {
           created_at: string
-          finished: boolean
+          finished: string | null
           id: number
+          started: string | null
           survey: number
           user: string
         }
         Insert: {
           created_at?: string
-          finished?: boolean
+          finished?: string | null
           id?: number
+          started?: string | null
           survey: number
           user: string
         }
         Update: {
           created_at?: string
-          finished?: boolean
+          finished?: string | null
           id?: number
+          started?: string | null
           survey?: number
           user?: string
         }

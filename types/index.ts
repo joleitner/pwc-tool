@@ -13,11 +13,7 @@ export type Registrations = Tables<"registrations">;
 
 export type Survey = Tables<"surveys">;
 
-export type PairwiseComparison = {
-  id: number;
-  image_1: number;
-  image_2: number;
-};
+export type PairwiseComparison = Tables<"comparison_pairs">;
 
 export type Participation = Tables<"participations"> & {
   survey: {
@@ -34,4 +30,8 @@ export type DetailedSurvey = Survey & {
   comparison_count: number;
   pwc_results: PWCResult[];
   questionnaires: Questionnaire[];
+};
+
+export type PWCResultWithPair = PWCResult & {
+  pair: PairwiseComparison;
 };

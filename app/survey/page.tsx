@@ -1,7 +1,7 @@
 import { getAuthUser } from "@/actions/auth";
 import {
   getImages,
-  getUnansweredComparisons,
+  getComparisonBatch,
   getParticipation,
 } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
@@ -17,7 +17,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
 
   const user = await getAuthUser();
   if (!user) {
-    redirect("/login");
+    redirect(`/login?next=/survey?id=${id}`);
   }
   const { data: participation } = await getParticipation(id!, user.id);
 
@@ -54,22 +54,12 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
   }
 
   const surveyId = participation.survey.id;
-  const { data: comparisons } = await getUnansweredComparisons(surveyId);
+  const { data: comparisons } = await getComparisonBatch(surveyId);
   const { data: images } = await getImages(surveyId);
 
   if (!comparisons || !images) {
     redirect("/error");
   }
-
-  // go through comparisons and only keep images that are part of the comparisons
-  const imageIds = comparisons.flatMap((comparison) => [
-    comparison.image_1,
-    comparison.image_2,
-  ]);
-  const uniqueImageIds = Array.from(new Set(imageIds));
-  const filteredImages = images.filter((image) =>
-    uniqueImageIds.includes(image.id)
-  );
 
   return (
     <>
@@ -77,7 +67,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
       <SurveyWrapper
         participation={participation}
         comparisons={comparisons}
-        images={filteredImages}
+        images={images}
       />
     </>
   );

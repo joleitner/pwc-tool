@@ -37,15 +37,15 @@ export const SurveyWrapper = ({
 
     const valid = 3600; // 1 hour
 
-    setUrlExpiry(currentTime + valid);
-    console.log("fetching image urls");
-
     const urls = await Promise.all(
       images.map(async (image) => ({
         id: image.id,
         url: await getSignedFileUrl(image.path, valid),
       }))
     );
+    if (urls.length > 0) {
+      setUrlExpiry(currentTime + valid);
+    }
 
     return urls.reduce<{ [id: number]: string }>((acc, { id, url }) => {
       acc[id] = url;
@@ -62,13 +62,14 @@ export const SurveyWrapper = ({
     const getUrls = async () => {
       const urls = await fetchImageUrls();
       setImageUrls(urls);
+      console.log("urls", urls);
     };
     getUrls();
   }, [storageLoaded]);
 
   return (
     <SurveyProvider
-      comparisons={comparisons}
+      initialComparisons={comparisons}
       imageUrls={imageUrls}
       participation={participation}
     >
