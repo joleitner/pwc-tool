@@ -1,17 +1,17 @@
 import { getAuthUser } from "@/actions/auth";
 // import { getSurveyInfo } from "@/actions/survey";
 import { Header } from "@/components/Header/Header";
-import { Container, Divider } from "@mantine/core";
+import { NextPageProps } from "@/types";
+import { Container, Divider, Title } from "@mantine/core";
 import { redirect } from "next/navigation";
 
-// { params }: NextPageProps
-export default async function SurveyDetailPage() {
+export default async function SurveyDetailPage({ params }: NextPageProps) {
   const user = await getAuthUser();
 
   if (!user || user?.admin === undefined || user.admin === false) {
     redirect("/admin/login");
   }
-  // const surveyId = (await params).slug;
+  const surveyId = (await params).slug;
 
   // const survey = await getSurveyInfo(parseInt(surveyId));
 
@@ -19,9 +19,9 @@ export default async function SurveyDetailPage() {
     <>
       <Header admin />
       <Container size="md">
-        {/* <Title order={2} ta="center">
-          Umfrage: {survey.id}
-        </Title> */}
+        <Title order={2} ta="center">
+          Umfrage: {surveyId}
+        </Title>
         <Divider my="lg" />
       </Container>
     </>
