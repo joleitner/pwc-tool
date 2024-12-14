@@ -26,8 +26,8 @@ export default function Home() {
             mehrere Serien von Gruppenfotos, die sich ähnlich sehen. Aber
             eigentlich will doch jeder nur das Beste davon, oder? Sortiert man
             die Bilder nicht gleich aus, sammeln sich im Laufe der Zeit viele
-            solcher Fotoserien an. "Welches war jetzt nochmal das eine schöne,
-            das ich jemandem schicken wollte?"
+            solcher Fotoserien an. &quot;Welches war jetzt nochmal das eine
+            schöne, das ich jemandem schicken wollte?&quot;
           </Text>
           <Text my={5}></Text>
         </Container>
