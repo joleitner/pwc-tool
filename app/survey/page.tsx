@@ -25,10 +25,10 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     return (
       <>
         <Header />
-        <Container size="md" style={{ height: "calc(100vh - 150px - 210px)" }}>
+        <Container size="md" style={{ height: "calc(100vh - 110px - 210px)" }}>
           <Flex
             align="center"
-            mih="60vh"
+            mih="100%"
             justify="center"
             direction="column"
             gap={10}

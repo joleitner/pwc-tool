@@ -7,13 +7,13 @@ export default function Confirmed() {
   return (
     <>
       <Header />
-      <Container size="md" style={{ height: "calc(100vh - 150px - 210px)" }}>
+      <Container size="md" style={{ height: "calc(100vh - 110px - 210px)" }}>
         <Flex
           align="center"
-          mih="60vh"
           justify="center"
           direction="column"
           gap={10}
+          h="100%"
         >
           <IconMail size={50} color="gray" />
           <Text>Email erfolgreich bestätigt.</Text>

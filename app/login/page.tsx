@@ -9,7 +9,7 @@ export default async function Login() {
   return (
     <>
       <Header />
-      <Container size="md" style={{ height: "calc(100vh - 150px - 210px)" }}>
+      <Container size="md" style={{ height: "calc(100vh - 110px - 210px)" }}>
         <Flex
           mih="100%"
           align="center"

@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Container size="md" style={{ minHeight: "calc(100vh - 150px - 210px)" }}>
+      <Container size="md" style={{ minHeight: "calc(100vh - 110px - 210px)" }}>
         <Paper shadow="md" p={30} radius="md" my={20} withBorder>
           <Title order={2} mb="md">
             Impressum

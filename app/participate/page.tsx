@@ -9,7 +9,7 @@ export default function ParticipatePage() {
       <Header />
       <Container size="md" mih="70vh">
         <Container>
-          <Title order={2} mb={40}>
+          <Title order={2} mb="md">
             Danke für Deine Hilfe!
           </Title>
           <Text>

@@ -16,27 +16,23 @@ export default function Home() {
     <>
       <Header />
       <Container size="lg">
-        <PwcExample />
         <Container size="md">
-          <Title order={2} size="h3">
-            Bewertung der Bildqualität von Gruppenbildern
+          <Title order={2} size="h3" mb="md">
+            Umfrage zur ästhetischen Qualität von Gruppenbildern
           </Title>
           <Text my={5}>
-            Wenn man als Gruppe unterwegs ist, nimmt man häufiger gerne
-            Gruppenbilder auf um sich auch noch später an die guten alten Zeiten
-            zu erinnern.
+            Wir kennen es doch alle: Man war mit Freunden unterwegs und hat
+            schöne Erinnerungsfotos aufgenommen. Beim Teilen entstehen oft
+            mehrere Serien von Gruppenfotos, die sich ähnlich sehen. Aber
+            eigentlich will doch jeder nur das Beste davon, oder? Sortiert man
+            die Bilder nicht gleich aus, sammeln sich im Laufe der Zeit viele
+            solcher Fotoserien an. "Welches war jetzt nochmal das eine schöne,
+            das ich jemandem schicken wollte?"
           </Text>
-          <Text my={5}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </Text>
+          <Text my={5}></Text>
+        </Container>
+        <PwcExample />
+        <Container size="md">
           <List>
             <ListItem>Weil es einfach cool ist!</ListItem>
             <ListItem>Hilf mir es besser zu machen</ListItem>
