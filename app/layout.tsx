@@ -4,7 +4,6 @@ import "@mantine/carousel/styles.css";
 import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import { Notifications } from "@mantine/notifications";
-import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Gruppenbilder - Nutzerstudie",
@@ -42,9 +41,13 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <ColorSchemeScript />
+        <script
+          defer
+          src="https://umami.jonasleitner.com/script.js"
+          data-website-id="4b732082-fdb8-48aa-ac1f-c9e1a7a3ab29"
+        ></script>
       </head>
       <body>
-        <Analytics />
         <MantineProvider defaultColorScheme="light" theme={theme}>
           {children}
           <Notifications />
