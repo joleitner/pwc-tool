@@ -3,9 +3,11 @@ import { Header } from "@/components/Header/Header";
 import { MagicLinkForm } from "@/components/MagicLinkForm";
 import { Container, Flex, Text } from "@mantine/core";
 import { IconLogin } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 
-export default async function Login() {
+export default function Login() {
+  const t = useTranslations("Login");
   return (
     <>
       <Header />
@@ -19,11 +21,8 @@ export default async function Login() {
         >
           <IconLogin size={50} color="gray" />
 
-          <Text fw="bold">Neuen Loginlink anfordern</Text>
-          <Text ta="center">
-            Du hast dich erfolgreich registriert aber dein Loginlink ist
-            abgelaufen?
-          </Text>
+          <Text fw="bold">{t("title")}</Text>
+          <Text ta="center">{t("text")}</Text>
           <Suspense>
             <MagicLinkForm w={250} />
           </Suspense>

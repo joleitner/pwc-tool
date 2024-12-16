@@ -14,11 +14,8 @@ import classes from "./Header.module.css";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import { IconAB } from "@tabler/icons-react";
 import { logout } from "@/actions/auth";
-
-const links = [
-  { link: "/", label: "Um was gehts?" },
-  { link: "/participate", label: "Hilf mit!" },
-];
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export function Header({
   admin,
@@ -28,11 +25,17 @@ export function Header({
   survey?: boolean;
 }) {
   const [opened, { toggle }] = useDisclosure(false);
+  const t = useTranslations("Header");
+
+  const links = [
+    { link: "/", label: t("home") },
+    { link: "/participate", label: t("participate") },
+  ];
   //   const [active, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
     <Button
-      component="a"
+      component={Link}
       key={link.label}
       href={link.link}
       //   className={classes.link}
@@ -55,7 +58,7 @@ export function Header({
           <IconAB size={40} color="var(--mantine-primary-color-6)" />
           {!survey && (
             <Title order={1} size="h3" visibleFrom="sm">
-              Nutzerstudie - Gruppenbilder
+              {t("title")}
             </Title>
           )}
         </Group>

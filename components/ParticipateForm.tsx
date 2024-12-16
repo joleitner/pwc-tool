@@ -15,9 +15,11 @@ import { isEmail, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { redirect } from "next/navigation";
 import { DataPrivacyModal } from "./DataPrivacyModal";
+import { useTranslations } from "next-intl";
 
 export const ParticapteForm = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const t = useTranslations("ParticipateForm");
 
   const form = useForm({
     initialValues: {
@@ -26,13 +28,9 @@ export const ParticapteForm = () => {
       dataPrivacy: false,
     },
     validate: {
-      email: isEmail("Bitte geben Sie eine gültige Email-Adresse ein."),
-      consent: (value) =>
-        value ? null : "Bitte stimmen Sie den Teilnahmebedinungen zu.",
-      dataPrivacy: (value) =>
-        value
-          ? null
-          : "Bitte nehmen Sie die Datenschutzerklärung zur Kenntnis.",
+      email: isEmail(t("emailValidation")),
+      consent: (value) => (value ? null : t("consentValidation")),
+      dataPrivacy: (value) => (value ? null : t("dataPrivacyValidation")),
     },
   });
 
@@ -44,17 +42,9 @@ export const ParticapteForm = () => {
     if (form.isValid()) {
       const { error } = await inviteParticipant(values.email);
       if (error) {
-        showNotification(
-          "Leider hat das einschreiben nicht geklappt",
-          "Bitte versuche es erneut!",
-          "error"
-        );
+        showNotification(t("errorTitle"), t("errorText"), "error");
       } else {
-        showNotification(
-          "Erfolgreich eingeschrieben",
-          "Danke für deine Teilnahme! Bitte überprüfe deine Emails.",
-          "success"
-        );
+        showNotification(t("successTitle"), t("successText"), "success");
         redirect("/");
       }
     }
@@ -73,7 +63,7 @@ export const ParticapteForm = () => {
           />
           <Checkbox
             mt="md"
-            label="Ich habe die Bedingungen der Nutzerstudie gelesen und stimme den Teilnahmebedinungen zu."
+            label={t("consent")}
             key={form.key("consent")}
             {...form.getInputProps("consent", { type: "checkbox" })}
           />
@@ -81,7 +71,7 @@ export const ParticapteForm = () => {
             mt="md"
             label={
               <Text size="sm">
-                Ich habe die{" "}
+                {t("dataPrivacy1")}
                 <Anchor
                   onClick={(e) => {
                     e.preventDefault();
@@ -89,9 +79,9 @@ export const ParticapteForm = () => {
                   }}
                   c="indigo"
                 >
-                  Datenschutzerklärung
+                  {t("dataPrivacy2")}
                 </Anchor>{" "}
-                zur Kenntnis genommen.
+                {t("dataPrivacy3")}
               </Text>
             }
             key={form.key("dataPrivacy")}
@@ -100,7 +90,7 @@ export const ParticapteForm = () => {
 
           <Flex justify="center" mt="md">
             <Button type="submit" disabled={!form.isValid()}>
-              Teilnehmen
+              {t("submit")}
             </Button>
           </Flex>
         </form>

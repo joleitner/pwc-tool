@@ -2,8 +2,11 @@ import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { Container, Flex, Text } from "@mantine/core";
 import { IconMail } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 export default function Confirmed() {
+  const t = useTranslations("Confirmed");
+
   return (
     <>
       <Header />
@@ -16,7 +19,7 @@ export default function Confirmed() {
           h="100%"
         >
           <IconMail size={50} color="gray" />
-          <Text>Email erfolgreich bestätigt.</Text>
+          <Text>{t("text")}</Text>
         </Flex>
       </Container>
 

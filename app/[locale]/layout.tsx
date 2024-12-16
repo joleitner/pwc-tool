@@ -1,9 +1,15 @@
+import "@mantine/carousel/styles.css";
 import { ColorSchemeScript, createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import "@mantine/carousel/styles.css";
+import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
-import { Notifications } from "@mantine/notifications";
+import { NextIntlClientProvider } from "next-intl";
+
+import { routing } from "@/i18n/routing";
+
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gruppenbilder - Nutzerstudie",
@@ -31,11 +37,23 @@ const theme = createTheme({
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const { locale } = await params;
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
+
   return (
-    <html lang="de" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -48,10 +66,12 @@ export default async function RootLayout({
         ></script>
       </head>
       <body>
-        <MantineProvider defaultColorScheme="light" theme={theme}>
-          {children}
-          <Notifications />
-        </MantineProvider>
+        <NextIntlClientProvider messages={messages}>
+          <MantineProvider defaultColorScheme="light" theme={theme}>
+            {children}
+            <Notifications />
+          </MantineProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

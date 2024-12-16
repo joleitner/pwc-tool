@@ -14,6 +14,7 @@ import { IconCircleDashedCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useSurveyContext } from "../SurveyProvider";
 import classes from "./ComparisonForm.module.css";
+import { useTranslations } from "next-intl";
 
 type Props = {
   comparison: PairwiseComparison;
@@ -21,6 +22,7 @@ type Props = {
 };
 
 export const ComparisonForm = ({ comparison, finished }: Props) => {
+  const t = useTranslations("ComparisonForm");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([false, false]);
   const [timeStart, setTimeStart] = useState<Date | null>(null);
@@ -42,14 +44,13 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
   useEffect(() => {
     if (imagesLoaded.every((loaded) => loaded)) {
       setTimeStart(new Date());
-      console.log("time started");
     }
   }, [imagesLoaded]);
 
   return (
     <>
       <Title order={3} mb={largerThanMd ? 40 : 5} mt={40}>
-        Welches Bild gefällt dir besser?
+        {t("text")}
       </Title>
       <Box className={classes.wrapper}>
         {images.map((imageId, index) => (
@@ -93,7 +94,7 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
           disabled={!selectedImage && timeStart === null}
           onClick={handleSubmit}
         >
-          Weiter
+          {t("submit")}
         </Button>
       </Flex>
     </>

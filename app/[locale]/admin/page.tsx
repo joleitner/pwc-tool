@@ -3,8 +3,8 @@ import { getRegistrations, getSurveys } from "@/actions/survey";
 import { Header } from "@/components/Header/Header";
 import { RegistrationOverview } from "@/components/RegistrationOverview";
 import { SurveyOverview } from "@/components/SurveyOverview";
+import { Link } from "@/i18n/routing";
 import { Button, Container, Divider, Flex, Title } from "@mantine/core";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AdminPanel() {
@@ -27,9 +27,9 @@ export default async function AdminPanel() {
         <Divider my="lg" />
         <RegistrationOverview my={50} initial={participants!} />
         <Flex justify="center" mb="lg">
-          <Button component={Link} href="/admin/createSurvey">
-            Neue Umfrage erstellen
-          </Button>
+          <Link href="/admin/createSurvey">
+            <Button>Neue Umfrage erstellen</Button>
+          </Link>
         </Flex>
 
         <Divider my={50} />

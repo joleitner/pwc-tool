@@ -4,10 +4,12 @@ import { resendOTPLink } from "@/actions/auth";
 import { showNotification } from "@/utils/showNotification";
 import { Box, BoxProps, Button, Flex, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
+  const t = useTranslations("Login");
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
 
@@ -25,26 +27,18 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
       const { error } = await resendOTPLink(values.email, next || "/");
 
       if (error) {
-        showNotification(
-          "Fehler beim Senden des Email",
-          "Bitte versuche es noch einmal.",
-          "error"
-        );
+        showNotification(t("errorTitle"), t("errorText"), "error");
         return;
       } else {
-        showNotification(
-          "Email wurde erfolgreich versendet",
-          "Bitte überprüfe deine Email.",
-          "success"
-        );
+        showNotification(t("successTitle"), t("successText"), "success");
       }
     }
   };
 
   useEffect(() => {
     showNotification(
-      "Dein Loginlink ist abgelaufen",
-      "Bitte fordere einen neuen an.",
+      t("initialErrorTitle"),
+      t("initialErrorText"),
       "error",
       10000
     );
@@ -64,7 +58,7 @@ export const MagicLinkForm = ({ ...props }: Partial<BoxProps>) => {
 
           <Flex justify="center" mt="md">
             <Button type="submit" disabled={!form.isValid()}>
-              Neuen Link anfordern
+              {t("submit")}
             </Button>
           </Flex>
         </form>

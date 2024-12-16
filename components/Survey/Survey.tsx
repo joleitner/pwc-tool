@@ -13,11 +13,13 @@ import {
 import { useEffect, useState } from "react";
 import { PwcExample } from "../PwcExample/PwcExample";
 import { ComparisonForm } from "./ComparisonForm/ComparisonForm";
-import { Questionaire } from "./Questionaire";
+import { Questionnaire } from "./Questionnaire";
 import { useSurveyContext } from "./SurveyProvider";
 import { getComparisonBatch, sendSurveyStarted } from "@/actions/survey";
+import { useTranslations } from "next-intl";
 
 export const Survey = () => {
+  const t = useTranslations("Survey");
   const {
     comparisons,
     setComparisons,
@@ -75,7 +77,7 @@ export const Survey = () => {
               >
                 <Loader type="dots" />
                 <Text size="sm" c="gray.7">
-                  Laden neuer Vergleichspaare
+                  {t("loading")}
                 </Text>
               </Flex>
             </Container>
@@ -90,56 +92,24 @@ export const Survey = () => {
           )
         ) : (
           <Container size="md" mb={150}>
-            <Questionaire />
+            <Questionnaire />
           </Container>
         )
       ) : (
         <Container size="md" mb={150} mt={50}>
           <Container>
-            <Title order={2} mb={40}>
-              Willkommen zur Umfrage
+            <Title order={2} mb="lg">
+              {t("title")}
             </Title>
-            <Text>
-              Die Umfrage wird etwa 10-15 Minuten dauern. Bitte stelle sicher,
-              dass du in einer ruhigen Umgebung bist und dich auf die Aufgabe
-              konzentrieren kannst.
-            </Text>
-            <Text>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et justo duo
-              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
-              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-              invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-              dolor sit amet.
-            </Text>
+            <Text>{t("text1")}</Text>
+            <Text>{t("text2")}</Text>
             <Text fw="bold" mt={15} mb={5}>
-              Ablauf der Nutzerstudie:
+              {t("process")}
             </Text>
             <List mb={20}>
-              <ListItem>
-                Es wird eine Reihe von Gruppenbildern von Ihnen aufgenommen
-              </ListItem>
-              <ListItem>
-                Darauffolgend erhalten Sie einen Link zur Umfrage. In dieser
-                musst du mithilfe von paarweisen Vergleichen die Bildqualität
-                der einzelnen Bilder bewerten.
-              </ListItem>
-              <ListItem>
-                Im Anschluss erhälst du ein paar allgemeine Fragen dazu, anhand
-                was du die Qualität von Gruppenbildern festmachst.
-              </ListItem>
-              <ListItem>
-                Die Umfrage dauert ca. 10-15 Minuten und kann bequem von zu
-                Hause aus durchgeführt werden.
-              </ListItem>
-              <ListItem>
-                Die Bilder können nur von Teilnehmern der Umfrage gesehen
-                werden. Die Ergebnisse werden anonymisiert ausgewertet.
-              </ListItem>
+              <ListItem>{t("point1")}</ListItem>
+              <ListItem>{t("point2")}</ListItem>
+              <ListItem>{t("point3")}</ListItem>
             </List>
           </Container>
 
@@ -152,7 +122,7 @@ export const Survey = () => {
                 setSurveyStarted(true);
               }}
             >
-              Umfrage starten
+              {t("start")}
             </Button>
           </Flex>
         </Container>

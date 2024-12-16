@@ -21,3 +21,13 @@
     margin-top: var(--mantine-spacing-md);
   }
 }
+
+.link {
+  color: var(--mantine-color-gray-6);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--mantine-color-gray-7);
+    text-decoration: underline;
+  }
+}

@@ -13,8 +13,10 @@ import {
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSurveyContext } from "./SurveyProvider";
+import { useTranslations } from "next-intl";
 
-export const Questionaire = () => {
+export const Questionnaire = () => {
+  const t = useTranslations("Questionnaire");
   const smallScreen = useMediaQuery("(max-width: 768px)", true);
   const {
     participation: { survey },
@@ -23,44 +25,43 @@ export const Questionaire = () => {
   const questions = [
     {
       key: "eyes",
-      label: "dass alle Personen auf dem Bild die Augen geöffnet haben.",
+      label: t("eyes"),
     },
-    { key: "smile", label: "dass die meisten Personen Freude ausdrücken." },
+    { key: "smile", label: t("smile") },
     {
       key: "gaze",
-      label: "dass die meisten Personen in die Kamera schauen?",
+      label: t("gaze"),
     },
     {
       key: "occluded",
-      label: "dass keine Gesicht verdeckt oder abgeschnitten ist?",
+      label: t("occluded"),
     },
-    { key: "sharpness", label: "dass das Bild scharf ist?" },
+    { key: "sharpness", label: t("sharpness") },
     {
       key: "lighting",
-      label:
-        "dass die Beleuchtung im Bild gleichmäßig ist (z. B. keine starken Schatten oder Reflexionen auf den Gesichtern/Personen)?",
+      label: t("lighting"),
     },
     {
       key: "face_orientation",
-      label: "dass die Personen den Kopf nicht zu stark wegdrehen",
+      label: t("faceOrientation"),
     },
-    { key: "centering", label: "dass die Gruppe im Bild zentriert ist?" },
+    { key: "centering", label: t("centering") },
     {
       key: "self_observation",
-      label: "dass oben genannte Kriterien vorallem auf mich zutreffen?",
+      label: t("selfObservation"),
     },
     {
       key: "background",
-      label: "dass der Hintergrund mit der Gesamtbild harmoniert?",
+      label: t("background"),
     },
   ];
 
   const radioOptions = [
-    { value: "1", label: "Sehr unwichtig" },
-    { value: "2", label: "Unwichtig" },
-    { value: "3", label: "Neutral" },
-    { value: "4", label: "Wichtig" },
-    { value: "5", label: "Sehr wichtig" },
+    { value: "1", label: t("radioOption1") },
+    { value: "2", label: t("radioOption2") },
+    { value: "3", label: t("radioOption3") },
+    { value: "4", label: t("radioOption4") },
+    { value: "5", label: t("radioOption5") },
   ];
 
   // loop through questions to create initial values and validation rules
@@ -92,13 +93,11 @@ export const Questionaire = () => {
     <>
       <Paper withBorder p={smallScreen ? 25 : 50} mt={80} shadow="lg">
         <Title order={3} mb={40}>
-          Fragebogen
+          {t("title")}
         </Title>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="lg">
-            <Text fw="bold">
-              Bei der Auswahl der Gruppenbilder ist es mir wichtig, …
-            </Text>
+            <Text fw="bold">{t("text")}</Text>
 
             {questions.map((question) => {
               return (
@@ -130,14 +129,14 @@ export const Questionaire = () => {
               mt={smallScreen ? "md" : "lg"}
               autosize
               minRows={4}
-              label="Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden (oder sonstige Anmerkungen):"
+              label={t("additional")}
               {...form.getInputProps("additional_features")}
             />
           </Stack>
 
           <Flex justify="center" mt="md">
             <Button type="submit" disabled={!form.isValid()}>
-              Umfrage abschicken
+              {t("submit")}
             </Button>
           </Flex>
         </form>

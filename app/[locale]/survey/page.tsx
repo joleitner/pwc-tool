@@ -1,15 +1,15 @@
 import { getAuthUser } from "@/actions/auth";
 import {
-  getImages,
   getComparisonBatch,
+  getImages,
   getParticipation,
 } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
+import { SurveyNotification } from "@/components/Survey/SurveyNotification";
 import { SurveyWrapper } from "@/components/Survey/SurveyWrapper";
 import { NextPageProps } from "@/types";
-import { Container, Flex, Text } from "@mantine/core";
-import { IconMoodSad, IconMoodSmile } from "@tabler/icons-react";
+import { Container } from "@mantine/core";
 import { redirect } from "next/navigation";
 
 export default async function SurveyPage({ searchParams }: NextPageProps) {
@@ -26,27 +26,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
       <>
         <Header />
         <Container size="md" style={{ height: "calc(100vh - 110px - 210px)" }}>
-          <Flex
-            align="center"
-            mih="100%"
-            justify="center"
-            direction="column"
-            gap={10}
-          >
-            {participation?.finished ? (
-              <>
-                <IconMoodSmile size={50} color="gray" />
-                <Text fw="bold">Umfrage abgeschlossen</Text>
-                <Text>Vielen Dank für deine Teilnahme.</Text>
-              </>
-            ) : (
-              <>
-                <IconMoodSad size={50} color="gray" />
-                <Text fw="bold">Ungültige Umfrage ID</Text>
-                <Text>Bitte klicke auf den Link in deiner Email.</Text>
-              </>
-            )}
-          </Flex>
+          <SurveyNotification finished={Boolean(participation?.finished)} />
         </Container>
         <Footer />
       </>

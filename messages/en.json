@@ -1,0 +1,104 @@
+{
+  "Header": {
+    "title": "Survey - Group images",
+    "home": "Home",
+    "participate": "Participate"
+  },
+  "Footer": {
+    "title": "Survey - Group images",
+    "imprint": "Imprint",
+    "dataPrivacy": "Data Privacy",
+    "participate": "Participate"
+  },
+  "HomePage": {
+    "title": "Survey on the aesthetic quality of group pictures",
+    "text1": "We've all been there: you've been out with friends and taken some great souvenir photos. When sharing, you often end up with several series of group photos that look similar. But actually, everyone only wants the best of them, right? If you don't sort out the photos straight away, you end up with a lot of them over time. 'Now which was the nice one that I wanted to send to someone?'",
+    "text2": "In my master's thesis, I would like to research whether a machine learning model can be developed that provides suggestions for aesthetic image quality. AI assistance systems already save us time and effort in many areas - so why not in our image gallery too?",
+    "text3": "I need your support here! In order to reliably check the functionality of the AI model developed, I need real, labelled data for validation. This is only possible with the help of many dedicated volunteers. For validation, I use the method of forced pairwise comparison. In each case, two images are compared and the image that is subjectively perceived as more aesthetically pleasing must be selected.",
+    "participate": "Participate in the survey"
+  },
+  "PwcExample": {
+    "text": "Which picture do you prefer?"
+  },
+  "ParticipatePage": {
+    "title": "Thank you for your help!",
+    "text1": "Thank you for taking part in the user study on the qualitative evaluation of group photos! It is often easy for us humans to decide which image we like best aesthetically. However, this often happens on a subconscious level, making it difficult to understand exactly why one image is preferred over another. In order to better understand this process, I am conducting this survey for my master's thesis. I want to investigate whether it is possible to make meaningful statements about the aesthetic quality of group images with the help of deep learning. For the validation I need your help to collect real data.",
+    "process": "Procedure of the user study:",
+    "point1": "After you have given your consent to participate in the user study, a series of group photos of you and your group will be taken.",
+    "point2": "The pictures will be added to your survey and you will receive a link to the survey by e-mail.",
+    "point3": "In the survey, you will rate the quality of the individual images based on pair comparisons.",
+    "point4": "Afterwards you will be asked some general questions to find out which factors determine the aesthetic quality of the group photos.",
+    "point5": "The survey takes about 5 minutes and can be carried out directly from your smartphone or ideally from the comfort of your own home.",
+    "point6": "The group photos taken can only be viewed by the survey participants. The results are analysed pseudonymously."
+  },
+  "ParticipateForm": {
+    "emailValidation": "Please enter a valid email address.",
+    "consent": "I have read the terms and conditions of the user study and agree to the conditions of participation.",
+    "consentValidation": "Please agree to the conditions of participation.",
+    "dataPrivacy1": "I have taken note of the ",
+    "dataPrivacy2": "Privacy policy",
+    "dataPrivacy3": ".",
+    "dataPrivacyValidation": "Please take note of the privacy policy.",
+    "submit": "Participate",
+    "successTitle": "Successfully enrolled!",
+    "successText": "Thank you for your participation! Please check your emails.",
+    "errorTitle": "Unfortunately the enrolment did not work.",
+    "errorText": "Please try again!"
+  },
+  "SurveyNotification": {
+    "successTitle": "Survey Completed",
+    "successText": "Thank you for your participation.",
+    "errorTitle": "Invalid Survey ID",
+    "errorText": "Please click the link in your email."
+  },
+  "Survey": {
+    "title": "Welcome to the Survey",
+    "text1": "The survey will take approximately 10-15 minutes. Please ensure you are in a quiet environment and can focus on the task.",
+    "text2": "More to come...",
+    "process": "User Study Process:",
+    "point1": "Point 1",
+    "point2": "Point 2",
+    "point3": "Point 3",
+    "start": "Start survey",
+    "loading": "Loading new pairs"
+  },
+  "ComparisonForm": {
+    "text": "Which image do you prefer?",
+    "submit": "Next"
+  },
+  "Questionnaire": {
+    "title": "Questionnaire",
+    "text": "When selecting the group pictures, it is important to me ...",
+    "eyes": "that all people in the picture have their eyes open.",
+    "smile": "that most people express joy.",
+    "gaze": "that most people are looking at the camera?",
+    "occluded": "that no face is covered or cut off?",
+    "sharpness": "that the image is sharp?",
+    "lighting": "that the lighting in the picture is even (e.g., no harsh shadows or reflections on faces/people)?",
+    "faceOrientation": "that people do not turn their heads too far away.",
+    "centering": "that the group is centered in the picture?",
+    "selfObservation": "that the above criteria apply especially to me?",
+    "background": "that the background harmonizes with the overall picture?",
+    "additional": "I find additional aspects important in group photos that have not been mentioned above (or other comments):",
+    "submit": "Submit Survey",
+    "radioOption1": "Very unimportant",
+    "radioOption2": "Unimportant",
+    "radioOption3": "Neutral",
+    "radioOption4": "Important",
+    "radioOption5": "Very important"
+  },
+  "Confirmed": {
+    "text": "Email successfully confirmed."
+  },
+  "Login": {
+    "title": "Request a new login link",
+    "text": "You have successfully registered but your login link has expired?",
+    "initialErrorTitle": "Your login link has expired",
+    "initialErrorText": "Please request a new login link.",
+    "errorTitle": "Error sending email",
+    "errorText": "Please try again.",
+    "successTitle": "Email sent successfully",
+    "successText": "Please check your emails.",
+    "submit": "Request new Link"
+  }
+}

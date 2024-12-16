@@ -1,0 +1,104 @@
+{
+  "Header": {
+    "title": "Nutzerstudie - Gruppenbilder",
+    "home": "Um was gehts?",
+    "participate": "Hilf mit!"
+  },
+  "Footer": {
+    "title": "Nutzerstudie - Gruppenbilder",
+    "imprint": "Impressum",
+    "dataPrivacy": "Datenschutz",
+    "participate": "Hilf mit"
+  },
+  "HomePage": {
+    "title": "Umfrage zur ästhetischen Qualität von Gruppenbildern",
+    "text1": "Wir kennen es doch alle: Man war mit Freunden unterwegs und hat schöne Erinnerungsfotos aufgenommen. Beim Teilen entstehen oft mehrere Serien von Gruppenfotos, die sich ähnlich sehen. Aber eigentlich will doch jeder nur das Beste davon, oder? Sortiert man die Bilder nicht gleich aus, sammeln sich im Laufe der Zeit viele solcher Fotoserien an. \"Welches war jetzt nochmal das eine schöne, das ich jemandem schicken wollte?\"",
+    "text2": "In meiner Masterarbeit möchte ich untersuchen, ob sich ein Machine-Learning-Modell entwickeln lässt, das Vorschläge zur ästhetischen Bildqualität liefert. KI-Assistenzsysteme sparen uns in vielen Bereichen bereits Zeit und Aufwand – warum also nicht auch in unserer Bildergalerie?",
+    "text3": "Hier brauche ich Deine Unterstützung! Um die Funktionalität des entwickelten KI-Modells verlässlich zu überprüfen, benötige ich echte, gelabelte Daten zur Validierung. Dies ist nur mit der Hilfe vieler engagierter Freiwilliger möglich. Für die Validierung verwende ich die Methode der erzwungenen paarweisen Vergleiche (Forced Pairwise Comparison). Dabei werden jeweils zwei Bilder gegenübergestellt, und das Bild, das subjektiv als ästhetisch ansprechender empfunden wird, muss ausgewählt werden.",
+    "particpate": "An Umfrage teilnehmen"
+  },
+  "PwcExample": {
+    "text": "Welches Bild gefällt dir besser?"
+  },
+  "ParticipatePage": {
+    "title": "Danke für Deine Hilfe!",
+    "text1": "Vielen Dank für deine Teilnahme an der Nutzerstudie zur qualitativen Bewertung von Gruppenbildern! Für uns Menschen ist es oft einfach zu entscheiden, welches Bild uns ästhetisch am besten gefällt. Dies geschieht jedoch oft auf einer unbewussten Ebene, wodurch es schwierig ist, genau zu verstehen, warum ein Bild einem anderen vorgezogen wird. Um diesen Prozess besser verstehen zu können, führe ich diese Umfrage für meine Masterarbeit durch. Ich möchte untersuchen, ob es möglich ist mit Hilfe von Deep Learning sinnvolle Aussagen über die ästhetische Qualität von Gruppenbildern zu treffen. Für die Validierung benötige ich deine Hilfe, um reale Daten zu sammeln.",
+    "process": "Ablauf der Nutzerstudie:",
+    "point1": "Nachdem du deine Zustimmung zur Teilnahme an der Nutzerstudie gegeben hast, werden zu Beginn eine Reihe von Gruppenfotos von dir und deiner Gruppe gemacht.",
+    "point2": "Die Bilder werden zu eurer Umfrage hinzugefügt und ihr erhaltet einen Link zur Umfrage per E-Mail.",
+    "point3": "In der Umfrage wirst du die Qualität der einzelnen Bilder anhand von Paarvergleichen bewerten.",
+    "point4": "Anschließend werden dir einige allgemeine Fragen gestellt, um herauszufinden, welche Faktoren die ästhetische Qualität der Gruppenfotos bestimmen.",
+    "point5": "Die Umfrage dauert ca. 5 Minuten und kann direkt vom Smartphone oder idealerweise bequem von zu Hause aus durchgeführt werden.",
+    "point6": "Die aufgenommenen Gruppenbilder können nur von den Teilnehmern der Umfrage eingesehen werden. Die Ergebnisse werden pseudonymisiert ausgewertet."
+  },
+  "ParticipateForm": {
+    "emailValidation": "Bitte geben Sie eine gültige Email-Adresse ein.",
+    "consent": "Ich habe die Bedingungen der Nutzerstudie gelesen und stimme den Teilnahmebedinungen zu.",
+    "consentValidation": "Bitte stimmen Sie den Teilnahmebedingungen zu.",
+    "dataPrivacy1": "Ich habe die ",
+    "dataPrivacy2": "Datenschutzerklärung",
+    "dataPrivacy3": "zur Kenntnis genommen.",
+    "dataPrivacyValidation": "Bitte nehmen Sie die Datenschutzerklärung zur Kenntnis.",
+    "submit": "Teilnehmen",
+    "successTitle": "Erfolgreich eingeschrieben!",
+    "successText": "Danke für deine Teilnahme! Bitte überprüfe deine Emails.",
+    "errorTitle": "Leider hat das einschreiben nicht geklappt.",
+    "errorText": "Bitte versuche es erneut!"
+  },
+  "SurveyNotification": {
+    "successTitle": "Umfrage abgeschlossen",
+    "successText": "Vielen Dank für deine Teilnahme.",
+    "errorTitle": "Ungültige Umfrage ID",
+    "errorText": "Bitte klicke auf den Link in deiner Email."
+  },
+  "Survey": {
+    "title": "Willkommen zur Umfrage",
+    "text1": "Die Umfrage wird etwa 10-15 Minuten dauern. Bitte stelle sicher, dass du in einer ruhigen Umgebung bist und dich auf die Aufgabe konzentrieren kannst.",
+    "text2": "More to come...",
+    "process": "Ablauf der Nutzerstudie:",
+    "point1": "Punkt 1",
+    "point2": "Punkt 2",
+    "point3": "Punkt 3",
+    "start": "Umfrage starten",
+    "loading": "Laden neuer Vergleichspaare"
+  },
+  "ComparisonForm": {
+    "text": "Welches Bild gefällt dir besser?",
+    "submit": "Weiter"
+  },
+  "Questionnaire": {
+    "title": "Fragebogen",
+    "text": "Bei der Auswahl der Gruppenbilder ist es mir wichtig, …",
+    "eyes": "dass alle Personen auf dem Bild die Augen geöffnet haben.",
+    "smile": "dass die meisten Personen Freude ausdrücken.",
+    "gaze": "dass die meisten Personen in die Kamera schauen?",
+    "occluded": "dass keine Gesicht verdeckt oder abgeschnitten ist?",
+    "sharpness": "dass das Bild scharf ist?",
+    "lighting": "dass die Beleuchtung im Bild gleichmäßig ist (z. B. keine starken Schatten oder Reflexionen auf den Gesichtern/Personen)?",
+    "faceOrientation": "dass die Personen den Kopf nicht zu stark wegdrehen.",
+    "centering": "dass die Gruppe im Bild zentriert ist?",
+    "selfObservation": "dass oben genannte Kriterien vorallem auf mich zutreffen?",
+    "background": "dass der Hintergrund mit der Gesamtbild harmoniert?",
+    "additional": "Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden (oder sonstige Anmerkungen):",
+    "submit": "Umfrage abschicken",
+    "radioOption1": "Sehr unwichtig",
+    "radioOption2": "Unwichtig",
+    "radioOption3": "Neutral",
+    "radioOption4": "Wichtig",
+    "radioOption5": "Sehr wichtig"
+  },
+  "Confirmed": {
+    "text": "Email erfolgreich bestätigt."
+  },
+  "Login": {
+    "title": "Neuen Loginlink anfordern",
+    "text": "Du hast dich erfolgreich registriert aber dein Loginlink ist abgelaufen?",
+    "initialErrorTitle": "Dein Loginlink ist abgelaufen",
+    "initialErrorText": "Bitte fordere einen neuen Loginlink an.",
+    "errorTitle": "Fehler beim Senden des Email",
+    "errorText": "Bitte versuche es erneut.",
+    "successTitle": "Email wurde erfolgreich versendet",
+    "successText": "Bitte überprüfe deine Emails.",
+    "submit": "Neuen Loginlink anfordern"
+  }
+}
