@@ -26,10 +26,14 @@ export type PWCResult = Tables<"pwc_results">;
 export type Questionnaire = Tables<"questionnaires">;
 
 export type DetailedSurvey = Survey & {
-  participations: { user: string; finished: boolean }[];
+  participations: {
+    user: { id: string; name: string };
+    started: string | null;
+    finished: string | null;
+    comparison_count: number;
+  }[];
   comparison_count: number;
-  pwc_results: PWCResult[];
-  questionnaires: Questionnaire[];
+  images: { id: number; path: string }[];
 };
 
 export type PWCResultWithPair = PWCResult & {

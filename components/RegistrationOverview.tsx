@@ -72,7 +72,7 @@ export const RegistrationOverview = ({ initial, ...props }: Props) => {
                 <Flex justify="space-between" align="center">
                   <Text>{registrant.email}</Text>
                   <Group gap={20}>
-                    <Badge color={registrant.verified ? "green" : "blue"}>
+                    <Badge color={registrant.verified ? "green" : "indigo"}>
                       {registrant.verified ? "Verified" : "Pending"}
                     </Badge>
                     <ActionIcon

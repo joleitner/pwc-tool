@@ -87,7 +87,7 @@ export const ParticapteForm = () => {
                     e.preventDefault();
                     open();
                   }}
-                  c="blue"
+                  c="indigo"
                 >
                   Datenschutzerklärung
                 </Anchor>{" "}

@@ -73,7 +73,7 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
                       variant="light"
                       size="xl"
                       leftSection={<IconPhoto size={20} />}
-                      color="blue"
+                      color="indigo"
                     >
                       {survey.image_count}
                     </Badge>
@@ -81,7 +81,7 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
                       variant="light"
                       size="xl"
                       leftSection={<IconUsersGroup size={20} />}
-                      color="blue"
+                      color="indigo"
                     >
                       {survey.participant_count}
                     </Badge>

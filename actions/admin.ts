@@ -28,6 +28,7 @@ export async function signupParticipants(
     userRequests.push(
       supabase.from("users").insert({
         id: registration.id,
+        name: registration.email,
       })
     );
     surveyUserRequests.push(

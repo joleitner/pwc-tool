@@ -1,6 +1,6 @@
 "use server";
 
-import { Participation, PWCResultWithPair } from "@/types";
+import { DetailedSurvey, Participation, PWCResultWithPair } from "@/types";
 import { convertToPwcObjects, createPWCMatrix } from "@/utils/pwcMatrix";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
@@ -29,48 +29,85 @@ export async function getSurveys() {
     .order("created_at", { ascending: false });
 }
 
-// export async function getSurveyInfo(surveyId: number): Promise<DetailedSurvey> {
-//   const supabase = await createServerSupabase();
+export async function getSurveyInfo(
+  surveyId: number
+): Promise<DetailedSurvey | null> {
+  const supabase = await createServerSupabase();
 
-//   const { data: survey } = await supabase
-//     .from("surveys")
-//     .select("*")
-//     .eq("id", surveyId)
-//     .single();
+  const { data: survey } = await supabase
+    .from("surveys")
+    .select("*")
+    .eq("id", surveyId)
+    .single();
 
-//   const { data: participations } = await supabase
-//     .from("participations")
-//     .select("user, finished")
-//     .eq("survey", surveyId);
+  if (!survey) return null;
 
-//   const { data: comparisons, error } = await supabase
-//     .from("comparison_pairs")
-//     .select("id")
-//     .eq("survey", surveyId);
+  const [{ data: participations }, { data: pwcResults }, { data: images }] =
+    await Promise.all([
+      supabase
+        .from("participations")
+        .select("user(id, name), started, finished")
+        .eq("survey", surveyId)
+        .returns<
+          {
+            user: { id: string; name: string };
+            started: string;
+            finished: string;
+          }[]
+        >(),
+      supabase
+        .from("pwc_results")
+        .select("*, pair!inner(*)")
+        .eq("pair.survey", surveyId)
+        .returns<PWCResultWithPair[]>(),
+      getImages(surveyId),
+    ]);
 
-//   console.log(error);
+  const participationsWithCount: any = [];
 
-//   const { data: pwc_results } = await supabase
-//     .from("pwc_results")
-//     .select()
-//     .in(
-//       "pair",
-//       comparisons!.map((c) => c.id)
-//     );
+  for (const participation of participations!) {
+    const comparison_count = pwcResults!.filter(
+      (result) => result.user === participation.user.id
+    ).length;
+    participationsWithCount.push({ ...participation, comparison_count });
+  }
 
-//   const { data: questionnaires } = await supabase
-//     .from("questionnaires")
-//     .select()
-//     .eq("survey", surveyId);
+  return {
+    ...survey!,
+    participations: participationsWithCount,
+    comparison_count: pwcResults!.length,
+    images: images!,
+  };
+}
 
-//   return {
-//     ...survey!,
-//     participations: participations!,
-//     comparison_count: comparisons!.length,
-//     pwc_results: pwc_results!,
-//     questionnaires: questionnaires!,
-//   };
-// }
+export async function getSurveyScores(
+  surveyId: number
+): Promise<{ scores_mean: number[]; scores_std: number[] }> {
+  const supabase = await createServerSupabase();
+
+  const [{ data: pwcResults }, { data: images }] = await Promise.all([
+    supabase
+      .from("pwc_results")
+      .select("*, pair!inner(*)")
+      .eq("pair.survey", surveyId)
+      .returns<PWCResultWithPair[]>(),
+    getImages(surveyId),
+  ]);
+
+  // get scores for images
+  const imageIds = images!.map((image) => image.id);
+  const pwc_matrix = createPWCMatrix(imageIds, pwcResults!);
+  const asapResult = await fetch(`${process.env.ASAP_API_URL}/scores`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pwc_matrix,
+    }),
+  });
+  return await asapResult.json();
+}
 
 export async function createNewSurvey(data: any) {
   const supabase = await createServerSupabase();
@@ -158,8 +195,7 @@ export async function getComparisonBatch(surveyId: number) {
         supabase.from("comparison_pairs").select().eq("survey", surveyId),
         supabase
           .from("pwc_results")
-          .select("*, pair(*)")
-
+          .select("*, pair!inner(*)")
           .eq("pair.survey", surveyId)
           .returns<PWCResultWithPair[]>(),
       ]);
