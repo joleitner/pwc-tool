@@ -6,7 +6,7 @@ import groupImage2 from "../../public/group_image_2.webp";
 import classes from "./PwcExample.module.css";
 
 export const PwcExample = () => (
-  <Paper shadow="md" p={30} radius="md" my={50} withBorder>
+  <Paper shadow="md" p={30} radius="md" my={30} withBorder>
     <Text fw="bold" mb={15}>
       Welches Bild gefällt dir besser?
     </Text>
