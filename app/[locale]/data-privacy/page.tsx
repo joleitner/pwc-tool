@@ -1,4 +1,4 @@
-import { DataPrivacy } from "@/components/DataPrivacy";
+import { DataPrivacy } from "@/components/DataPrivacy/DataPrivacy";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { Container, Paper, Title } from "@mantine/core";
