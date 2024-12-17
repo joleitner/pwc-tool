@@ -8,7 +8,7 @@ import {
   DroppableProvided,
 } from "@hello-pangea/dnd";
 import { Box, Flex, Group, Paper, Text } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useListState, useMediaQuery } from "@mantine/hooks";
 import { IconMenu } from "@tabler/icons-react";
 import { useEffect } from "react";
 
@@ -110,18 +110,27 @@ export const OrderQuestion = ({ title, items, setOrderedList }: Props) => {
   );
 };
 
-const OrderItem = ({ label, index }: { label: string; index?: number }) => (
-  <Paper p="sm" withBorder shadow="sm">
-    <Flex justify="space-between" align="center" px="lg">
-      <Group gap="md">
-        {index && (
-          <Text fw="bold" size="sm">
-            {index}.{" "}
-          </Text>
-        )}
-        <Text size="sm">{label}</Text>
-      </Group>
-      <IconMenu color="gray" size={20} />
-    </Flex>
-  </Paper>
-);
+const OrderItem = ({ label, index }: { label: string; index?: number }) => {
+  const smallScreen = useMediaQuery("(max-width: 768px)", true);
+
+  return (
+    <Paper
+      px={smallScreen ? 5 : "md"}
+      py={smallScreen ? "xs" : "md"}
+      withBorder
+      shadow="sm"
+    >
+      <Flex justify="space-between" align="center" px="lg">
+        <Group gap="md">
+          {index && (
+            <Text fw="bold" size="sm">
+              {index}.{" "}
+            </Text>
+          )}
+          <Text size="sm">{label}</Text>
+        </Group>
+        <IconMenu color="gray" size={20} />
+      </Flex>
+    </Paper>
+  );
+};

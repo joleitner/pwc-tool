@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 const theme = createTheme({
+  fontFamily: "Inter, sans-serif",
   colors: {
     primary: [
       "#fff4e1",
