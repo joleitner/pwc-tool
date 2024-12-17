@@ -12,6 +12,14 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/confirmed";
 
+  // if user is already logged in, redirect them to the next page
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    redirect(next);
+  }
+
   if (token_hash && type) {
     const { data, error } = await supabase.auth.verifyOtp({
       type,
