@@ -57,14 +57,20 @@
   },
   "Survey": {
     "title": "Welcome to the Survey",
-    "text1": "The survey will take approximately 10-15 minutes. Please ensure you are in a quiet environment and can focus on the task.",
-    "text2": "More to come...",
-    "process": "User Study Process:",
-    "point1": "Point 1",
-    "point2": "Point 2",
-    "point3": "Point 3",
-    "start": "Start survey",
-    "loading": "Loading new pairs"
+    "text1": "Thank you for participating! The survey will take about 5 minutes. Please ensure a quiet environment where you can focus well.",
+    "pairTitle": "Pairwise Comparisons",
+    "pairText": "At the beginning of the survey, you will see two images side by side and choose the one you find more aesthetically pleasing. A decision is required for each comparison. You will complete about 20 of these comparisons in total.",
+    "noticeTitle": "Important Notes",
+    "notice1Title": "Screen Brightness: ",
+    "notice1Text": "Make sure your screen brightness is set high enough to see the images clearly.",
+    "notice2Title": "Ambient Light: ",
+    "notice2Text": "Avoid distracting light sources such as reflections on the display.",
+    "notice3Title": "Attention: ",
+    "notice3Text": "Take a few seconds to carefully examine the images before making your choice.",
+    "text2": "After the image comparisons, you will answer a short questionnaire evaluating various factors that influence the aesthetic quality of group photos.",
+    "wish": "Have fun and thank you for your support!",
+    "start": "Start Survey",
+    "loading": "Loading new comparison pairs"
   },
   "ComparisonForm": {
     "text": "Which image do you prefer?",

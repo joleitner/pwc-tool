@@ -102,18 +102,34 @@ export const Survey = () => {
               {t("title")}
             </Title>
             <Text>{t("text1")}</Text>
-            <Text>{t("text2")}</Text>
             <Text fw="bold" mt={15} mb={5}>
-              {t("process")}
+              {t("pairTitle")}
             </Text>
-            <List mb={20}>
-              <ListItem>{t("point1")}</ListItem>
-              <ListItem>{t("point2")}</ListItem>
-              <ListItem>{t("point3")}</ListItem>
+            <Text>{t("pairText")}</Text>
+            <PwcExample />
+            <Text fw="bold" mt={15} mb={5}>
+              {t("noticeTitle")}
+            </Text>
+            <List mb="md">
+              <ListItem>
+                <b>{t("notice1Title")}</b>
+                {t("notice1Text")}
+              </ListItem>
+              <ListItem>
+                <b>{t("notice2Title")}</b>
+                {t("notice2Text")}
+              </ListItem>
+              <ListItem>
+                <b>{t("notice3Title")}</b>
+                {t("notice3Text")}
+              </ListItem>
             </List>
+            <Text mb="md">{t("text2")}</Text>
+            <Text fw="bold" mb="lg">
+              {t("wish")}
+            </Text>
           </Container>
 
-          <PwcExample />
           <Flex justify="center">
             <Button
               size="md"
