@@ -1,3 +1,5 @@
+"use client";
+
 import { saveQuestionaireAnswers } from "@/actions/survey";
 import {
   Button,
@@ -12,8 +14,10 @@ import {
 } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import { useSurveyContext } from "./SurveyProvider";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { OrderQuestion } from "./OrderQuestion";
+import { useSurveyContext } from "./SurveyProvider";
 
 export const Questionnaire = () => {
   const t = useTranslations("Questionnaire");
@@ -36,7 +40,6 @@ export const Questionnaire = () => {
       key: "occluded",
       label: t("occluded"),
     },
-    { key: "sharpness", label: t("sharpness") },
     {
       key: "lighting",
       label: t("lighting"),
@@ -45,11 +48,12 @@ export const Questionnaire = () => {
       key: "face_orientation",
       label: t("faceOrientation"),
     },
-    { key: "centering", label: t("centering") },
     {
       key: "self_observation",
       label: t("selfObservation"),
     },
+    { key: "centering", label: t("centering") },
+    { key: "sharpness", label: t("sharpness") },
     {
       key: "background",
       label: t("background"),
@@ -61,8 +65,21 @@ export const Questionnaire = () => {
     { value: "2", label: t("radioOption2") },
     { value: "3", label: t("radioOption3") },
     { value: "4", label: t("radioOption4") },
-    { value: "5", label: t("radioOption5") },
   ];
+
+  const featureItems = [
+    { value: "eyes", label: t("featureEyes") },
+    { value: "smile", label: t("featureSmile") },
+    { value: "gaze", label: t("featureGaze") },
+    { value: "occluded", label: t("featureOccluded") },
+    { value: "lighting", label: t("featureLighting") },
+    { value: "face_orientation", label: t("featureFaceOrientation") },
+    { value: "background", label: t("featureBackground") },
+    { value: "centering", label: t("featureCentering") },
+    { value: "sharpness", label: t("featureSharpness") },
+  ];
+
+  const [featureOrder, setFeatureOrder] = useState<string[]>([]);
 
   // loop through questions to create initial values and validation rules
   const initialValues: any = {
@@ -80,8 +97,11 @@ export const Questionnaire = () => {
   });
 
   const handleSubmit = async (values: any) => {
-    if (form.isValid()) {
-      const { error } = await saveQuestionaireAnswers(survey.id, values);
+    if (form.isValid() && featureOrder.length === featureItems.length) {
+      const { error } = await saveQuestionaireAnswers(survey.id, {
+        ...values,
+        feature_order: featureOrder,
+      });
 
       if (!error) {
         window.location.reload();
@@ -125,6 +145,11 @@ export const Questionnaire = () => {
               );
             })}
 
+            <OrderQuestion
+              title={t("orderQuestion")}
+              items={featureItems}
+              setOrderedList={setFeatureOrder}
+            />
             <Textarea
               mt={smallScreen ? "md" : "lg"}
               autosize
@@ -135,7 +160,12 @@ export const Questionnaire = () => {
           </Stack>
 
           <Flex justify="center" mt="md">
-            <Button type="submit" disabled={!form.isValid()}>
+            <Button
+              type="submit"
+              disabled={
+                !form.isValid() || featureOrder.length !== featureItems.length
+              }
+            >
               {t("submit")}
             </Button>
           </Flex>
