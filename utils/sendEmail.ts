@@ -1,4 +1,8 @@
-export const sendSurveyLinkMail = async (email: string, surveyLink: string) => {
+export const sendEmail = async (
+  email: string,
+  templateId: number,
+  otpLink: string
+) => {
   return await fetch(process.env.BREVO_API_URL!, {
     method: "POST",
     headers: {
@@ -12,9 +16,9 @@ export const sendSurveyLinkMail = async (email: string, surveyLink: string) => {
           email: email,
         },
       ],
-      templateId: 1,
+      templateId,
       params: {
-        surveyLink,
+        otpLink,
       },
     }),
   });

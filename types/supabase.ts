@@ -186,6 +186,7 @@ export type Database = {
           created_at: string
           eyes: number
           face_orientation: number
+          feature_order: Json
           gaze: number
           id: number
           lighting: number
@@ -202,6 +203,7 @@ export type Database = {
           created_at?: string
           eyes: number
           face_orientation: number
+          feature_order: Json
           gaze: number
           id?: number
           lighting: number
@@ -218,6 +220,7 @@ export type Database = {
           created_at?: string
           eyes?: number
           face_orientation?: number
+          feature_order?: Json
           gaze?: number
           id?: number
           lighting?: number
@@ -242,18 +245,21 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          locale: string | null
           verified: boolean
         }
         Insert: {
           created_at?: string
           email: string
           id: string
+          locale?: string | null
           verified?: boolean
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
+          locale?: string | null
           verified?: boolean
         }
         Relationships: []

@@ -1,7 +1,7 @@
 "use server";
 
 import { Registrations } from "@/types";
-import { sendSurveyLinkMail } from "@/utils/sendEmail";
+import { sendEmail } from "@/utils/sendEmail";
 import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
 
 export async function signupParticipants(
@@ -10,19 +10,10 @@ export async function signupParticipants(
 ) {
   const supabase = createAdminSupabase();
 
-  // const responses = await Promise.all(
-  //     participants.map((participant) =>
-  //         supabase.auth.admin.createUser({
-  //             email: participant.email,
-  //             email_confirm: false,
-  //         })
-  //     )
-  //   )
-
   let userRequests: any[] = [];
   let participantRequests: any[] = [];
   let surveyUserRequests: any[] = [];
-  let participantEmails: string[] = [];
+  let participants: { email: string; locale: string }[] = [];
 
   registrations.forEach(async (registration) => {
     userRequests.push(
@@ -40,7 +31,10 @@ export async function signupParticipants(
     participantRequests.push(
       supabase.from("registrations").delete().eq("id", registration.id)
     );
-    participantEmails.push(registration.email);
+    participants.push({
+      email: registration.email,
+      locale: registration.locale!,
+    });
   });
 
   const userResponses = await Promise.all(userRequests);
@@ -63,10 +57,10 @@ export async function signupParticipants(
     .eq("id", surveyId)
     .single();
 
-  participantEmails.map(async (email) => {
+  participants.map(async (participant) => {
     const { data: otp_link } = await supabase.auth.admin.generateLink({
       type: "magiclink",
-      email,
+      email: participant.email,
     });
     if (otp_link) {
       const token = otp_link.properties?.hashed_token;
@@ -74,9 +68,68 @@ export async function signupParticipants(
 
       const surveyLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/survey?id=${survey?.public_id}`;
 
-      await sendSurveyLinkMail(email, surveyLink);
+      await sendEmail(
+        participant.email,
+        participant.locale === "de" ? 1 : 2,
+        surveyLink
+      );
     }
   });
+
+  return { error: null };
+}
+
+export async function inviteParticipant(email: string, locale: string) {
+  const supabase = createAdminSupabase();
+
+  const { data, error } = await supabase.auth.admin.generateLink({
+    type: "invite",
+    email,
+  });
+
+  if (error) {
+    return { error };
+  }
+  const token = data.properties?.hashed_token;
+  const type = data.properties?.verification_type;
+  const inviteLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/confirmed`;
+
+  await sendEmail(email, locale === "de" ? 3 : 4, inviteLink);
+
+  return await supabase
+    .from("registrations")
+    .insert([{ id: data.user.id, email, locale }]);
+}
+
+export async function resendOTPLink(
+  email: string,
+  next: string,
+  locale: string
+) {
+  const supabase = await createAdminSupabase();
+
+  // check if user exists
+  const [user, registration] = await Promise.all([
+    supabase.from("users").select("id").eq("name", email).single(),
+    supabase.from("registrations").select("id").eq("email", email).single(),
+  ]);
+  if (!user && !registration) {
+    return { error: "User not found" };
+  }
+
+  const { data, error } = await supabase.auth.admin.generateLink({
+    type: "magiclink",
+    email,
+  });
+
+  if (error) {
+    return { error };
+  }
+  const token = data.properties?.hashed_token;
+  const type = data.properties?.verification_type;
+  const magicLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=${next}`;
+
+  await sendEmail(email, locale === "de" ? 5 : 6, magicLink);
 
   return { error: null };
 }

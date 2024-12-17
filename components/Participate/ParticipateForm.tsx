@@ -12,9 +12,9 @@ import {
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DataPrivacyModal } from "../DataPrivacy/DataPrivacyModal";
-import { inviteParticipant } from "@/actions/auth";
+import { inviteParticipant } from "@/actions/admin";
 
 export const ParticapteForm = ({
   setRegistered,
@@ -23,6 +23,7 @@ export const ParticapteForm = ({
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const t = useTranslations("ParticipateForm");
+  const locale = useLocale();
 
   const form = useForm({
     initialValues: {
@@ -43,7 +44,7 @@ export const ParticapteForm = ({
     dataPrivacy: boolean;
   }) => {
     if (form.isValid()) {
-      const { error } = await inviteParticipant(values.email);
+      const { error } = await inviteParticipant(values.email, locale);
       if (error) {
         showNotification(t("errorTitle"), t("errorText"), "error");
       } else {

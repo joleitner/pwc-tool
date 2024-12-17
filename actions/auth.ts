@@ -47,36 +47,3 @@ export async function logout() {
   revalidatePath("/", "layout");
   redirect("/");
 }
-
-export async function inviteParticipant(email: string) {
-  const supabase = await createAdminSupabase();
-
-  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
-
-  if (error) {
-    console.error(error.message);
-    return { error };
-  }
-
-  return await supabase
-    .from("registrations")
-    .insert([{ id: data.user.id, email }]);
-
-  // return await supabase.auth.signInWithOtp({
-  //   email,
-  // });
-}
-
-export async function resendOTPLink(email: string, redirectTo: string) {
-  const supabase = await createServerSupabase();
-
-  return await supabase.auth.signInWithOtp({
-    email: email,
-    options: {
-      shouldCreateUser: false,
-      emailRedirectTo: redirectTo.startsWith("http")
-        ? redirectTo
-        : `${process.env.SITE_URL}${redirectTo}`,
-    },
-  });
-}
