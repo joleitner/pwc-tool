@@ -30,7 +30,7 @@ export const ParticipateContent = () => {
 
   return (
     <Container size="md" style={{ minHeight: "calc(100vh - 110px - 210px)" }}>
-      <Container>
+      <Container mb="lg">
         <Title order={2} mb="md">
           {t("title")}
         </Title>
@@ -46,6 +46,12 @@ export const ParticipateContent = () => {
           <ListItem>{t("point5")}</ListItem>
           <ListItem>{t("point6")}</ListItem>
         </List>
+        <Text fw="bold" mt={15} mb={5}>
+          {t("notice")}
+        </Text>
+        <Text>{t("noticeText1")}</Text>
+        <Text>{t("noticeText2")}</Text>
+        <Text>{t("noticeText3")}</Text>
       </Container>
 
       <Container size="sm">
