@@ -1,8 +1,8 @@
 import { getAuthUser } from "@/actions/auth";
 import { getRegistrations, getSurveys } from "@/actions/survey";
 import { Header } from "@/components/Header/Header";
-import { RegistrationOverview } from "@/components/RegistrationOverview";
-import { SurveyOverview } from "@/components/SurveyOverview";
+import { RegistrationOverview } from "@/components/Admin/RegistrationOverview";
+import { SurveyOverview } from "@/components/Admin/SurveyOverview";
 import { Link } from "@/i18n/routing";
 import { Button, Container, Divider, Flex, Title } from "@mantine/core";
 import { redirect } from "next/navigation";

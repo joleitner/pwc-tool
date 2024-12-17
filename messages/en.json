@@ -20,7 +20,7 @@
   "PwcExample": {
     "text": "Which picture do you prefer?"
   },
-  "ParticipatePage": {
+  "Participate": {
     "title": "Thank you for your help!",
     "text1": "Thank you for taking part in the user study on the qualitative evaluation of group photos! It is often easy for us humans to decide which image we like best aesthetically. However, this often happens on a subconscious level, making it difficult to understand exactly why one image is preferred over another. In order to better understand this process, I am conducting this survey for my master's thesis. I want to investigate whether it is possible to make meaningful statements about the aesthetic quality of group images with the help of deep learning. For the validation I need your help to collect real data.",
     "process": "Procedure of the user study:",
@@ -29,7 +29,9 @@
     "point3": "In the survey, you will rate the quality of the individual images based on pair comparisons.",
     "point4": "Afterwards you will be asked some general questions to find out which factors determine the aesthetic quality of the group photos.",
     "point5": "The survey takes about 5 minutes and can be carried out directly from your smartphone or ideally from the comfort of your own home.",
-    "point6": "The group photos taken can only be viewed by the survey participants. The results are analysed pseudonymously."
+    "point6": "The group photos taken can only be viewed by the survey participants. The results are analysed pseudonymously.",
+    "successTitle": "Successfully enrolled!",
+    "successText": "Thank you for your participation! Please check your emails."
   },
   "ParticipateForm": {
     "emailValidation": "Please enter a valid email address.",
@@ -40,8 +42,6 @@
     "dataPrivacy3": ".",
     "dataPrivacyValidation": "Please take note of the privacy policy.",
     "submit": "Participate",
-    "successTitle": "Successfully enrolled!",
-    "successText": "Thank you for your participation! Please check your emails.",
     "errorTitle": "Unfortunately the enrolment did not work.",
     "errorText": "Please try again!"
   },

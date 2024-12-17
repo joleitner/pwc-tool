@@ -28,7 +28,6 @@ export default function Home() {
           </Flex>
         </Container>
       </Container>
-
       <Footer />
     </>
   );

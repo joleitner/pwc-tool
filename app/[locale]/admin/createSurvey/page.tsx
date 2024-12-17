@@ -1,6 +1,6 @@
 import { getAuthUser } from "@/actions/auth";
 import { getRegistrations } from "@/actions/survey";
-import { CreateSurveyForm } from "@/components/CreateSurveyForm";
+import { CreateSurveyForm } from "@/components/Admin/CreateSurveyForm";
 import { Header } from "@/components/Header/Header";
 import { Container, Title } from "@mantine/core";
 import { redirect } from "next/navigation";

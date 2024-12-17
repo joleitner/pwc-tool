@@ -1,7 +1,7 @@
 import { getAuthUser } from "@/actions/auth";
 import { getSurveyInfo } from "@/actions/survey";
 import { Header } from "@/components/Header/Header";
-import { ImageRanking } from "@/components/ImageRanking";
+import { ImageRanking } from "@/components/Admin/ImageRanking";
 import { NextPageProps } from "@/types";
 import {
   Badge,

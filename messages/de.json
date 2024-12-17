@@ -20,7 +20,7 @@
   "PwcExample": {
     "text": "Welches Bild gefällt dir besser?"
   },
-  "ParticipatePage": {
+  "Participate": {
     "title": "Danke für Deine Hilfe!",
     "text1": "Vielen Dank für deine Teilnahme an der Nutzerstudie zur qualitativen Bewertung von Gruppenbildern! Für uns Menschen ist es oft einfach zu entscheiden, welches Bild uns ästhetisch am besten gefällt. Dies geschieht jedoch oft auf einer unbewussten Ebene, wodurch es schwierig ist, genau zu verstehen, warum ein Bild einem anderen vorgezogen wird. Um diesen Prozess besser verstehen zu können, führe ich diese Umfrage für meine Masterarbeit durch. Ich möchte untersuchen, ob es möglich ist mit Hilfe von Deep Learning sinnvolle Aussagen über die ästhetische Qualität von Gruppenbildern zu treffen. Für die Validierung benötige ich deine Hilfe, um reale Daten zu sammeln.",
     "process": "Ablauf der Nutzerstudie:",
@@ -29,7 +29,9 @@
     "point3": "In der Umfrage wirst du die Qualität der einzelnen Bilder anhand von Paarvergleichen bewerten.",
     "point4": "Anschließend werden dir einige allgemeine Fragen gestellt, um herauszufinden, welche Faktoren die ästhetische Qualität der Gruppenfotos bestimmen.",
     "point5": "Die Umfrage dauert ca. 5 Minuten und kann direkt vom Smartphone oder idealerweise bequem von zu Hause aus durchgeführt werden.",
-    "point6": "Die aufgenommenen Gruppenbilder können nur von den Teilnehmern der Umfrage eingesehen werden. Die Ergebnisse werden pseudonymisiert ausgewertet."
+    "point6": "Die aufgenommenen Gruppenbilder können nur von den Teilnehmern der Umfrage eingesehen werden. Die Ergebnisse werden pseudonymisiert ausgewertet.",
+    "successTitle": "Erfolgreich eingeschrieben!",
+    "successText": "Danke für deine Teilnahme! Bitte überprüfe deine Emails."
   },
   "ParticipateForm": {
     "emailValidation": "Bitte geben Sie eine gültige Email-Adresse ein.",
@@ -40,8 +42,6 @@
     "dataPrivacy3": "zur Kenntnis genommen.",
     "dataPrivacyValidation": "Bitte nehmen Sie die Datenschutzerklärung zur Kenntnis.",
     "submit": "Teilnehmen",
-    "successTitle": "Erfolgreich eingeschrieben!",
-    "successText": "Danke für deine Teilnahme! Bitte überprüfe deine Emails.",
     "errorTitle": "Leider hat das einschreiben nicht geklappt.",
     "errorText": "Bitte versuche es erneut!"
   },

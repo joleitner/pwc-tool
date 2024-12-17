@@ -1,6 +1,5 @@
 "use client";
 
-import { inviteParticipant } from "@/actions/auth";
 import { showNotification } from "@/utils/showNotification";
 import {
   Anchor,
@@ -13,11 +12,15 @@ import {
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { redirect } from "next/navigation";
-import { DataPrivacyModal } from "./DataPrivacyModal";
 import { useTranslations } from "next-intl";
+import { DataPrivacyModal } from "../DataPrivacy/DataPrivacyModal";
+import { inviteParticipant } from "@/actions/auth";
 
-export const ParticapteForm = () => {
+export const ParticapteForm = ({
+  setRegistered,
+}: {
+  setRegistered: (value: boolean) => void;
+}) => {
   const [opened, { open, close }] = useDisclosure(false);
   const t = useTranslations("ParticipateForm");
 
@@ -44,8 +47,7 @@ export const ParticapteForm = () => {
       if (error) {
         showNotification(t("errorTitle"), t("errorText"), "error");
       } else {
-        showNotification(t("successTitle"), t("successText"), "success");
-        redirect("/");
+        setRegistered(true);
       }
     }
   };
