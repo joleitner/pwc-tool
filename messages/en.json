@@ -104,7 +104,8 @@
     "featureFaceOrientation": "Head Orientation",
     "featureBackground": "Harmonious Background",
     "featureCentering": "Centered Group",
-    "featureSharpness": "Sharp Image"
+    "featureSharpness": "Sharp Image",
+    "dragHint": "Drag the features into your desired order"
   },
   "Confirmed": {
     "text": "Email successfully confirmed."

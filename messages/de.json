@@ -104,7 +104,8 @@
     "featureFaceOrientation": "Verdrehter Kopf",
     "featureBackground": "Harmonischer Hintergrund",
     "featureCentering": "Zentrierte Gruppe",
-    "featureSharpness": "Scharfes Bild"
+    "featureSharpness": "Scharfes Bild",
+    "dragHint": "Ziehe die Eigenschaften in deine gewünschte Reihenfolge"
   },
   "Confirmed": {
     "text": "Email erfolgreich bestätigt."

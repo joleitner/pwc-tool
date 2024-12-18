@@ -7,9 +7,14 @@ import {
   Droppable,
   DroppableProvided,
 } from "@hello-pangea/dnd";
-import { Box, Flex, Group, Paper, Text } from "@mantine/core";
+import { Box, Flex, Group, Paper, Stack, Text } from "@mantine/core";
 import { useListState, useMediaQuery } from "@mantine/hooks";
-import { IconMenu } from "@tabler/icons-react";
+import {
+  IconArrowDownDashed,
+  IconHandGrab,
+  IconMenu,
+} from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 type Props = {
@@ -19,8 +24,12 @@ type Props = {
 };
 
 export const OrderQuestion = ({ title, items, setOrderedList }: Props) => {
+  const t = useTranslations("Questionnaire");
   const [stack, stackHandlers] = useListState(items);
-  const [orderedList, orderedListHandlers] = useListState([items[0]]);
+  const [orderedList, orderedListHandlers] = useListState<{
+    value: string;
+    label: string;
+  }>([]);
 
   const handleDragEnd = ({ destination, source }: any) => {
     if (!destination || destination.droppableId === "stack") return;
@@ -38,10 +47,6 @@ export const OrderQuestion = ({ title, items, setOrderedList }: Props) => {
   };
 
   useEffect(() => {
-    stackHandlers.remove(0);
-  }, []);
-
-  useEffect(() => {
     setOrderedList(orderedList.map((item) => item.value));
   }, [orderedList]);
 
@@ -52,33 +57,66 @@ export const OrderQuestion = ({ title, items, setOrderedList }: Props) => {
       </Text>
       <DragDropContext onDragEnd={handleDragEnd}>
         {stack.length > 0 && (
-          <Droppable droppableId="stack" direction="vertical">
-            {(dropProvided: DroppableProvided) => (
-              <div {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
-                <Draggable
-                  key={stack[0].value}
-                  index={0}
-                  draggableId={stack[0].value}
+          <>
+            <Droppable droppableId="stack" direction="vertical">
+              {(dropProvided: DroppableProvided) => (
+                <div
+                  {...dropProvided.droppableProps}
+                  ref={dropProvided.innerRef}
                 >
-                  {(dragProvided: DraggableProvided) => (
-                    <Box
-                      p={10}
-                      my={5}
-                      {...dragProvided.draggableProps}
-                      {...dragProvided.dragHandleProps}
-                      ref={dragProvided.innerRef}
-                    >
-                      <OrderItem label={stack[0].label} />
-                    </Box>
-                  )}
-                </Draggable>
-                {dropProvided.placeholder}
-              </div>
-            )}
-          </Droppable>
+                  <Draggable
+                    key={stack[0].value}
+                    index={0}
+                    draggableId={stack[0].value}
+                  >
+                    {(dragProvided: DraggableProvided) => (
+                      <Box
+                        p={10}
+                        my={5}
+                        {...dragProvided.draggableProps}
+                        {...dragProvided.dragHandleProps}
+                        ref={dragProvided.innerRef}
+                      >
+                        <OrderItem label={stack[0].label} />
+                      </Box>
+                    )}
+                  </Draggable>
+                  {dropProvided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            <Flex justify="center">
+              <IconArrowDownDashed />
+            </Flex>
+          </>
         )}
 
-        <Box style={{ border: "1px solid gray", minHeight: 80, padding: 10 }}>
+        <Box
+          style={{
+            border: "1px solid gray",
+            minHeight: 100,
+            padding: 10,
+            position: "relative",
+          }}
+        >
+          {orderedList.length === 0 && (
+            <Stack
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "100%",
+                transform: "translate(-50%, -50%)",
+              }}
+              align="center"
+              gap={5}
+            >
+              <IconHandGrab color="gray" />
+              <Text size="sm" c="gray" ta="center">
+                {t("dragHint")}
+              </Text>
+            </Stack>
+          )}
           <Droppable droppableId="order-list" direction="vertical">
             {(dropProvided: DroppableProvided) => (
               <div {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
@@ -119,6 +157,10 @@ const OrderItem = ({ label, index }: { label: string; index?: number }) => {
       py={smallScreen ? "xs" : "md"}
       withBorder
       shadow="sm"
+      style={{
+        borderColor: index ? undefined : "red",
+        backgroundColor: index ? undefined : "rgba(255, 0, 0, 0.1)",
+      }}
     >
       <Flex justify="space-between" align="center" px="lg">
         <Group gap="md">
