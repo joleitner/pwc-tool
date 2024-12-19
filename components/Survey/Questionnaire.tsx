@@ -39,6 +39,7 @@ export const Questionnaire = () => {
     {
       key: "occluded",
       label: t("occluded"),
+      negated: true,
     },
     {
       key: "lighting",
@@ -47,12 +48,13 @@ export const Questionnaire = () => {
     {
       key: "face_orientation",
       label: t("faceOrientation"),
+      negated: true,
     },
     {
       key: "self_observation",
       label: t("selfObservation"),
     },
-    { key: "centering", label: t("centering") },
+    { key: "centering", label: t("centering"), negated: true },
     { key: "sharpness", label: t("sharpness") },
     {
       key: "background",
@@ -65,6 +67,12 @@ export const Questionnaire = () => {
     { value: "2", label: t("radioOption2") },
     { value: "3", label: t("radioOption3") },
     { value: "4", label: t("radioOption4") },
+  ];
+  const radioOptionsNegated = [
+    { value: "4", label: t("radioOption1") },
+    { value: "3", label: t("radioOption2") },
+    { value: "2", label: t("radioOption3") },
+    { value: "1", label: t("radioOption4") },
   ];
 
   const featureItems = [
@@ -132,7 +140,10 @@ export const Questionnaire = () => {
                     justify="space-evenly"
                     direction={smallScreen ? "column" : "row"}
                   >
-                    {radioOptions.map((option) => (
+                    {(question.negated
+                      ? radioOptionsNegated
+                      : radioOptions
+                    ).map((option) => (
                       <Radio
                         key={`${question.key}_${option.value}`}
                         value={option.value}
