@@ -93,7 +93,7 @@ export const DataPrivacy = () => {
         folgenden Datenschutzerkl&auml;rung.
       </Text>
       <Title order={2} mt="xl">
-        2. Hosting
+        2. Hosting und Content Delivery Networks (CDN)
       </Title>
       <Text my="sm">
         Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
@@ -178,6 +178,70 @@ export const DataPrivacy = () => {
         Websitebesucher nur nach unseren Weisungen und unter Einhaltung der
         DSGVO verarbeitet.
       </Text>
+      <Title order={3} mt="md">
+        Cloudflare
+      </Title>
+      <Text my="sm">
+        Wir nutzen den Service „Cloudflare“. Anbieter ist die Cloudflare Inc.,
+        101 Townsend St., San Francisco, CA 94107, USA (im Folgenden
+        „Cloudflare”).
+      </Text>
+      <Text my="sm">
+        Cloudflare bietet ein weltweit verteiltes Content Delivery Network mit
+        DNS an. Dabei wird technisch der Informationstransfer zwischen Ihrem
+        Browser und unserer Website über das Netzwerk von Cloudflare geleitet.
+        Das versetzt Cloudflare in die Lage, den Datenverkehr zwischen Ihrem
+        Browser und unserer Website zu analysieren und als Filter zwischen
+        unseren Servern und potenziell bösartigem Datenverkehr aus dem Internet
+        zu dienen. Hierbei kann Cloudflare auch Cookies oder sonstige
+        Technologien zur Wiedererkennung von Internetnutzern einsetzen, die
+        jedoch allein zum hier beschriebenen Zweck verwendet werden.
+      </Text>
+      <Text my="sm">
+        Der Einsatz von Cloudflare beruht auf unserem berechtigten Interesse an
+        einer möglichst fehlerfreien und sicheren Bereitstellung unseres
+        Webangebotes (Art. 6 Abs. 1 lit. f DSGVO).
+      </Text>
+      <Text my="sm">
+        Die Datenübertragung in die USA wird auf die Standardvertragsklauseln
+        der EU-Kommission gestützt. Details finden Sie hier:
+        <Link href="https://www.cloudflare.com/privacypolicy/">
+          https://www.cloudflare.com/privacypolicy/
+        </Link>
+        .
+      </Text>
+      <Text my="sm">
+        Weitere Informationen zum Thema Sicherheit und Datenschutz bei
+        Cloudflare finden Sie hier:{" "}
+        <Link href="https://www.cloudflare.com/privacypolicy/">
+          https://www.cloudflare.com/privacypolicy/
+        </Link>
+        .
+      </Text>
+      <Text my="sm">
+        Das Unternehmen verfügt über eine Zertifizierung nach dem „EU-US Data
+        Privacy Framework“ (DPF). Der DPF ist ein Übereinkommen zwischen der
+        Europäischen Union und den USA, der die Einhaltung europäischer
+        Datenschutzstandards bei Datenverarbeitungen in den USA gewährleisten
+        soll. Jedes nach dem DPF zertifizierte Unternehmen verpflichtet sich,
+        diese Datenschutzstandards einzuhalten. Weitere Informationen hierzu
+        erhalten Sie vom Anbieter unter folgendem Link:
+        <Link href="https://www.dataprivacyframework.gov/s/participant-search/participant-detail?contact=true&id=a2zt0000000GnZKAA0&status=Active">
+          https://www.dataprivacyframework.gov/s/participant-search/participant-detail?contact=true&id=a2zt0000000GnZKAA0&status=Active
+        </Link>
+      </Text>
+      <Text fw="bold" mt="sm">
+        Auftragsverarbeitung
+      </Text>
+      <Text my="sm">
+        Wir haben einen Vertrag &uuml;ber Auftragsverarbeitung (AVV) zur Nutzung
+        des oben genannten Dienstes geschlossen. Hierbei handelt es sich um
+        einen datenschutzrechtlich vorgeschriebenen Vertrag, der
+        gew&auml;hrleistet, dass dieser die personenbezogenen Daten unserer
+        Websitebesucher nur nach unseren Weisungen und unter Einhaltung der
+        DSGVO verarbeitet.
+      </Text>
+
       <Title order={2} mt="xl">
         3. Allgemeine Hinweise und Pflicht&shy;informationen
       </Title>
