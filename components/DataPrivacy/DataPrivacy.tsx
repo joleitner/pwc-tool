@@ -138,6 +138,46 @@ export const DataPrivacy = () => {
         Websitebesucher nur nach unseren Weisungen und unter Einhaltung der
         DSGVO verarbeitet.
       </Text>
+      <Text my="sm">Wir speicher</Text>
+      <Title order={3} mt="md">
+        Supabase
+      </Title>
+      <Text my="sm">
+        Anbieter ist die Supabase Inc., mit Sitz in den USA (mit Rechenzentren
+        auch in Europa).
+      </Text>
+      <Text my="sm">
+        Details zur Datenschutzerklärung von Supabase finden Sie hier:{" "}
+        <a
+          href="https://supabase.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://supabase.com/privacy
+        </a>
+        .
+      </Text>
+      <Text my="sm">
+        Die Nutzung von Supabase erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f
+        DSGVO. Wir haben ein berechtigtes Interesse an einer zuverlässigen
+        Bereitstellung und Verwaltung unserer Datenbankdienste. Sofern eine
+        entsprechende Einwilligung abgefragt wurde, erfolgt die Verarbeitung
+        ausschließlich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO und § 25
+        Abs. 1 TDDDG, soweit die Einwilligung die Speicherung von Cookies oder
+        den Zugriff auf Informationen im Endgerät des Nutzers umfasst. Die
+        Einwilligung kann jederzeit widerrufen werden.
+      </Text>
+      <Text fw="bold" mt="sm">
+        Auftragsverarbeitung
+      </Text>
+      <Text my="sm">
+        Wir haben einen Vertrag &uuml;ber Auftragsverarbeitung (AVV) zur Nutzung
+        des oben genannten Dienstes geschlossen. Hierbei handelt es sich um
+        einen datenschutzrechtlich vorgeschriebenen Vertrag, der
+        gew&auml;hrleistet, dass dieser die personenbezogenen Daten unserer
+        Websitebesucher nur nach unseren Weisungen und unter Einhaltung der
+        DSGVO verarbeitet.
+      </Text>
       <Title order={2} mt="xl">
         3. Allgemeine Hinweise und Pflicht&shy;informationen
       </Title>
