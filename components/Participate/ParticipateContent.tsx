@@ -20,9 +20,12 @@ export const ParticipateContent = () => {
           gap={10}
           h="100%"
         >
-          <IconMoodSmile size={50} color="gray" />
+          <IconMoodSmile
+            size={50}
+            style={{ color: "var(--mantine-primary-color-6)" }}
+          />
           <Text fw="bold">{t("successTitle")}</Text>
-          <Text>{t("successText")}</Text>
+          <Text ta="center">{t("successText")}</Text>
         </Flex>
       </Container>
     );
@@ -44,14 +47,16 @@ export const ParticipateContent = () => {
           <ListItem>{t("point3")}</ListItem>
           <ListItem>{t("point4")}</ListItem>
           <ListItem>{t("point5")}</ListItem>
-          <ListItem>{t("point6")}</ListItem>
         </List>
         <Text fw="bold" mt={15} mb={5}>
           {t("notice")}
         </Text>
         <Text>{t("noticeText1")}</Text>
         <Text>{t("noticeText2")}</Text>
-        <Text>{t("noticeText3")}</Text>
+        <Text fw="bold" mt={15} mb={5}>
+          {t("consent")}
+        </Text>
+        <Text>{t("consentText")}</Text>
       </Container>
 
       <Container size="sm">

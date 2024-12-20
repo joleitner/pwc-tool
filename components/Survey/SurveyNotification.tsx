@@ -16,7 +16,10 @@ export const SurveyNotification = ({ finished }: { finished: boolean }) => {
     >
       {finished ? (
         <>
-          <IconMoodSmile size={50} color="gray" />
+          <IconMoodSmile
+            size={50}
+            style={{ color: "var(--mantine-primary-color-6)" }}
+          />
           <Text fw="bold">{t("successTitle")}</Text>
           <Text>{t("successText")}</Text>
         </>

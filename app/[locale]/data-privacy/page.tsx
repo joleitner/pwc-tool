@@ -8,7 +8,14 @@ export default function Home() {
     <>
       <Header />
       <Container size="md">
-        <Paper shadow="md" p={30} radius="md" my={20} withBorder>
+        <Paper
+          shadow="md"
+          p={30}
+          radius="md"
+          my={20}
+          withBorder
+          style={{ overflow: "hidden" }}
+        >
           <Title order={1} mb="md">
             Datenschutzerklärung
           </Title>

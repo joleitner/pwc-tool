@@ -138,7 +138,6 @@ export const DataPrivacy = () => {
         Websitebesucher nur nach unseren Weisungen und unter Einhaltung der
         DSGVO verarbeitet.
       </Text>
-      <Text my="sm">Wir speicher</Text>
       <Title order={3} mt="md">
         Supabase
       </Title>
@@ -205,7 +204,7 @@ export const DataPrivacy = () => {
       <Text my="sm">
         Die Datenübertragung in die USA wird auf die Standardvertragsklauseln
         der EU-Kommission gestützt. Details finden Sie hier:
-        <Link href="https://www.cloudflare.com/privacypolicy/">
+        <Link href="https://www.cloudflare.com/privacypolicy/" target="_blank">
           https://www.cloudflare.com/privacypolicy/
         </Link>
         .
@@ -213,7 +212,7 @@ export const DataPrivacy = () => {
       <Text my="sm">
         Weitere Informationen zum Thema Sicherheit und Datenschutz bei
         Cloudflare finden Sie hier:{" "}
-        <Link href="https://www.cloudflare.com/privacypolicy/">
+        <Link href="https://www.cloudflare.com/privacypolicy/" target="_blank">
           https://www.cloudflare.com/privacypolicy/
         </Link>
         .
@@ -226,7 +225,10 @@ export const DataPrivacy = () => {
         soll. Jedes nach dem DPF zertifizierte Unternehmen verpflichtet sich,
         diese Datenschutzstandards einzuhalten. Weitere Informationen hierzu
         erhalten Sie vom Anbieter unter folgendem Link:
-        <Link href="https://www.dataprivacyframework.gov/s/participant-search/participant-detail?contact=true&id=a2zt0000000GnZKAA0&status=Active">
+        <Link
+          href="https://www.dataprivacyframework.gov/s/participant-search/participant-detail?contact=true&id=a2zt0000000GnZKAA0&status=Active"
+          target="_blank"
+        >
           https://www.dataprivacyframework.gov/s/participant-search/participant-detail?contact=true&id=a2zt0000000GnZKAA0&status=Active
         </Link>
       </Text>
@@ -545,7 +547,10 @@ export const DataPrivacy = () => {
         anschließend gelöscht. Der Inhalt der Nutzerstudie oder andere
         persönliche Informationen werden nicht bei Brevo gespeichert. Weitere
         Informationen finden Sie in der{" "}
-        <Link href="https://www.brevo.com/de/legal/privacypolicy/">
+        <Link
+          href="https://www.brevo.com/de/legal/privacypolicy/"
+          target="_blank"
+        >
           Datenschutzerklärung von Brevo
         </Link>
         .
@@ -604,36 +609,6 @@ export const DataPrivacy = () => {
         hierzu müssen die Server-Log-Files erfasst werden.
       </Text>
 
-      {/* <Title order={3} mt="md">
-        Kontaktformular
-      </Title>
-      <Text my="sm">
-        Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre
-        Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen
-        Kontaktdaten zwecks Bearbeitung der Anfrage und f&uuml;r den Fall von
-        Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne
-        Ihre Einwilligung weiter.
-      </Text>
-      <Text my="sm">
-        Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1
-        lit. b DSGVO, sofern Ihre Anfrage mit der Erf&uuml;llung eines Vertrags
-        zusammenh&auml;ngt oder zur Durchf&uuml;hrung vorvertraglicher
-        Ma&szlig;nahmen erforderlich ist. In allen &uuml;brigen F&auml;llen
-        beruht die Verarbeitung auf unserem berechtigten Interesse an der
-        effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1
-        lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO)
-        sofern diese abgefragt wurde; die Einwilligung ist jederzeit
-        widerrufbar.
-      </Text>
-      <Text my="sm">
-        Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns,
-        bis Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur
-        Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung
-        entf&auml;llt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer
-        Anfrage). Zwingende gesetzliche Bestimmungen &ndash; insbesondere
-        Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.
-      </Text> */}
-
       <Title order={3} mt="md">
         Anfrage per E-Mail, Telefon oder Telefax
       </Title>
@@ -672,7 +647,10 @@ export const DataPrivacy = () => {
       </Title>
       <Text my="sm">
         Diese Website benutzt den Open Source Webanalysedienst{" "}
-        <Link href="https://umami.is">Umami</Link>.
+        <Link href="https://umami.is" target="_blank">
+          Umami
+        </Link>
+        .
       </Text>
       <Text my="sm">
         Mit Hilfe von Umami erfassen und analysieren wir anonymisierte Daten zur
@@ -705,8 +683,10 @@ export const DataPrivacy = () => {
 
       <Text mt="xl">
         Diese Datenschutzerklärung wurde mit{" "}
-        <Link href="https://www.e-recht24.de">e-recht24</Link> erstellt und
-        stellenweise ergänzt und angepasst.
+        <Link href="https://www.e-recht24.de" target="_blank">
+          e-recht24
+        </Link>{" "}
+        erstellt und stellenweise ergänzt und angepasst.
       </Text>
     </>
   );

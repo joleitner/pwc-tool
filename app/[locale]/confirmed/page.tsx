@@ -18,7 +18,10 @@ export default function Confirmed() {
           gap={10}
           h="100%"
         >
-          <IconMail size={50} color="gray" />
+          <IconMail
+            size={50}
+            style={{ color: "var(--mantine-primary-color-6)" }}
+          />
           <Text>{t("text")}</Text>
         </Flex>
       </Container>

@@ -119,7 +119,13 @@ export const Questionnaire = () => {
 
   return (
     <>
-      <Paper withBorder p={smallScreen ? 25 : 50} mt={80} shadow="lg">
+      <Paper
+        withBorder
+        px={smallScreen ? "xs" : "xl"}
+        py="xl"
+        mt={smallScreen ? "sm" : 80}
+        shadow="lg"
+      >
         <Title order={3} mb={40}>
           {t("title")}
         </Title>

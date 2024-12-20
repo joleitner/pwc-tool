@@ -153,7 +153,7 @@ const OrderItem = ({ label, index }: { label: string; index?: number }) => {
 
   return (
     <Paper
-      px={smallScreen ? 5 : "md"}
+      px={smallScreen ? "xs" : "lg"}
       py={smallScreen ? "xs" : "md"}
       withBorder
       shadow="sm"
@@ -162,7 +162,7 @@ const OrderItem = ({ label, index }: { label: string; index?: number }) => {
         backgroundColor: index ? undefined : "rgba(255, 0, 0, 0.1)",
       }}
     >
-      <Flex justify="space-between" align="center" px="lg">
+      <Flex justify="space-between" align="center">
         <Group gap="md">
           {index && (
             <Text fw="bold" size="sm">

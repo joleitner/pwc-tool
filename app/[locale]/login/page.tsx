@@ -19,7 +19,10 @@ export default function Login() {
           direction="column"
           gap={10}
         >
-          <IconLogin size={50} color="gray" />
+          <IconLogin
+            size={50}
+            style={{ color: "var(--mantine-primary-color-6)" }}
+          />
 
           <Text fw="bold">{t("title")}</Text>
           <Text ta="center">{t("text")}</Text>
