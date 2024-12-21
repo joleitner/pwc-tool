@@ -1,21 +1,16 @@
 "use client";
 
 import { signupParticipants } from "@/actions/admin";
-import { getSuggestions } from "@/actions/helper";
+import { deleteSuggestion } from "@/actions/helper";
 import { createImageEntries, createNewSurvey } from "@/actions/survey";
 import { Registrations, Suggestion } from "@/types";
-import { resizeImage } from "@/utils/resizeImage";
 import { showNotification } from "@/utils/showNotification";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
-import { Carousel, CarouselSlide } from "@mantine/carousel";
 import {
   Box,
   BoxProps,
   Button,
   Center,
-  Container,
-  FileButton,
-  Flex,
   Group,
   Loader,
   MultiSelect,
@@ -25,39 +20,36 @@ import {
 import { isNotEmpty, useForm } from "@mantine/form";
 import { IconUsersGroup } from "@tabler/icons-react";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import { SuggestionItem } from "./SuggestionItem";
+import { useState } from "react";
 
 type Props = Partial<BoxProps> & {
   possibleParticipants: Registrations[];
+  suggestion: Suggestion;
 };
 
-export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
-  const [files, setFiles] = useState<File[]>([]);
+export const CreateSuggestionForm = ({
+  possibleParticipants,
+  suggestion,
+  ...props
+}: Props) => {
   const supabase = createClientSupabase();
   const [uploading, setUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      const { data, error } = await getSuggestions();
-      if (error) {
-        showNotification("Error fetching suggestions", error.message, "error");
-        return;
-      }
-      setSuggestions(data || []);
-    };
-
-    fetchSuggestions();
-  }, []);
+  const emailsLowercase = suggestion.emails.map((email: string) =>
+    email.toLowerCase()
+  );
 
   const form = useForm({
     initialValues: {
-      participants: possibleParticipants.map((participant) => participant.id),
+      participants: possibleParticipants
+        .filter((participant) =>
+          emailsLowercase.includes(participant.email.toLowerCase())
+        )
+        .map((participant) => participant.id),
     },
     validate: {
-      participants: isNotEmpty("Wählen Sie mindestens einen Teilnehmer aus"),
+      participants: isNotEmpty("Choose at least one participant"),
     },
   });
 
@@ -68,44 +60,36 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
   };
 
   const handleSubmit = async (values: { participants: string[] }) => {
-    if (form.isValid() && files.length > 0) {
+    if (form.isValid()) {
       // 1. create new survey
       setUploading(true);
       setUploadingStatus("Creating survey");
       const { data: survey, error } = await createNewSurvey({
         participant_count: values.participants.length,
-        image_count: files.length,
+        image_count: suggestion.images!.length,
       });
       if (error) {
         showNotification("Error creating survey", error.message, "error");
         return;
       }
 
-      // 2. resizing images
-      setUploadingStatus("Resizing images");
-      const resizedFiles = await Promise.all(
-        files.map((file) =>
-          resizeImage(file, { maxSize: 1920, type: "image/webp", quality: 0.9 })
-        )
-      );
-
       // 3. upload images
-      setUploadingStatus("Uploading images");
+      setUploadingStatus("Moving images");
       const filenames: string[] = [];
-      const uploadedFiles = await Promise.all(
-        resizedFiles.map((file, index) => {
-          const ext = file.name.split(".").pop();
-          const filename = `scene${survey.id}/${
+      const movedFiles = await Promise.all(
+        suggestion.images!.map((path, index) => {
+          const ext = path.split(".").pop();
+          const newPath = `scene${survey.id}/${
             index + 1
           }.${ext?.toLowerCase()}`;
-          filenames.push(filename);
-          return supabase.storage.from("group-images").upload(filename, file);
+          filenames.push(newPath);
+          return supabase.storage.from("group-images").move(path, newPath);
         })
       );
-      if (uploadedFiles.some((file) => file.error)) {
+      if (movedFiles.some((file) => file.error)) {
         showNotification(
-          "Error uploading files",
-          "Something went wrong while uploading your files",
+          "Error moving files",
+          "Something went wrong while moving your files",
           "error"
         );
         return;
@@ -146,6 +130,18 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
+      // 6. delete suggestion
+      setUploadingStatus("Remove suggestion");
+      const { error: deleteError } = await deleteSuggestion(suggestion.id);
+      if (deleteError) {
+        showNotification(
+          "Error deleting suggestion",
+          deleteError.message,
+          "error"
+        );
+        return;
+      }
+
       setUploading(false);
       setUploadingStatus("");
       showNotification(
@@ -159,19 +155,6 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      {suggestions.length > 0 && (
-        <Container my="xl">
-          <Text fw="bold" ta="center">
-            Suggestions
-          </Text>
-          <Stack gap={10}>
-            {suggestions.map((suggestion) => (
-              <SuggestionItem key={suggestion.id} suggestion={suggestion} />
-            ))}
-          </Stack>
-        </Container>
-      )}
-
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <MultiSelect
           label="Select all participants"
@@ -184,31 +167,6 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
           key={form.key("participants")}
           {...form.getInputProps("participants")}
         />
-        {files.length > 0 && (
-          <Flex justify="center">
-            <Box w={500}>
-              <Carousel
-                my="lg"
-                withIndicators
-                height={250}
-                // slideSize="100%"
-                // slideGap="md"
-              >
-                {files.map((file, index) => (
-                  <CarouselSlide key={index} w={300}>
-                    <Center>
-                      <img
-                        src={URL.createObjectURL(file)}
-                        height={250}
-                        alt={`group image ${index}`}
-                      />
-                    </Center>
-                  </CarouselSlide>
-                ))}
-              </Carousel>
-            </Box>
-          </Flex>
-        )}
 
         {uploading && (
           <Center my="lg">
@@ -220,19 +178,9 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         )}
 
         <Group justify="center" mt="md">
-          {files.length <= 0 ? (
-            <FileButton
-              onChange={(files) => setFiles(files)}
-              accept="image/png,image/jpeg"
-              multiple
-            >
-              {(props) => <Button {...props}>Add group images</Button>}
-            </FileButton>
-          ) : (
-            <Button type="submit" px="xl" disabled={uploading}>
-              Create survey
-            </Button>
-          )}
+          <Button type="submit" px="xl" disabled={uploading}>
+            Create survey
+          </Button>
         </Group>
       </form>
     </Box>

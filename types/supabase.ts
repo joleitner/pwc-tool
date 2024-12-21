@@ -244,23 +244,34 @@ export type Database = {
       suggestions: {
         Row: {
           created_at: string
-          emails: Json
+          emails: string[]
           id: number
-          images: Json | null
+          images: string[] | null
+          user: string
         }
         Insert: {
           created_at?: string
-          emails: Json
+          emails: string[]
           id?: number
-          images?: Json | null
+          images?: string[] | null
+          user: string
         }
         Update: {
           created_at?: string
-          emails?: Json
+          emails?: string[]
           id?: number
-          images?: Json | null
+          images?: string[] | null
+          user?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "suggestions_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       surveys: {
         Row: {

@@ -11,6 +11,12 @@ export type Registrations = Tables<"registrations">;
 
 export type Survey = Tables<"surveys">;
 
+export type Suggestion = Tables<"suggestions"> & {
+  user: {
+    name: string;
+  };
+};
+
 export type Participation = Tables<"participations"> & {
   survey: {
     id: number;
