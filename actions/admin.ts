@@ -133,3 +133,30 @@ export async function resendOTPLink(
 
   return { error: null };
 }
+
+export async function addHelper(email: string) {
+  const supabase = await createAdminSupabase();
+
+  const { data } = await supabase
+    .from("users")
+    .update({ role: "helper" })
+    .eq("name", email)
+    .select("id")
+    .single();
+
+  if (!data) {
+    return "";
+  }
+
+  const { data: otp_link } = await supabase.auth.admin.generateLink({
+    type: "magiclink",
+    email: email,
+  });
+  if (otp_link) {
+    const token = otp_link.properties?.hashed_token;
+    const type = otp_link.properties?.verification_type;
+
+    return `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/helper`;
+  }
+  return "";
+}

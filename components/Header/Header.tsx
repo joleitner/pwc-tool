@@ -46,9 +46,14 @@ export function Header({
     </Button>
   ));
   const adminLinks = (
-    <Button variant={"subtle"} onClick={logout}>
-      Logout
-    </Button>
+    <>
+      <Button variant={"subtle"} component={Link} href="/admin">
+        Admin
+      </Button>
+      <Button variant={"subtle"} onClick={logout}>
+        Logout
+      </Button>
+    </>
   );
 
   return (

@@ -6,13 +6,15 @@ import { SurveyOverview } from "@/components/Admin/SurveyOverview";
 import { Link } from "@/i18n/routing";
 import { Button, Container, Divider, Flex, Title } from "@mantine/core";
 import { redirect } from "next/navigation";
+import { HelperOverview } from "@/components/Admin/HelperOverview";
+import { getHelper } from "@/actions/helper";
 
 export default async function AdminPanel() {
   const user = await getAuthUser();
 
   if (user?.role === "admin") {
-    const { data: participants } = await getRegistrations();
-    const { data: surveys } = await getSurveys();
+    const [{ data: participants }, { data: surveys }, { data: helper }] =
+      await Promise.all([getRegistrations(), getSurveys(), getHelper()]);
 
     return (
       <>
@@ -25,12 +27,14 @@ export default async function AdminPanel() {
           <RegistrationOverview my={50} initial={participants!} />
           <Flex justify="center" mb="lg">
             <Link href="/admin/createSurvey">
-              <Button>Neue Umfrage erstellen</Button>
+              <Button>Create new survey</Button>
             </Link>
           </Flex>
 
           <Divider my={50} />
           <SurveyOverview initial={surveys!} />
+          <Divider my={50} />
+          <HelperOverview initial={helper!} />
         </Container>
       </>
     );

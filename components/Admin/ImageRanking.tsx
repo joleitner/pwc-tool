@@ -41,7 +41,7 @@ export const ImageRanking = ({ surveyId, images, ...props }: Props) => {
   }, []);
 
   return (
-    <Flex {...props} h={400} gap="xs" wrap="wrap">
+    <Flex {...props} h={400} gap="xs" wrap="wrap" mb={100}>
       {imageScores.length === 0 ? (
         <Flex h="100%" w="100%" align="center" justify="center">
           <Loader type="bars" />

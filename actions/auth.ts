@@ -1,7 +1,6 @@
 "use server";
 
 import { User } from "@/types/index";
-import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -23,7 +22,7 @@ export const getAuthUser = async (select = "*") => {
 
   if (error) return null;
 
-  return { email: user?.email, ...data } as User;
+  return data as User;
 };
 
 export async function adminLogin(email: string, password: string) {

@@ -56,7 +56,7 @@ export const RegistrationOverview = ({ initial, ...props }: Props) => {
     <>
       <Box {...props}>
         <Flex justify="space-between" mr="md" align="center" mb="md">
-          <Title order={2}>Teilnehmer</Title>
+          <Title order={2}>Registrations</Title>
           <Badge
             variant="light"
             size="xl"

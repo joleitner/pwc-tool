@@ -47,7 +47,7 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
     <>
       <Box {...props}>
         <Flex justify="space-between" mr="md" align="center" mb="md">
-          <Title order={2}>Laufende Umfragen</Title>
+          <Title order={2}>Running surveys</Title>
           <Badge
             variant="light"
             size="xl"
@@ -67,7 +67,7 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
                 onClick={() => redirect(`/admin/survey/${survey.id}`)}
               >
                 <Flex justify="space-between" align="center">
-                  <Text>Umfrage {survey.id}</Text>
+                  <Text>Survey {survey.id}</Text>
                   <Group gap="xs" wrap="nowrap">
                     <Badge
                       variant="light"

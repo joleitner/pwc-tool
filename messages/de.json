@@ -120,5 +120,12 @@
     "successTitle": "Email wurde erfolgreich versendet",
     "successText": "Bitte überprüfe deine Emails.",
     "submit": "Neuen Loginlink anfordern"
+  },
+  "Helper": {
+    "title": "Umfragebilder hochladen",
+    "text": "Bitte füge alle E-Mails von den Teilnehmern hinzu und lade die Bilder hoch.",
+    "add": "E-Mail hinzufügen",
+    "upload": "Gruppenbildern auswählen",
+    "submit": "Hochladen"
   }
 }

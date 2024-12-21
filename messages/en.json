@@ -120,5 +120,12 @@
     "successTitle": "Email sent successfully",
     "successText": "Please check your emails.",
     "submit": "Request new Link"
+  },
+  "Helper": {
+    "title": "Upload survey images",
+    "text": "Please add all emails from the participants and upload the pictures.",
+    "add": "Add Email",
+    "upload": "Select group images",
+    "submit": "Upload"
   }
 }

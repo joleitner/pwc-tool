@@ -5,9 +5,7 @@ export type NextPageProps = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-export type User = Tables<"users"> & {
-  email: string;
-};
+export type User = Tables<"users">;
 
 export type Registrations = Tables<"registrations">;
 

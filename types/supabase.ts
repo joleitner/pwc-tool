@@ -241,6 +241,27 @@ export type Database = {
         }
         Relationships: []
       }
+      suggestions: {
+        Row: {
+          created_at: string
+          emails: Json
+          id: number
+          images: Json | null
+        }
+        Insert: {
+          created_at?: string
+          emails: Json
+          id?: number
+          images?: Json | null
+        }
+        Update: {
+          created_at?: string
+          emails?: Json
+          id?: number
+          images?: Json | null
+        }
+        Relationships: []
+      }
       surveys: {
         Row: {
           created_at: string

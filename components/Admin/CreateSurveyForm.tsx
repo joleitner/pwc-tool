@@ -144,7 +144,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
     <Box {...props}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <MultiSelect
-          label="Wähle alle Teilnehmer aus"
+          label="Select all participants"
           data={possibleParticipants.map((participant) => ({
             value: participant.id.toString(),
             label: participant.email,
@@ -196,11 +196,11 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
               accept="image/png,image/jpeg"
               multiple
             >
-              {(props) => <Button {...props}>Gruppenbilder auswählen</Button>}
+              {(props) => <Button {...props}>Add group images</Button>}
             </FileButton>
           ) : (
             <Button type="submit" px="xl" disabled={uploading}>
-              Umfrage erstellen
+              Create survey
             </Button>
           )}
         </Group>
