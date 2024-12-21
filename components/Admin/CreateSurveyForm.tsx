@@ -1,11 +1,7 @@
 "use client";
 
 import { signupParticipants } from "@/actions/admin";
-import {
-  createImageEntries,
-  createNewSurvey,
-  createPairwiseComparisonEntries,
-} from "@/actions/survey";
+import { createImageEntries, createNewSurvey } from "@/actions/survey";
 import { Registrations } from "@/types";
 import { resizeImage } from "@/utils/resizeImage";
 import { showNotification } from "@/utils/showNotification";
@@ -119,7 +115,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
       const metadata = {
         participants: finalParticipants.map((user) => user.id),
       };
-      const { data: images, error: imageError } = await createImageEntries(
+      const { error: imageError } = await createImageEntries(
         survey!.id,
         filenames,
         metadata
@@ -133,21 +129,6 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         return;
       }
 
-      // 6. create pairwise comparison entries
-      setUploadingStatus("Creating PWC entries");
-      const { error: pwcError } = await createPairwiseComparisonEntries(
-        survey!.id,
-        images.map((image) => image.id)
-      );
-      if (pwcError) {
-        showNotification(
-          "Error creating pairwise comparisions",
-          pwcError.message,
-          "error"
-        );
-        return;
-      }
-
       setUploading(false);
       setUploadingStatus("");
       showNotification(
@@ -155,7 +136,7 @@ export const CreateSurveyForm = ({ possibleParticipants, ...props }: Props) => {
         "Survey was successfully created",
         "success"
       );
-      redirect("/admin/");
+      redirect("/admin");
     }
   };
 

@@ -1,13 +1,13 @@
 "use client";
 
-import { PairwiseComparison, Participation } from "@/types";
+import { Participation } from "@/types";
 import { useImageProvider } from "@/utils/useImageProvider";
 import { Survey } from "./Survey";
 import { SurveyProvider } from "./SurveyProvider";
 
 type Props = {
   participation: Participation;
-  comparisons: PairwiseComparison[];
+  comparisons: number[][];
   images: { id: number; path: string }[];
 };
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { DetailedSurvey, Participation, PWCResultWithPair } from "@/types";
+import { DetailedSurvey, Participation } from "@/types";
 import { convertToPwcObjects, createPWCMatrix } from "@/utils/pwcMatrix";
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
@@ -55,11 +55,7 @@ export async function getSurveyInfo(
             finished: string;
           }[]
         >(),
-      supabase
-        .from("pwc_results")
-        .select("*, pair!inner(*)")
-        .eq("pair.survey", surveyId)
-        .returns<PWCResultWithPair[]>(),
+      supabase.from("pwc_results").select().eq("survey", surveyId),
       getImages(surveyId),
     ]);
 
@@ -86,11 +82,7 @@ export async function getSurveyScores(
   const supabase = await createServerSupabase();
 
   const [{ data: pwcResults }, { data: images }] = await Promise.all([
-    supabase
-      .from("pwc_results")
-      .select("*, pair!inner(*)")
-      .eq("pair.survey", surveyId)
-      .returns<PWCResultWithPair[]>(),
+    supabase.from("pwc_results").select().eq("survey", surveyId),
     getImages(surveyId),
   ]);
 
@@ -144,25 +136,6 @@ export async function getImages(surveyId: number) {
     .order("id");
 }
 
-export async function createPairwiseComparisonEntries(
-  surveyId: number,
-  imageIds: number[]
-) {
-  const supabase = await createServerSupabase();
-  let comparisons = [];
-  for (let i = 0; i < imageIds.length; i++) {
-    for (let j = i + 1; j < imageIds.length; j++) {
-      comparisons.push({
-        survey: surveyId,
-        image_1: imageIds[i],
-        image_2: imageIds[j],
-      });
-    }
-  }
-
-  return await supabase.from("comparison_pairs").insert(comparisons);
-}
-
 export async function getParticipation(surveyId: string, userId: string) {
   const supabase = await createServerSupabase();
 
@@ -188,26 +161,19 @@ export async function getComparisonBatch(surveyId: number) {
 
   try {
     // 1. fetch all necessary data from supabase
-    const [user, { data: images }, { data: pwcPairs }, { data: pwcResults }] =
-      await Promise.all([
-        getAuthUser(),
-        getImages(surveyId),
-        supabase.from("comparison_pairs").select().eq("survey", surveyId),
-        supabase
-          .from("pwc_results")
-          .select("*, pair!inner(*)")
-          .eq("pair.survey", surveyId)
-          .returns<PWCResultWithPair[]>(),
-      ]);
+    const [user, { data: images }, { data: pwcResults }] = await Promise.all([
+      getAuthUser(),
+      getImages(surveyId),
+      supabase.from("pwc_results").select().eq("survey", surveyId),
+    ]);
 
     if (!user) throw new Error("User not authenticated");
     if (!images) throw new Error("Error when fetching images");
-    if (!pwcPairs) throw new Error("Error when fetching pairs");
     if (!pwcResults) throw new Error("Error when fetching results");
 
     // 2 see if user has already answered certain amount
     const userResults = pwcResults.filter(
-      (result) => result.user === user.id && result.pair.survey === surveyId
+      (result) => result.user === user.id && result.survey === surveyId
     );
     if (userResults.length >= (images.length - 1) * 2) {
       return { data: [], error: null };
@@ -230,7 +196,7 @@ export async function getComparisonBatch(surveyId: number) {
     const data = await asapResult.json();
 
     // 5. convert answer to next pairs with correct ids
-    const nextPairs = convertToPwcObjects(imageIds, pwcPairs, data.pairs);
+    const nextPairs = convertToPwcObjects(imageIds, data.pairs);
 
     return { data: nextPairs, error: null };
   } catch (error) {
@@ -262,8 +228,9 @@ export async function saveQuestionaireAnswers(surveyId: number, answers: any) {
 }
 
 export async function sendPwcResult(
-  comparisonPairId: number,
-  imageId: number,
+  survey: number,
+  pair: number[],
+  choice: number,
   timeTaken: number
 ) {
   const supabase = await createServerSupabase();
@@ -272,8 +239,10 @@ export async function sendPwcResult(
 
   return supabase.from("pwc_results").insert({
     user: user.id,
-    pair: comparisonPairId,
-    choice: imageId,
+    survey,
+    image_1: pair[0],
+    image_2: pair[1],
+    choice,
     time_taken: timeTaken,
   });
 }

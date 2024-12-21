@@ -86,7 +86,6 @@ export const Survey = () => {
               <ComparisonForm
                 comparison={comparisons[currentComparisonIndex]}
                 finished={() => setNextComparison(true)}
-                key={comparisons[currentComparisonIndex].id}
               />
             </Container>
           )

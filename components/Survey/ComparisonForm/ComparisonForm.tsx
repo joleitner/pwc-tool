@@ -1,5 +1,4 @@
 import { sendPwcResult } from "@/actions/survey";
-import { PairwiseComparison } from "@/types";
 import {
   Box,
   Button,
@@ -17,7 +16,7 @@ import classes from "./ComparisonForm.module.css";
 import { useTranslations } from "next-intl";
 
 type Props = {
-  comparison: PairwiseComparison;
+  comparison: number[];
   finished: () => void;
 };
 
@@ -26,9 +25,10 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([false, false]);
   const [timeStart, setTimeStart] = useState<Date | null>(null);
-  const { imageUrls } = useSurveyContext();
-
-  const images = [comparison.image_1, comparison.image_2];
+  const {
+    imageUrls,
+    participation: { survey },
+  } = useSurveyContext();
 
   const largerThanMd = useMediaQuery("(min-width: 768px)");
 
@@ -36,7 +36,7 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
     if (!selectedImage) return;
     const timeTaken = new Date().getTime() - timeStart!.getTime();
 
-    await sendPwcResult(comparison.id, selectedImage, timeTaken);
+    await sendPwcResult(survey.id, comparison, selectedImage, timeTaken);
 
     finished();
   };
@@ -53,7 +53,7 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
         {t("text")}
       </Title>
       <Box className={classes.wrapper}>
-        {images.map((imageId, index) => (
+        {comparison.map((imageId, index) => (
           <Box className={classes.imageContainer} key={imageId}>
             {imageUrls[imageId] ? (
               <img

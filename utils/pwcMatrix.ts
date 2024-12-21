@@ -1,8 +1,8 @@
-import { PairwiseComparison, PWCResultWithPair } from "@/types";
+import { PWCResult } from "@/types";
 
 export const createPWCMatrix = (
   imageIds: number[],
-  pwcResults: PWCResultWithPair[]
+  pwcResults: PWCResult[]
 ) => {
   const matrix = new Array(imageIds.length)
     .fill(null)
@@ -13,9 +13,7 @@ export const createPWCMatrix = (
   for (const entry of pwcResults) {
     const i = imageIds.indexOf(entry.choice);
     const j = imageIds.indexOf(
-      entry.choice === entry.pair.image_1
-        ? entry.pair.image_2
-        : entry.pair.image_1
+      entry.choice === entry.image_1 ? entry.image_2 : entry.image_1
     );
     matrix[i][j] += 1;
   }
@@ -25,16 +23,13 @@ export const createPWCMatrix = (
 
 export const convertToPwcObjects = (
   imageIds: number[],
-  pairObjects: PairwiseComparison[],
   asapPairs: number[][]
 ) => {
   const newPairs = [];
   for (const pair of asapPairs) {
     const imageId1 = imageIds[pair[0]];
     const imageId2 = imageIds[pair[1]];
-    newPairs.push(
-      pairObjects.find((p) => p.image_1 === imageId1 && p.image_2 === imageId2)!
-    );
+    newPairs.push([imageId1, imageId2]);
   }
 
   return newPairs;

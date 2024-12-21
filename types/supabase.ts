@@ -9,52 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      comparison_pairs: {
-        Row: {
-          created_at: string
-          id: number
-          image_1: number
-          image_2: number
-          survey: number
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          image_1: number
-          image_2: number
-          survey: number
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          image_1?: number
-          image_2?: number
-          survey?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pair_comparisons_image_1_fkey"
-            columns: ["image_1"]
-            isOneToOne: false
-            referencedRelation: "images"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pair_comparisons_image_2_fkey"
-            columns: ["image_2"]
-            isOneToOne: false
-            referencedRelation: "images"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pair_comparisons_survey_fkey"
-            columns: ["survey"]
-            isOneToOne: false
-            referencedRelation: "surveys"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       images: {
         Row: {
           created_at: string
@@ -92,6 +46,7 @@ export type Database = {
           created_at: string
           finished: string | null
           id: number
+          initial: boolean
           started: string | null
           survey: number
           user: string
@@ -100,6 +55,7 @@ export type Database = {
           created_at?: string
           finished?: string | null
           id?: number
+          initial?: boolean
           started?: string | null
           survey: number
           user: string
@@ -108,6 +64,7 @@ export type Database = {
           created_at?: string
           finished?: string | null
           id?: number
+          initial?: boolean
           started?: string | null
           survey?: number
           user?: string
@@ -134,7 +91,9 @@ export type Database = {
           choice: number
           created_at: string
           id: number
-          pair: number
+          image_1: number
+          image_2: number
+          survey: number
           time_taken: number
           user: string
         }
@@ -142,7 +101,9 @@ export type Database = {
           choice: number
           created_at?: string
           id?: number
-          pair: number
+          image_1: number
+          image_2: number
+          survey: number
           time_taken: number
           user: string
         }
@@ -150,7 +111,9 @@ export type Database = {
           choice?: number
           created_at?: string
           id?: number
-          pair?: number
+          image_1?: number
+          image_2?: number
+          survey?: number
           time_taken?: number
           user?: string
         }
@@ -163,10 +126,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "pwc_results_pair_fkey"
-            columns: ["pair"]
+            foreignKeyName: "pwc_results_image_1_fkey"
+            columns: ["image_1"]
             isOneToOne: false
-            referencedRelation: "comparison_pairs"
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pwc_results_image_2_fkey"
+            columns: ["image_2"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pwc_results_survey_fkey"
+            columns: ["survey"]
+            isOneToOne: false
+            referencedRelation: "surveys"
             referencedColumns: ["id"]
           },
           {
@@ -290,22 +267,22 @@ export type Database = {
       }
       users: {
         Row: {
-          admin: boolean
           created_at: string
           id: string
           name: string
+          role: Database["public"]["Enums"]["roles"]
         }
         Insert: {
-          admin?: boolean
           created_at?: string
           id?: string
           name: string
+          role?: Database["public"]["Enums"]["roles"]
         }
         Update: {
-          admin?: boolean
           created_at?: string
           id?: string
           name?: string
+          role?: Database["public"]["Enums"]["roles"]
         }
         Relationships: []
       }
@@ -314,13 +291,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      roles: "admin" | "helper" | "participant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -424,3 +398,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+

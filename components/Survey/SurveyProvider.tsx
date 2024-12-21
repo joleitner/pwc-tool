@@ -1,6 +1,6 @@
 "use client";
 
-import { PairwiseComparison, Participation } from "@/types";
+import { Participation } from "@/types";
 import { createContext, useContext, useState } from "react";
 
 type imageUrls = {
@@ -8,8 +8,8 @@ type imageUrls = {
 };
 
 type SurveyContextProps = {
-  comparisons: PairwiseComparison[];
-  setComparisons: (comparisons: PairwiseComparison[]) => void;
+  comparisons: number[][];
+  setComparisons: (comparisons: number[][]) => void;
   imageUrls: imageUrls;
   participation: Participation;
 };
@@ -25,12 +25,11 @@ export const SurveyProvider = ({
   participation,
 }: {
   children: React.ReactNode;
-  initialComparisons: PairwiseComparison[];
+  initialComparisons: number[][];
   imageUrls: imageUrls;
   participation: Participation;
 }) => {
-  const [comparisons, setComparisons] =
-    useState<PairwiseComparison[]>(initialComparisons);
+  const [comparisons, setComparisons] = useState(initialComparisons);
 
   return (
     <SurveyContext.Provider

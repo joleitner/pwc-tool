@@ -9,7 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "gen:types": "dotenv -e .env.local -- npm run _gen:types",
-    "_gen:types": "supabase gen types typescript --project-id $PROJECT_REF --schema public > types/supabase.ts"
+    "_gen:types": "supabase gen types typescript --db-url $DB_URL --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",

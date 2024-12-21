@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function CreateSurvey() {
   const user = await getAuthUser();
 
-  if (user?.admin === false) {
+  if (user?.role !== "admin") {
     redirect("/admin/login");
   }
 
