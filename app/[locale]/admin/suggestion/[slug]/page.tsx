@@ -1,7 +1,7 @@
 import { getAuthUser } from "@/actions/auth";
 import { getSuggestion } from "@/actions/helper";
 import { getRegistrations } from "@/actions/survey";
-import { CreateSuggestionForm } from "@/components/Admin/CreateSuggestionForm ";
+import { CreateSuggestionForm } from "@/components/Admin/CreateSuggestionForm";
 import { SuggestionImages } from "@/components/Admin/SuggestionImages";
 import { Header } from "@/components/Header/Header";
 import { NextPageProps } from "@/types";

@@ -73,7 +73,7 @@ export const CreateSuggestionForm = ({
         return;
       }
 
-      // 3. upload images
+      // 2. move images
       setUploadingStatus("Moving images");
       const filenames: string[] = [];
       const movedFiles = await Promise.all(
@@ -95,7 +95,7 @@ export const CreateSuggestionForm = ({
         return;
       }
 
-      // 4. signup all participants as users
+      // 3. signup all participants as users
       setUploadingStatus("Signing up participants and sending emails");
       const finalParticipants = getFinalParticipants(values.participants);
       const { error: signUpError } = await signupParticipants(
@@ -111,7 +111,7 @@ export const CreateSuggestionForm = ({
         return;
       }
 
-      // 5. create image entries
+      // 4. create image entries
       setUploadingStatus("Creating image entries");
       const metadata = {
         participants: finalParticipants.map((user) => user.id),
@@ -130,7 +130,7 @@ export const CreateSuggestionForm = ({
         return;
       }
 
-      // 6. delete suggestion
+      // 5. delete suggestion
       setUploadingStatus("Remove suggestion");
       const { error: deleteError } = await deleteSuggestion(suggestion.id);
       if (deleteError) {

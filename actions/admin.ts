@@ -3,6 +3,8 @@
 import { Registrations } from "@/types";
 import { sendEmail } from "@/utils/sendEmail";
 import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
+import { getAuthUser } from "./auth";
+import { createServerSupabase } from "@/utils/supabase/supabase.server";
 
 export async function signupParticipants(
   registrations: Registrations[],
@@ -17,7 +19,7 @@ export async function signupParticipants(
 
   registrations.forEach(async (registration) => {
     userRequests.push(
-      supabase.from("users").insert({
+      supabase.from("users").upsert({
         id: registration.id,
         name: registration.email,
       })
@@ -137,12 +139,29 @@ export async function resendOTPLink(
 export async function addHelper(email: string) {
   const supabase = await createAdminSupabase();
 
-  const { data } = await supabase
+  const { data: registration } = await supabase
+    .from("registrations")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  let query = supabase
     .from("users")
     .update({ role: "helper" })
     .eq("name", email)
     .select("id")
     .single();
+
+  // in case user hasn't done survey yet create user
+  if (registration) {
+    query = supabase
+      .from("users")
+      .insert({ id: registration.id, name: email, role: "helper" })
+      .select("id")
+      .single();
+  }
+
+  const { data } = await query;
 
   if (!data) {
     return "";
@@ -159,4 +178,38 @@ export async function addHelper(email: string) {
     return `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/helper`;
   }
   return "";
+}
+
+export async function getUsers() {
+  const supabase = await createAdminSupabase();
+
+  const user = await getAuthUser();
+  if (user?.role !== "admin") {
+    return null;
+  }
+
+  const {
+    data: { users },
+    error,
+  } = await supabase.auth.admin.listUsers({
+    page: 1,
+    perPage: 200,
+  });
+
+  if (error) return null;
+
+  return users;
+}
+
+export async function addRegistrations(users: { id: string; email: string }[]) {
+  const supabase = await createServerSupabase();
+
+  return await supabase.from("registrations").insert(
+    users.map((user) => ({
+      id: user.id,
+      email: user.email,
+      verified: true,
+      locale: "en",
+    }))
+  );
 }

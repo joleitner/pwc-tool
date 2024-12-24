@@ -25,7 +25,10 @@ export default async function AdminPanel() {
           </Title>
           <Divider my="lg" />
           <RegistrationOverview my={50} initial={participants!} />
-          <Flex justify="center" mb="lg">
+          <Flex justify="center" mb="lg" gap="lg">
+            <Link href="/admin/addRegistration">
+              <Button variant="outline">Add registration</Button>
+            </Link>
             <Link href="/admin/createSurvey">
               <Button>Create new survey</Button>
             </Link>
