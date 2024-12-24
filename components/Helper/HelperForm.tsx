@@ -43,7 +43,7 @@ export const HelperForm = () => {
   });
 
   const handleSubmit = async () => {
-    if (emails.length > 0 && files.length > 0) {
+    if (emails.length > 0 && files.length > 0 && !uploading) {
       // 1. create new suggestion
       setUploading(true);
       setUploadingStatus("Creating new survey suggestion");

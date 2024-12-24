@@ -24,6 +24,7 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
   const t = useTranslations("ComparisonForm");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([false, false]);
+  const [loading, setLoading] = useState(false);
   const [timeStart, setTimeStart] = useState<Date | null>(null);
   const {
     imageUrls,
@@ -34,10 +35,12 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
 
   const handleSubmit = async () => {
     if (!selectedImage) return;
+    setLoading(true);
     const timeTaken = new Date().getTime() - timeStart!.getTime();
-
     await sendPwcResult(survey.id, comparison, selectedImage, timeTaken);
 
+    setSelectedImage(null);
+    setLoading(false);
     finished();
   };
 
@@ -91,7 +94,8 @@ export const ComparisonForm = ({ comparison, finished }: Props) => {
       </Box>
       <Flex justify="flex-end" mt={40} mb={largerThanMd ? 0 : 40}>
         <Button
-          disabled={!selectedImage && timeStart === null}
+          disabled={(!selectedImage && timeStart === null) || loading}
+          loading={loading}
           onClick={handleSubmit}
         >
           {t("submit")}

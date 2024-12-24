@@ -15,6 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useLocale, useTranslations } from "next-intl";
 import { DataPrivacyModal } from "../DataPrivacy/DataPrivacyModal";
 import { inviteParticipant } from "@/actions/admin";
+import { useState } from "react";
 
 export const ParticapteForm = ({
   setRegistered,
@@ -22,6 +23,7 @@ export const ParticapteForm = ({
   setRegistered: (value: boolean) => void;
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
   const t = useTranslations("ParticipateForm");
   const locale = useLocale();
 
@@ -43,13 +45,15 @@ export const ParticapteForm = ({
     consent: boolean;
     dataPrivacy: boolean;
   }) => {
-    if (form.isValid()) {
+    if (form.isValid() && !loading) {
+      setLoading(true);
       const { error } = await inviteParticipant(values.email, locale);
       if (error) {
         showNotification(t("errorTitle"), t("errorText"), "error");
       } else {
         setRegistered(true);
       }
+      setLoading(false);
     }
   };
 
@@ -92,7 +96,11 @@ export const ParticapteForm = ({
           />
 
           <Flex justify="center" mt="md">
-            <Button type="submit" disabled={!form.isValid()}>
+            <Button
+              type="submit"
+              disabled={!form.isValid() || loading}
+              loading={loading}
+            >
               {t("submit")}
             </Button>
           </Flex>

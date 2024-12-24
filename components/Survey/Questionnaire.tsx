@@ -21,6 +21,7 @@ import { useSurveyContext } from "./SurveyProvider";
 
 export const Questionnaire = () => {
   const t = useTranslations("Questionnaire");
+  const [loading, setLoading] = useState(false);
   const smallScreen = useMediaQuery("(max-width: 768px)", true);
   const {
     participation: { survey },
@@ -105,11 +106,17 @@ export const Questionnaire = () => {
   });
 
   const handleSubmit = async (values: any) => {
-    if (form.isValid() && featureOrder.length === featureItems.length) {
+    if (
+      form.isValid() &&
+      featureOrder.length === featureItems.length &&
+      !loading
+    ) {
+      setLoading(true);
       const { error } = await saveQuestionaireAnswers(survey.id, {
         ...values,
         feature_order: featureOrder,
       });
+      setLoading(false);
 
       if (!error) {
         window.location.reload();
@@ -180,8 +187,11 @@ export const Questionnaire = () => {
             <Button
               type="submit"
               disabled={
-                !form.isValid() || featureOrder.length !== featureItems.length
+                !form.isValid() ||
+                featureOrder.length !== featureItems.length ||
+                loading
               }
+              loading={loading}
             >
               {t("submit")}
             </Button>
