@@ -3,6 +3,7 @@ import {
   getComparisonBatch,
   getImages,
   getParticipation,
+  isQuestionnaireFinished,
 } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
@@ -33,9 +34,13 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
     );
   }
 
-  const surveyId = participation.survey.id;
-  const { data: comparisons } = await getComparisonBatch(surveyId);
-  const { data: images } = await getImages(surveyId);
+  const surveyId = participation.survey!.id;
+  const [{ data: comparisons }, { data: images }, questionnaireFinished] =
+    await Promise.all([
+      getComparisonBatch(surveyId),
+      getImages(surveyId),
+      isQuestionnaireFinished(),
+    ]);
 
   if (!comparisons || !images) {
     redirect("/error");
@@ -48,6 +53,7 @@ export default async function SurveyPage({ searchParams }: NextPageProps) {
         participation={participation}
         comparisons={comparisons}
         images={images}
+        questionnaireFinished={questionnaireFinished}
       />
     </>
   );

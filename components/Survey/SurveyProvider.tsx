@@ -12,6 +12,7 @@ type SurveyContextProps = {
   setComparisons: (comparisons: number[][]) => void;
   imageUrls: imageUrls;
   participation: Participation;
+  questionnaireFinished: boolean;
 };
 
 const SurveyContext = createContext({} as SurveyContextProps);
@@ -23,17 +24,25 @@ export const SurveyProvider = ({
   initialComparisons,
   imageUrls,
   participation,
+  questionnaireFinished,
 }: {
   children: React.ReactNode;
   initialComparisons: number[][];
   imageUrls: imageUrls;
   participation: Participation;
+  questionnaireFinished: boolean;
 }) => {
   const [comparisons, setComparisons] = useState(initialComparisons);
 
   return (
     <SurveyContext.Provider
-      value={{ comparisons, setComparisons, imageUrls, participation }}
+      value={{
+        comparisons,
+        setComparisons,
+        imageUrls,
+        participation,
+        questionnaireFinished,
+      }}
     >
       {children}
     </SurveyContext.Provider>

@@ -9,12 +9,14 @@ type Props = {
   participation: Participation;
   comparisons: number[][];
   images: { id: number; path: string }[];
+  questionnaireFinished: boolean;
 };
 
 export const SurveyWrapper = ({
   comparisons,
   images,
   participation,
+  questionnaireFinished,
 }: Props) => {
   const { imageUrls } = useImageProvider(participation.survey.id, images);
 
@@ -23,6 +25,7 @@ export const SurveyWrapper = ({
       initialComparisons={comparisons}
       imageUrls={imageUrls}
       participation={participation}
+      questionnaireFinished={questionnaireFinished}
     >
       <Survey />
     </SurveyProvider>

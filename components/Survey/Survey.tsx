@@ -1,5 +1,6 @@
 "use client";
 
+import { getComparisonBatch, sendSurveyStarted } from "@/actions/survey";
 import {
   Button,
   Container,
@@ -10,13 +11,12 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { PwcExample } from "../PwcExample/PwcExample";
 import { ComparisonForm } from "./ComparisonForm/ComparisonForm";
 import { Questionnaire } from "./Questionnaire";
 import { useSurveyContext } from "./SurveyProvider";
-import { getComparisonBatch, sendSurveyStarted } from "@/actions/survey";
-import { useTranslations } from "next-intl";
 
 export const Survey = () => {
   const t = useTranslations("Survey");

@@ -156,7 +156,7 @@ export async function addHelper(email: string) {
   if (registration) {
     query = supabase
       .from("users")
-      .insert({ id: registration.id, name: email, role: "helper" })
+      .upsert({ id: registration.id, name: email, role: "helper" })
       .select("id")
       .single();
   }

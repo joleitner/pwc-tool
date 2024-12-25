@@ -156,6 +156,19 @@ export async function getParticipation(surveyId: string, userId: string) {
     .single();
 }
 
+export async function isQuestionnaireFinished() {
+  const supabase = await createServerSupabase();
+  const user = await getAuthUser();
+
+  const { data } = await supabase
+    .from("questionnaires")
+    .select("id")
+    .eq("user", user!.id)
+    .single();
+
+  return Boolean(data);
+}
+
 export async function getComparisonBatch(surveyId: number) {
   const supabase = await createServerSupabase();
 
@@ -256,6 +269,20 @@ export async function sendSurveyStarted(surveyId: number) {
     .from("participations")
     .update({
       started: new Date().toISOString(),
+    })
+    .eq("survey", surveyId)
+    .eq("user", user!.id);
+}
+
+export async function sendSurveyFinished(surveyId: number) {
+  const supabase = await createServerSupabase();
+  const user = await getAuthUser();
+  if (!user) return;
+
+  return supabase
+    .from("participations")
+    .update({
+      finished: new Date().toISOString(),
     })
     .eq("survey", surveyId)
     .eq("user", user!.id);
