@@ -35,10 +35,18 @@ export const useImageProvider = (
       setUrlExpiry(currentTime + valid);
     }
 
-    return urls.reduce<{ [id: number]: string }>((acc, { id, url }) => {
+    const urlMap = urls.reduce<{ [id: number]: string }>((acc, { id, url }) => {
       acc[id] = url;
       return acc;
     }, {});
+
+    // Prefetch images
+    Object.values(urlMap).forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+
+    return urlMap;
   };
 
   useEffect(() => {
