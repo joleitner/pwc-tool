@@ -1,12 +1,14 @@
 "use client";
 
 import { createNewSuggestion, updateSuggestion } from "@/actions/helper";
+import { Registrations } from "@/types";
 import { resizeImage } from "@/utils/resizeImage";
 import { showNotification } from "@/utils/showNotification";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import { Carousel, CarouselSlide } from "@mantine/carousel";
 import {
   ActionIcon,
+  Autocomplete,
   Box,
   Button,
   Center,
@@ -20,15 +22,18 @@ import {
   Space,
   Stack,
   Text,
-  TextInput,
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export const HelperForm = () => {
+type Props = {
+  registrations: Registrations[];
+};
+
+export const HelperForm = ({ registrations }: Props) => {
   const t = useTranslations("Helper");
   const [files, setFiles] = useState<File[]>([]);
   const [emails, setEmails] = useState<string[]>([]);
@@ -109,6 +114,12 @@ export const HelperForm = () => {
     }
   };
 
+  const filteredRegistrations = useMemo(() => {
+    return registrations.filter((registration) => {
+      return !emails.includes(registration.email);
+    });
+  }, [registrations, emails]);
+
   return (
     <Container size="md" style={{ minHeight: "calc(100vh - 110px - 210px)" }}>
       <Container mb="md">
@@ -140,10 +151,13 @@ export const HelperForm = () => {
           </Stack>
         </ScrollAreaAutosize>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
+          <Autocomplete
             label="Email"
             placeholder="example@email.com"
             key={form.key("email")}
+            data={filteredRegistrations.map(
+              (registration) => registration.email
+            )}
             {...form.getInputProps("email")}
           />
           <Flex justify="center" my="lg">
@@ -154,6 +168,7 @@ export const HelperForm = () => {
                 });
                 form.reset();
               }}
+              disabled={form.values.email === ""}
               px="xl"
             >
               {t("add")}

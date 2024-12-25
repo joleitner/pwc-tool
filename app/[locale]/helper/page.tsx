@@ -1,4 +1,5 @@
 import { getAuthUser } from "@/actions/auth";
+import { getRegistrations } from "@/actions/survey";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { HelperForm } from "@/components/Helper/HelperForm";
@@ -11,10 +12,12 @@ export default async function Home() {
     redirect("/");
   }
 
+  const { data: registrations } = await getRegistrations();
+
   return (
     <>
       <Header />
-      <HelperForm />
+      <HelperForm registrations={registrations || []} />
       <Footer />
     </>
   );
