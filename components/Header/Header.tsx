@@ -16,6 +16,7 @@ import { IconAB } from "@tabler/icons-react";
 import { logout } from "@/actions/auth";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { redirect } from "next/navigation";
 
 export function Header({
   admin,
@@ -27,24 +28,21 @@ export function Header({
   const [opened, { toggle }] = useDisclosure(false);
   const t = useTranslations("Header");
 
-  const links = [
-    { link: "/", label: t("home") },
-    { link: "/participate", label: t("participate") },
-  ];
-  //   const [active, setActive] = useState(links[0].link);
-
-  const items = links.map((link) => (
-    <Button
-      component={Link}
-      key={link.label}
-      href={link.link}
-      //   className={classes.link}
-      variant={"subtle"}
-      //   data-active={active === link.link || undefined}
-    >
-      {link.label}
-    </Button>
-  ));
+  const items = (
+    <>
+      <Button component={Link} key={t("home")} href="/" variant="subtle">
+        {t("home")}
+      </Button>
+      <Button
+        component={Link}
+        key={t("participate")}
+        href="/participate"
+        variant="subtle"
+      >
+        {t("participate")}
+      </Button>
+    </>
+  );
   const adminLinks = (
     <>
       <Button variant={"subtle"} component={Link} href="/admin">
@@ -88,7 +86,30 @@ export function Header({
         // withCloseButton={false}
       >
         <Stack gap={10}>
-          {admin ? adminLinks : items}
+          {admin ? (
+            adminLinks
+          ) : (
+            <>
+              <Button
+                variant="subtle"
+                onClick={() => {
+                  toggle();
+                  redirect("/");
+                }}
+              >
+                {t("home")}
+              </Button>
+              <Button
+                variant="subtle"
+                onClick={() => {
+                  toggle();
+                  redirect("/participate");
+                }}
+              >
+                {t("participate")}
+              </Button>
+            </>
+          )}
           <ThemeToggle />
         </Stack>
       </Modal>
