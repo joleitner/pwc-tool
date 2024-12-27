@@ -6,35 +6,53 @@ export const resizeImage = async (
     quality = 1,
   }: { maxSize?: number; type?: string; quality?: number }
 ) => {
-  const imageBitmap = await createImageBitmap(file);
+  // Detect Safari (both desktop and iOS)
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const outputType = isSafari && type === "image/webp" ? "image/jpeg" : type;
 
-  // Calculate new size
-  const { width, height } = imageBitmap;
+  // Load the image as a Data URL
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  // Create an image element
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+
+  // Determine new dimensions based on the aspect ratio
+  const { width, height } = image;
   const aspectRatio = width / height;
-  const isLandScape = width > height;
-  const newWidth = isLandScape ? maxSize : maxSize * aspectRatio;
-  const newHeight = isLandScape ? maxSize / aspectRatio : maxSize;
+  const newWidth = width > height ? maxSize : maxSize * aspectRatio;
+  const newHeight = width > height ? maxSize / aspectRatio : maxSize;
 
-  // Set canvas size and draw image
+  // Create a canvas and resize the image
   const canvas = document.createElement("canvas");
   canvas.width = newWidth;
   canvas.height = newHeight;
-
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Could not resize image");
-  ctx.drawImage(imageBitmap, 0, 0, newWidth, newHeight);
+  if (!ctx) throw new Error("Failed to create canvas context");
 
-  // convert canvas to blob
+  // Draw the resized image on the canvas
+  ctx.drawImage(image, 0, 0, newWidth, newHeight);
+
+  // Convert the canvas to a blob
   const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) =>
         blob ? resolve(blob) : reject("Failed to convert canvas to blob"),
-      type,
+      outputType,
       quality
     );
   });
 
-  // turn blob into file
-  const filename = `${file.name.split(".")[0]}.${type.split("/")[1]}`;
-  return new File([blob], filename, { type });
+  // Return the resized image as a File
+  const filename = `${file.name.split(".")[0]}.${outputType.split("/")[1]}`;
+  return new File([blob], filename, { type: outputType });
 };

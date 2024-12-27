@@ -210,7 +210,7 @@ export const HelperForm = ({ registrations }: Props) => {
             {files.length <= 0 ? (
               <FileButton
                 onChange={(files) => setFiles(files)}
-                accept="image/png,image/jpeg"
+                accept="image/png,image/jpeg,image/webp"
                 multiple
               >
                 {(props) => <Button {...props}>{t("upload")}</Button>}

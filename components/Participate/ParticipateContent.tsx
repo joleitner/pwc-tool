@@ -41,12 +41,12 @@ export const ParticipateContent = () => {
         <Text fw="bold" mt={15} mb={5}>
           {t("process")}
         </Text>
-        <List mb={20}>
-          <ListItem>{t("point1")}</ListItem>
-          <ListItem>{t("point2")}</ListItem>
-          <ListItem>{t("point3")}</ListItem>
-          <ListItem>{t("point4")}</ListItem>
-          <ListItem>{t("point5")}</ListItem>
+        <List mb={20} type="ordered">
+          <ListItem mb={8}>{t("point1")}</ListItem>
+          <ListItem mb={8}>{t("point2")}</ListItem>
+          <ListItem mb={8}>{t("point3")}</ListItem>
+          <ListItem mb={8}>{t("point4")}</ListItem>
+          <ListItem mb={8}>{t("point5")}</ListItem>
         </List>
         <Text fw="bold" mt={15} mb={5}>
           {t("notice")}
