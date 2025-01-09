@@ -16,7 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconListCheck, IconPhoto, IconUsersGroup } from "@tabler/icons-react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 
 type Props = Partial<BoxProps> & {
@@ -64,7 +64,9 @@ export const SurveyOverview = ({ initial, ...props }: Props) => {
                 px="lg"
                 withBorder
                 key={survey.id}
-                onClick={() => redirect(`/admin/survey/${survey.id}`)}
+                component={Link}
+                href={`/admin/survey/${survey.id}`}
+                style={{ color: "inherit", textDecoration: "none" }}
               >
                 <Flex justify="space-between" align="center">
                   <Text>Survey {survey.id}</Text>
