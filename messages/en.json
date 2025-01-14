@@ -127,5 +127,15 @@
     "add": "Add Email",
     "upload": "Select group images",
     "submit": "Upload"
+  },
+  "Refine": {
+    "textRefine": "Thank you for rating another series!",
+    "text1": "Every comparison improves the quality of the results.",
+    "text2": "If you take the time to rate another series of group photos, you will help me a lot.",
+    "nextSurvey": "Rate new series",
+    "stop": "Stop",
+    "thankyouText": "Thank you for your help!",
+    "thankyouText2": "Every single one of your comparisons has helped me a lot.",
+    "loading": "Loading of comparison pairs"
   }
 }

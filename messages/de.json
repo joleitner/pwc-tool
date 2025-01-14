@@ -88,7 +88,7 @@
     "selfObservation": "achte ich primär darauf, dass die oben genannten Kriterien auf mich selbst zutreffen.",
     "centering": "ist es mir wichtig, dass die Gruppe im Bild zentriert ist.",
     "sharpness": "habe ich darauf geachtet, dass das Bild scharf ist.",
-    "background": "ist es mir wichtig, dass der Hintergrund mit der Gesamtbild harmoniert.",
+    "background": "ist es mir wichtig, dass der Hintergrund mit dem Gesamtbild harmoniert.",
     "additional": "Mir sind noch weitere Eigenschaften wichtig bei Gruppenfotos die oben noch nicht genannt wurden (oder sonstige Anmerkungen):",
     "submit": "Umfrage abschicken",
     "radioOption1": "trifft nicht zu",
@@ -127,5 +127,15 @@
     "add": "E-Mail hinzufügen",
     "upload": "Gruppenbildern auswählen",
     "submit": "Hochladen"
+  },
+  "Refine": {
+    "textRefine": "Danke, dass du eine weitere Serie bewertet hast!",
+    "text1": "Jeder Vergleich verbessert die Qualität der Ergebnisse.",
+    "text2": "Wenn du dir noch einmal die Zeit nimmst, eine weitere Serie von Gruppenfotos zu bewerten, hilfst du mir sehr.",
+    "nextSurvey": "Neue Serie bewerten",
+    "stop": "Aufhören",
+    "thankyouText": "Danke für deine Hilfe!",
+    "thankyouText2": "Jeder einzelne deiner Vergleiche hat mir viel geholfen.",
+    "loading": "Laden der Vergleichspaare"
   }
 }

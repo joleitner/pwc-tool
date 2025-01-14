@@ -33,6 +33,7 @@ export type DetailedSurvey = Survey & {
     started: string | null;
     finished: string | null;
     comparison_count: number;
+    initial: boolean;
   }[];
   comparison_count: number;
   images: { id: number; path: string }[];

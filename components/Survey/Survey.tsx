@@ -1,6 +1,10 @@
 "use client";
 
-import { getComparisonBatch, sendSurveyStarted } from "@/actions/survey";
+import {
+  getComparisonBatch,
+  sendSurveyFinished,
+  sendSurveyStarted,
+} from "@/actions/survey";
 import {
   Button,
   Container,
@@ -17,13 +21,15 @@ import { PwcExample } from "../PwcExample/PwcExample";
 import { ComparisonForm } from "./ComparisonForm/ComparisonForm";
 import { Questionnaire } from "./Questionnaire";
 import { useSurveyContext } from "./SurveyProvider";
+import { redirect, useParams } from "next/navigation";
 
 export const Survey = () => {
   const t = useTranslations("Survey");
   const {
     comparisons,
     setComparisons,
-    participation: { started, survey },
+    participation: { started, survey, initial },
+    questionnaireFinished,
   } = useSurveyContext();
   const [nextComparison, setNextComparison] = useState<boolean>(false);
   const [loadingBatches, setLoadingBatches] = useState<boolean>(false);
@@ -32,6 +38,15 @@ export const Survey = () => {
   >(comparisons.length > 0 ? 0 : null);
 
   const [surveyStarted, setSurveyStarted] = useState<boolean>(started !== null);
+  const { refinement } = useParams<{ refinement: string; id: string }>();
+
+  // don't show explanation for refinement surveys
+  useEffect(() => {
+    if (!initial && !surveyStarted) {
+      sendSurveyStarted(survey.id);
+      setSurveyStarted(true);
+    }
+  }, [initial, surveyStarted]);
 
   useEffect(() => {
     if (nextComparison) {
@@ -58,6 +73,20 @@ export const Survey = () => {
       setNextComparison(false);
     }
   }, [nextComparison, comparisons.length]);
+
+  useEffect(() => {
+    if (questionnaireFinished && currentComparisonIndex === null) {
+      const setFinished = async () => {
+        await sendSurveyFinished(survey.id);
+        if (refinement) {
+          redirect("/refinement");
+        } else {
+          window.location.reload();
+        }
+      };
+      setFinished();
+    }
+  }, [questionnaireFinished, currentComparisonIndex]);
 
   return (
     <>
@@ -91,9 +120,11 @@ export const Survey = () => {
             </Container>
           )
         ) : (
-          <Container size="md" mb={150}>
-            <Questionnaire />
-          </Container>
+          !questionnaireFinished && (
+            <Container size="md" mb={150}>
+              <Questionnaire />
+            </Container>
+          )
         )
       ) : (
         <Container size="md" mb={150} mt={50}>

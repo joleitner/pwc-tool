@@ -1,7 +1,7 @@
 import { getAuthUser } from "@/actions/auth";
 import { getSurveyInfo } from "@/actions/survey";
-import { Header } from "@/components/Header/Header";
 import { ImageRanking } from "@/components/Admin/ImageRanking";
+import { Header } from "@/components/Header/Header";
 import { NextPageProps } from "@/types";
 import {
   Badge,
@@ -10,6 +10,7 @@ import {
   Flex,
   Group,
   Paper,
+  ScrollAreaAutosize,
   Space,
   Stack,
   Text,
@@ -32,6 +33,11 @@ export default async function SurveyDetailPage({ params }: NextPageProps) {
   const surveyId = (await params).slug;
 
   const survey = await getSurveyInfo(parseInt(surveyId));
+
+  const initialParticipations = survey?.participations.filter((p) => p.initial);
+  const refinementParticipations = survey?.participations.filter(
+    (p) => !p.initial
+  );
 
   return (
     <>
@@ -79,46 +85,18 @@ export default async function SurveyDetailPage({ params }: NextPageProps) {
             </Flex>
             <Title order={3}>Teilnehmer</Title>
             <Stack my="lg" mb="xl">
-              {survey.participations.map((participation, index) => (
-                <Paper p="md" withBorder shadow="xs" key={index}>
-                  <Flex justify="space-between" align="center">
-                    <Text>{participation.user.name}</Text>
-                    <Group>
-                      {participation.started && (
-                        <Badge
-                          variant="light"
-                          size="xl"
-                          leftSection={<IconAB size={20} />}
-                          color="indigo"
-                        >
-                          {participation.comparison_count}
-                        </Badge>
-                      )}
-                      <Badge
-                        color={
-                          participation.finished
-                            ? "green"
-                            : participation.started
-                            ? "indigo"
-                            : "red"
-                        }
-                      >
-                        {participation.finished
-                          ? new Date(participation.finished).toLocaleString(
-                              "de-DE"
-                            )
-                          : participation.started
-                          ? new Date(participation.started).toLocaleString(
-                              "de-DE"
-                            )
-                          : "Not started"}
-                      </Badge>
-                    </Group>
-                  </Flex>
-                </Paper>
+              {initialParticipations?.map((participation, index) => (
+                <ParticipantItem key={index} participation={participation} />
               ))}
             </Stack>
-
+            <Title order={4}>Refinements</Title>
+            <ScrollAreaAutosize mah={450} offsetScrollbars>
+              <Stack my="lg" mb="xl">
+                {refinementParticipations?.map((participation, index) => (
+                  <ParticipantItem key={index} participation={participation} />
+                ))}
+              </Stack>
+            </ScrollAreaAutosize>
             <Title order={3}>Bild Scores</Title>
             <ImageRanking surveyId={survey.id} images={survey.images} />
           </Container>
@@ -141,3 +119,38 @@ export default async function SurveyDetailPage({ params }: NextPageProps) {
     </>
   );
 }
+
+const ParticipantItem = ({ participation }: { participation: any }) => (
+  <Paper p="md" withBorder shadow="xs">
+    <Flex justify="space-between" align="center">
+      <Text>{participation.user.name}</Text>
+      <Group>
+        {participation.started && (
+          <Badge
+            variant="light"
+            size="xl"
+            leftSection={<IconAB size={20} />}
+            color="indigo"
+          >
+            {participation.comparison_count}
+          </Badge>
+        )}
+        <Badge
+          color={
+            participation.finished
+              ? "green"
+              : participation.started
+              ? "indigo"
+              : "red"
+          }
+        >
+          {participation.finished
+            ? new Date(participation.finished).toLocaleString("de-DE")
+            : participation.started
+            ? new Date(participation.started).toLocaleString("de-DE")
+            : "Not started"}
+        </Badge>
+      </Group>
+    </Flex>
+  </Paper>
+);

@@ -1,6 +1,6 @@
 "use client";
 
-import { saveQuestionaireAnswers, sendSurveyFinished } from "@/actions/survey";
+import { saveQuestionaireAnswers } from "@/actions/survey";
 import {
   Button,
   Flex,
@@ -15,7 +15,7 @@ import {
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { OrderQuestion } from "./OrderQuestion";
 import { useSurveyContext } from "./SurveyProvider";
 
@@ -25,7 +25,6 @@ export const Questionnaire = () => {
   const smallScreen = useMediaQuery("(max-width: 768px)", true);
   const {
     participation: { survey },
-    questionnaireFinished,
   } = useSurveyContext();
 
   const questions = [
@@ -116,16 +115,6 @@ export const Questionnaire = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (questionnaireFinished) {
-      const setFinished = async () => {
-        await sendSurveyFinished(survey.id);
-        window.location.reload();
-      };
-      setFinished();
-    }
-  }, [questionnaireFinished]);
 
   return (
     <>

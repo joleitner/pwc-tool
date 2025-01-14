@@ -14,13 +14,17 @@ import { Container } from "@mantine/core";
 import { redirect } from "next/navigation";
 
 export default async function SurveyPage({ searchParams }: NextPageProps) {
-  const { id } = await searchParams;
+  const { id, refinement } = await searchParams;
 
   const user = await getAuthUser();
   if (!user) {
     redirect(`/login?next=/survey?id=${id}`);
   }
   const { data: participation } = await getParticipation(id!, user.id);
+
+  if (participation?.finished && refinement) {
+    redirect("/refinement");
+  }
 
   if (!participation || participation.finished) {
     return (

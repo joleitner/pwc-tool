@@ -46,13 +46,14 @@ export async function getSurveyInfo(
     await Promise.all([
       supabase
         .from("participations")
-        .select("user(id, name), started, finished")
+        .select("user(id, name), started, finished, initial")
         .eq("survey", surveyId)
         .returns<
           {
             user: { id: string; name: string };
             started: string;
             finished: string;
+            initial: boolean;
           }[]
         >(),
       supabase.from("pwc_results").select().eq("survey", surveyId),
