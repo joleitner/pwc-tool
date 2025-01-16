@@ -4,7 +4,7 @@ import { Header } from "@/components/Header/Header";
 import { RegistrationOverview } from "@/components/Admin/RegistrationOverview";
 import { SurveyOverview } from "@/components/Admin/SurveyOverview";
 import { Link } from "@/i18n/routing";
-import { Button, Container, Divider, Flex, Title } from "@mantine/core";
+import { Button, Container, Divider, Flex, Space, Title } from "@mantine/core";
 import { redirect } from "next/navigation";
 import { HelperOverview } from "@/components/Admin/HelperOverview";
 import { getHelper } from "@/actions/helper";
@@ -38,6 +38,14 @@ export default async function AdminPanel() {
           <SurveyOverview initial={surveys!} />
           <Divider my={50} />
           <HelperOverview initial={helper!} />
+          <Divider my={50} />
+          <Title order={2}>Refinement</Title>
+          <Flex my={20} justify="center">
+            <Link href="/admin/refinement">
+              <Button>Start refinement</Button>
+            </Link>
+          </Flex>
+          <Space h={100} />
         </Container>
       </>
     );

@@ -3,6 +3,7 @@
 import { createServerSupabase } from "@/utils/supabase/supabase.server";
 import { getAuthUser } from "./auth";
 import { createAdminSupabase } from "@/utils/supabase/supabase.admin";
+import { sendEmail } from "@/utils/sendEmail";
 
 export async function enterRefinementForNewSurvey() {
   const supabase = await createServerSupabase();
@@ -85,4 +86,75 @@ export async function areSurveysAvailable() {
   );
 
   return availableSurveys.length > 0;
+}
+
+export async function getAvailableUsers() {
+  const supabase = await createServerSupabase();
+  const { data: users } = await supabase
+    .from("users")
+    .select("*")
+    .neq("role", "admin");
+
+  return users;
+}
+
+export async function sendRefinementEmail(
+  users: { email: string; locale: string }[]
+) {
+  const supabase = await createAdminSupabase();
+
+  users.map(async (user) => {
+    const { data: otp_link } = await supabase.auth.admin.generateLink({
+      type: "magiclink",
+      email: user.email,
+    });
+    if (otp_link) {
+      const token = otp_link.properties?.hashed_token;
+      const type = otp_link.properties?.verification_type;
+
+      const refinementLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/refinement`;
+
+      await sendEmail(
+        user.email,
+        user.locale === "de" ? 9 : 10,
+        refinementLink
+      );
+    }
+  });
+}
+
+export async function getResponselessParticipants() {
+  const supabase = await createServerSupabase();
+  const { data: participants } = await supabase
+    .from("participations")
+    .select("survey(id, public_id), user(id, name, locale)")
+    .eq("initial", true)
+    .filter("finished", "is", null);
+
+  return participants;
+}
+
+export async function sendReminderEmail(
+  reminders: { survey_id: string; email: string; locale: string }[]
+) {
+  const supabase = await createAdminSupabase();
+
+  reminders.map(async (remind) => {
+    const { data: otp_link } = await supabase.auth.admin.generateLink({
+      type: "magiclink",
+      email: remind.email,
+    });
+    if (otp_link) {
+      const token = otp_link.properties?.hashed_token;
+      const type = otp_link.properties?.verification_type;
+
+      const reminderLink = `${process.env.SITE_URL}/auth/confirm?token_hash=${token}&type=${type}&next=/survey?id=${remind.survey_id}`;
+
+      await sendEmail(
+        remind.email,
+        remind.locale === "de" ? 7 : 8,
+        reminderLink
+      );
+    }
+  });
 }

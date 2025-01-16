@@ -6,18 +6,17 @@ import { User } from "@/types";
 import { showNotification } from "@/utils/showNotification";
 import { createClientSupabase } from "@/utils/supabase/supabase.client";
 import {
+  ActionIcon,
   Box,
   BoxProps,
+  Button,
   Flex,
-  Text,
   Paper,
   ScrollAreaAutosize,
   Stack,
-  Title,
-  ActionIcon,
+  Text,
   TextInput,
-  Space,
-  Button,
+  Title,
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
@@ -105,7 +104,6 @@ export const HelperOverview = ({ initial, ...props }: Partial<Props>) => {
         <Flex justify="center" my="md">
           <Button onClick={handleSubmit}>Add Helper</Button>
         </Flex>
-        <Space h={100} />
       </Box>
     </>
   );

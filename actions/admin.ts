@@ -22,6 +22,7 @@ export async function signupParticipants(
       supabase.from("users").upsert({
         id: registration.id,
         name: registration.email,
+        locale: registration.locale || "de",
       })
     );
     surveyUserRequests.push(

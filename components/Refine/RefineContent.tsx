@@ -69,7 +69,7 @@ export const RefineContent = ({
               style={{ color: "var(--mantine-primary-color-6)" }}
             />
             <Text fw="bold">{t("thankyouText")}</Text>
-            <Text>{t("thankyouText2")}</Text>
+            <Text ta="center">{t("thankyouText2")}</Text>
           </>
         ) : (
           <Container mb="lg">

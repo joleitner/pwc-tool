@@ -326,18 +326,21 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          locale: string
           name: string
           role: Database["public"]["Enums"]["roles"]
         }
         Insert: {
           created_at?: string
           id?: string
+          locale?: string
           name: string
           role?: Database["public"]["Enums"]["roles"]
         }
         Update: {
           created_at?: string
           id?: string
+          locale?: string
           name?: string
           role?: Database["public"]["Enums"]["roles"]
         }

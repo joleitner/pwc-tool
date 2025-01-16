@@ -55,6 +55,7 @@ export const AddRegistrationForm = ({ users, ...props }: Props) => {
           }))}
           checkIconPosition="right"
           leftSection={<IconUsersGroup size={18} />}
+          searchable
           key={form.key("users")}
           {...form.getInputProps("users")}
         />
